@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-08",
+  "root_cause": "SPIR-V compiler truncates a 384-element skin uniform array to 128 through uint8_t reflection",
+  "fix": "Three independent 128-entry affine-row uniforms; matching CPU upload for ordinary, instanced and shadow draws",
+  "vulkan": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "1-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "2-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "3-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "4-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "5-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "6-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "7-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "8-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      }
+    ]
+  },
+  "direct3d11": {
+    "passed": true,
+    "cases": [
+      {
+        "case": "1-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "2-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "3-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "4-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "5-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "6-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "7-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      },
+      {
+        "case": "8-801-cpu",
+        "different_pixels": 0,
+        "maximum_channel_error": 0
+      }
+    ]
+  },
+  "offline_admin": {
+    "passed": true,
+    "account": "ashesh",
+    "userLevel": 1,
+    "isolated_startup_exit": 0,
+    "other_offline_account_roles_unchanged": true,
+    "updated_local_profiles": [
+      {
+        "profile": "C:\\_GitHub\\TantraSrc\\_remake_bgfx\\userdata\\zflauncher\\offline\\tantra.sqlite3",
+        "userLevel": 1
+      },
+      {
+        "profile": "C:\\Users\\Ashesh\\AppData\\Local\\ZFLauncher\\userdata\\offline\\tantra.sqlite3",
+        "userLevel": 1
+      }
+    ],
+    "online_permissions_modified": false
+  },
+  "scope": "Idle poses for eight character types, shader reflection and offline role upgrade; no repeated combat/FX/gameplay journeys"
+}

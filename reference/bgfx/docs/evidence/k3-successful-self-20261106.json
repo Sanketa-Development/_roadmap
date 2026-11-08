@@ -1,0 +1,134 @@
+{
+  "updated_at": "2026-11-06T12:08:18.186540+08:00",
+  "game_name": "Global Tantra",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "client_sha256": "f4979c9650da1df71d0f20eb143531b7ce9ad30e850e02e8cddcde426e10b2db",
+  "client_patch_version": 1793936845,
+  "client_rebuilt": false,
+  "source_review": {
+    "sources": [
+      {
+        "path": "Tantra/zone/CMob2.cpp",
+        "sha256": "50cd5a0bbe8d5287d44ced2bd893013f33c8c472b09982890db11caee3c65e8b",
+        "lines": [
+          1439,
+          1504,
+          1507,
+          1509,
+          1635,
+          1655,
+          1658,
+          1660,
+          1666
+        ]
+      },
+      {
+        "path": "Tantra/zone/CMOB.CPP",
+        "sha256": "3421c51069c245603784168aa8ea2c276798d480b9749d8e9124734ad0715a46",
+        "lines": [
+          1389,
+          1425,
+          1431
+        ]
+      },
+      {
+        "path": "_server_cpp/src/zone/npc_world_actions.cpp",
+        "sha256": "b34f4d9ee1e9254f1e8018f807a93374d6cff0997f6926bd98ae05b7d5b3a4f3",
+        "lines": [
+          49,
+          64,
+          65
+        ]
+      }
+    ],
+    "k3_records": [
+      {
+        "ID": "3023",
+        "byteLevel": "1",
+        "byteSuccessRate": "80",
+        "iDuration": "8000",
+        "iEffect1ID": "3150",
+        "iEffect1Duration": "8000",
+        "sCombatPhase": "132"
+      },
+      {
+        "ID": "3028",
+        "byteLevel": "1",
+        "byteSuccessRate": "80",
+        "iDuration": "8000",
+        "iEffect1ID": "3150",
+        "iEffect1Duration": "8000",
+        "sCombatPhase": "132"
+      }
+    ],
+    "findings": [
+      "K3 taunts3023/3028 use AffectSelf on the caster.",
+      "CastSkill applies CastInstant3 before recipient OnAffect and caster AffectSelf, within the successful unit branch.",
+      "Caster taunt is an inner-affection selector bias; the existing population bridge copies it to native monster target scoring.",
+      "The previous server cast() added all AffectSelf effects while paying for the cast, including future misses.",
+      "New successful-self calls retain the caster handle as effect owner and skip unrelated recipient instant-heal phases."
+    ],
+    "unchanged": [
+      "K3 tables/FX",
+      "Beta skill admission",
+      "Original threat scoring",
+      "Native skill costs, durations, success rates and cooldowns"
+    ]
+  },
+  "implemented": [
+    "Defer implicit AffectSelf from cast payment until a successful recipient",
+    "Preserve explicit self-target casts and native caster ownership",
+    "Keep CastInstant3 before recipient OnAffect and caster AffectSelf",
+    "Use native active-effect snapshots without duplicate per-unit target impacts"
+  ],
+  "authority": {
+    "passed": true,
+    "single_target_skill": 3023,
+    "world_cast_attempts": 2,
+    "successful_and_missed_world_hits": true,
+    "no_implicit_self_effect_at_payment": true,
+    "caster_inner_taunt_flag": true,
+    "lifetime_ms": 8000,
+    "native_expiry": true,
+    "native_caster_owner": true,
+    "area_skill": 3028,
+    "area_hit_recipients": 2,
+    "area_fixture_player_died_after_impacts": true,
+    "encounter_survival_accepted": false,
+    "network_session": false,
+    "graphical_check": false
+  },
+  "debug_builds": 0,
+  "server_deployment": {
+    "ready": true,
+    "native_worlds": 11,
+    "admin_stub_worlds": 1,
+    "empty_at_restart": true,
+    "binaries": {
+      "TantraZone.exe": "9a1c1545de1637462a48671c44e86cafdebc90731387f394e1b8f3011fb88b34",
+      "TantraService.exe": "4c77b8bbbc969c9177d267607872ae2c6b247b53c146db2b16c6f03e4ccaa509",
+      "TantraServerManager.exe": "446684e6aa1ed71acff2aa44aeee456e361e7a7fbfe8964eea5ad2ba9045f8bc",
+      "TantraDataTools.exe": "d0f6579cddb590f48ab238081fa5ba519cdcd8c9dfa85cfd180a96bc4b729745"
+    }
+  },
+  "server_update": {
+    "archive": "D:\\Tantra-Beta\\Expansion-20261106\\k3-successful-self\\Global-Tantra-Server-Update-20261106-caster-phases.zip",
+    "sha256": "71efb2f751d7c503d60e741ee258d8e45940859cdecea077ca438c471215b828",
+    "files": 78,
+    "bytes": 11779879,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "k3_tables_or_fx_changed": false,
+  "beta_admission_changed": false,
+  "native_datasets_changed": false,
+  "normal_player_data_edited": false,
+  "remaining": [
+    "Broader skill and encounter graphical acceptance",
+    "Selected quest journeys",
+    "Shadow/FX/audio and remaining zone acceptance"
+  ],
+  "evidence_root": "D:\\Tantra-Beta\\Expansion-20261106\\k3-successful-self"
+}

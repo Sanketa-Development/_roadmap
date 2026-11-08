@@ -1,0 +1,1025 @@
+{
+  "date": "2026-11-07",
+  "scope": "pending NPC encounter handler batch",
+  "completed": true,
+  "actions": [
+    20100,
+    20101,
+    2200,
+    1170
+  ],
+  "original_source": {
+    "Tantra/zone/server.cpp": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a"
+  },
+  "source_rules": "Normalized half-open living/nonempty NPC counts include NPC/Event classes. Current-clan affections exclude those classes and use native AddEffect, self ownership and status/effect publication. Generic immunity mode1 sets,0 restores original definition; other modes do nothing.",
+  "changed_source": {
+    "_server_cpp/src/zone/NativeMapWorldEvents.inc": "ff2b1632036cfc078600c2a0df8040de49bd368b60f9add710cf478d5b710137",
+    "_server_cpp/src/zone/world_map_events.inc": "0fe6ecf286454089ccc391623ee6689c1b2328ab9cb3247743591eff29bf5083",
+    "_server_cpp/src/zone/world_story_events.inc": "d815b409df3e768a652783046d23f4d8f2f45297d018005081079cc8c2f6910b",
+    "_server_cpp/src/zone/world_castle.inc": "3b465bc18adf0e9cc0e26ca1df8fc4943ae851b2080596e875a250866874786a",
+    "_server_cpp/tests/player_map_npc_encounters.inc": "f94a90c485468fd2819535edbbe290794cf675dd09694aa87474604f70b40b1c",
+    "_server_cpp/tests/player_damage_tests.cpp": "4324e5756a6a4301cdb8d63c63762821bc6efa28549d9f00958f62fbf84c6e9a"
+  },
+  "result": {
+    "actions": [
+      20100,
+      20101,
+      2200,
+      1170
+    ],
+    "clan_effects": 2,
+    "dead_and_pc_not_counted": true,
+    "graphical_acceptance": false,
+    "live_tcp": false,
+    "maximum_x_excluded": true,
+    "native_monsters": [
+      2333,
+      2334,
+      2001,
+      2003,
+      2002
+    ],
+    "npc_and_event_counted": true,
+    "npc_and_event_not_buffed": true,
+    "original_tasks": [
+      76,
+      264
+    ],
+    "passed": true,
+    "restored_immunity_damage": true,
+    "reversed_bounds": true,
+    "saved_reopen_exact": true,
+    "source_effect_duration_ms": 3600000,
+    "source_task_table_modified": false,
+    "strict_threshold": true,
+    "unknown_immunity_mode_noop": true,
+    "world": {
+      "arena": {
+        "duel_cells": 0,
+        "entries": [],
+        "events": [
+          240,
+          241,
+          242,
+          243,
+          244,
+          245
+        ],
+        "loaded": true,
+        "money": 0,
+        "prize": 0,
+        "progress": false,
+        "starts": 0,
+        "winner": 0
+      },
+      "authored_hit_timing_ready": true,
+      "cargo_ready": true,
+      "cash_shop_ready": false,
+      "chat_relay_failures": 0,
+      "chatsrv_configured": false,
+      "checkpoint_failures": 0,
+      "committed_saves": 1,
+      "connections": 1,
+      "entry_ready": true,
+      "game_ready": false,
+      "inventory_ready": true,
+      "last_checkpoint_error": "",
+      "last_npc_event": 0,
+      "last_story_event_action": 0,
+      "last_story_event_error": "",
+      "last_story_event_id": 0,
+      "last_story_event_result": 0,
+      "limited_shop_ready": false,
+      "missing_native_content": {
+        "ai_row_ids": [],
+        "npc_skill_ids": []
+      },
+      "movement_ready": true,
+      "movement_updates": 0,
+      "msgsrv_configured": false,
+      "native_castle": {
+        "calendar_loaded": false,
+        "horse": 0,
+        "loaded": false,
+        "revision": 0,
+        "state": {
+          "date": 0,
+          "entries": [
+            [
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              }
+            ],
+            [
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              }
+            ],
+            [
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              }
+            ],
+            [
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              },
+              {
+                "id": 0,
+                "legacy": false
+              }
+            ]
+          ],
+          "expiry": 0,
+          "occupied": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "owner": {
+            "id": 0,
+            "legacy": false
+          },
+          "started": 0,
+          "winner": 0
+        },
+        "town_symbol": 0,
+        "yut_counter": 0,
+        "yut_step": 0,
+        "yut_timer_calls": 0
+      },
+      "native_height": 1024,
+      "native_karya": {
+        "calendar_entries": 6,
+        "calendar_loaded": true,
+        "handles": [
+          0,
+          0,
+          0
+        ],
+        "loaded": false,
+        "missing_messages": [],
+        "opened": false,
+        "positions": [
+          null,
+          null,
+          null
+        ],
+        "teleport_failures": 0
+      },
+      "native_map_events": {
+        "area_effect_applications": 0,
+        "area_effect_removals": 0,
+        "calendar_entries": 6,
+        "calendar_loaded": true,
+        "calendar_loaded_unix": 1000,
+        "calendar_start_ms": 10000,
+        "clan_effect_applications": 2,
+        "decks": [
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          },
+          {
+            "index": 0,
+            "size": 0
+          }
+        ],
+        "decks_initialized": true,
+        "event_items_created": 0,
+        "event_overrides": [],
+        "gold_bags_created": 0,
+        "gold_lookup_failures": 0,
+        "item_drop_failures": 0,
+        "missing_event_items": [],
+        "missing_messages": [],
+        "pending_instant_events": 0,
+        "reward_corrections": [
+          {
+            "base": 100.0,
+            "extra": 25.0,
+            "factor": 1.25
+          },
+          {
+            "base": 100.0,
+            "extra": 0.0,
+            "factor": 1.0
+          },
+          {
+            "base": 100.0,
+            "extra": 0.0,
+            "factor": 1.0
+          },
+          {
+            "base": 100.0,
+            "extra": 0.0,
+            "factor": 1.0
+          }
+        ],
+        "saved_return_failures": 0,
+        "source_unhandled_actions": []
+      },
+      "native_tomb": {
+        "guardians": [],
+        "loaded": false,
+        "missing_monsters": [],
+        "missing_speech": [],
+        "spawn_failures": 0,
+        "startup_event": 149,
+        "trap_handles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "trap_skill_selections": 0
+      },
+      "native_width": 1024,
+      "npc_ai_ready": false,
+      "npc_alive": 5,
+      "npc_combat_ready": false,
+      "npc_events_pending": 0,
+      "npc_events_processed": 0,
+      "npc_peace_ready": true,
+      "npc_peace_tick": 0,
+      "npc_phase_out_respawns": 0,
+      "npc_phase_outs": 0,
+      "npc_services_ready": false,
+      "ordinary_merchants_ready": true,
+      "player_recovery_ready": true,
+      "players": 1,
+      "population_ready": true,
+      "population_ticks": 0,
+      "position_checkpoint_ms": 1000,
+      "position_checkpoints": 0,
+      "random_draws": 7509,
+      "random_state": 2061601542,
+      "rejected_actions": 0,
+      "release_failures": 0,
+      "repair_ready": true,
+      "save_point_ready": true,
+      "social_service_failures": 0,
+      "story_event_rejections": 0,
+      "whisper_routing_ready": false,
+      "zone_instance": "7c9ada2597ee5a534fdf8ee315147204323e13975bed170f5c4138730ae143cb"
+    }
+  },
+  "result_path": "D:\\Tantra-Beta\\Expansion-20261107\\native-npc-encounters\\RESULT.json",
+  "staging": [
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraZone.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraZone.exe",
+      "sha256": "3ed918f8d677b428b3278eaa3ad71ff4384d543e41f05097cb4541ac23bef0be",
+      "previous": "d6aba7d338f095f9c44ddf4a3088e99e9d1d5cdb3eef97c6ceccc3b4ddffc9d5",
+      "changed": true,
+      "root": "_server_cpp",
+      "backup": "D:\\Tantra-Beta\\Expansion-20261107\\native-npc-encounters\\previous\\_server_cpp\\TantraZone.exe"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraZone.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraZone.exe",
+      "sha256": "3ed918f8d677b428b3278eaa3ad71ff4384d543e41f05097cb4541ac23bef0be",
+      "previous": "d6aba7d338f095f9c44ddf4a3088e99e9d1d5cdb3eef97c6ceccc3b4ddffc9d5",
+      "changed": true,
+      "root": "_server_final",
+      "backup": "D:\\Tantra-Beta\\Expansion-20261107\\native-npc-encounters\\previous\\_server_final\\TantraZone.exe"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraService.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraService.exe",
+      "sha256": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "previous": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "changed": false,
+      "root": "_server_cpp"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraService.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraService.exe",
+      "sha256": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "previous": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "changed": false,
+      "root": "_server_final"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraServerManager.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraServerManager.exe",
+      "sha256": "290392eca3440e80ecb7e9bcb7c3f5de806648b45f347ec61c41f645cf00c9d0",
+      "previous": "434a8b8cca80c3ec248fc0c4067ef5d414e381d0e7fccea974d07a142e2e84fe",
+      "changed": true,
+      "root": "_server_cpp",
+      "backup": "D:\\Tantra-Beta\\Expansion-20261107\\native-npc-encounters\\previous\\_server_cpp\\TantraServerManager.exe"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraServerManager.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraServerManager.exe",
+      "sha256": "290392eca3440e80ecb7e9bcb7c3f5de806648b45f347ec61c41f645cf00c9d0",
+      "previous": "434a8b8cca80c3ec248fc0c4067ef5d414e381d0e7fccea974d07a142e2e84fe",
+      "changed": true,
+      "root": "_server_final",
+      "backup": "D:\\Tantra-Beta\\Expansion-20261107\\native-npc-encounters\\previous\\_server_final\\TantraServerManager.exe"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraDataTools.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraDataTools.exe",
+      "sha256": "117b905949eb4bc8dc2303832ec7c52c31bcbce54421aa5d0e48358a81b57b04",
+      "previous": "117b905949eb4bc8dc2303832ec7c52c31bcbce54421aa5d0e48358a81b57b04",
+      "changed": false,
+      "root": "_server_cpp"
+    },
+    {
+      "source": "C:\\_GitHub\\TantraSrc\\_server_cpp\\build\\Release\\TantraDataTools.exe",
+      "dest": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraDataTools.exe",
+      "sha256": "117b905949eb4bc8dc2303832ec7c52c31bcbce54421aa5d0e48358a81b57b04",
+      "previous": "117b905949eb4bc8dc2303832ec7c52c31bcbce54421aa5d0e48358a81b57b04",
+      "changed": false,
+      "root": "_server_final"
+    }
+  ],
+  "workers_restarted": false,
+  "normal_database_changed": false,
+  "original_tasks_preserved": [
+    76,
+    264
+  ],
+  "verification_notes": [
+    "Original production build succeeded; a test compile correction removed a nonexistent wire field.",
+    "Initial checks had an incorrect appearance tribe offset and unconditional fixture event wrappers; both fixed in the check only.",
+    "Two test-only resume builds; no new production, client or Debug rebuild during resume.",
+    "check-conditions.log passes the one focused World component; no full gameplay journey repeated."
+  ],
+  "remaining_goal": "Quest26 online client flow"
+}

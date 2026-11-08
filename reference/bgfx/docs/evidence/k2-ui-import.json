@@ -1,0 +1,147 @@
+{
+  "source": "B:\\Tantra-Files\\_TantraClients\\K2108",
+  "definitions": "Original SYS versions1002/1003; UI-only filename bindings from K2108 ClientRes.txl",
+  "files": [
+    {
+      "file": "MainUIInfo.K2.sys",
+      "source_file": "MainUIInfo.sys",
+      "sha256": "5b6c7969e3c521d0a5bd0c00e4ec7befb06a43913062373a469823e217acacf2",
+      "bytes": 281567
+    },
+    {
+      "file": "IntroUIInfo.K2.sys",
+      "source_file": "IntroUIInfo.sys",
+      "sha256": "7f4eeedc71ac37c602d881fcf9148151da7ca91599d1757ba046a064383c7f15",
+      "bytes": 27846
+    },
+    {
+      "file": "LoadingUI.K2.sys",
+      "source_file": "LoadingUI.sys",
+      "sha256": "c9ed86760090fdc98d9f488df6c878b39e21e76b8a5d2c94b5b3586b61d03855",
+      "bytes": 2126
+    },
+    {
+      "file": "MAINUI.HPK",
+      "source_file": "MAINUI.HPK",
+      "sha256": "f09d6836a09422b6b4a99bccfa54c7c6ad632b5bf35935de4c46f015b55ba161",
+      "bytes": 8415024
+    },
+    {
+      "file": "INTROUI.hpk",
+      "source_file": "INTROUI.hpk",
+      "sha256": "16d74a5e5d396e69fde4e86eff8520e1dcda871f80c4ab80a539e7893cbcb0d7",
+      "bytes": 17079830
+    },
+    {
+      "file": "IntroUIBack0.hpk",
+      "source_file": "IntroUIBack0.hpk",
+      "sha256": "3ff3a2c91571ba8378752a30d636ce7f9068bae6c29cdcc72311e3041c979ffd",
+      "bytes": 2359948
+    },
+    {
+      "file": "IntroUIBack0_800.hpk",
+      "source_file": "IntroUIBack0_800.hpk",
+      "sha256": "b5ace1db86a7599bc79fa3294587a64bf5b58881b0071f07f06663f1fa4adb4b",
+      "bytes": 1966732
+    },
+    {
+      "file": "IntroUIBack1.hpk",
+      "source_file": "IntroUIBack1.hpk",
+      "sha256": "609d5cb2f02482e2e0664a87d195fa072106718471058571cfc5e2012974495a",
+      "bytes": 2359948
+    },
+    {
+      "file": "IntroUIBack1_800.hpk",
+      "source_file": "IntroUIBack1_800.hpk",
+      "sha256": "58c8548affc5140182db32189405f7b5705e372bb9c36fe6bae964f0e22fb7e5",
+      "bytes": 1966732
+    },
+    {
+      "file": "IntroUIBack2.hpk",
+      "source_file": "IntroUIBack2.hpk",
+      "sha256": "1147c7cf73421326f61cc86e994136b453d95943ae706175cde6a19b7b709b3f",
+      "bytes": 2359948
+    },
+    {
+      "file": "IntroUIBack2_800.hpk",
+      "source_file": "IntroUIBack2_800.hpk",
+      "sha256": "3f7ae89332fb29fa7bdf6cdf7d347e2e0e22f1d7d6cfa6315d5f2cc929f186f0",
+      "bytes": 1966732
+    },
+    {
+      "file": "IntroUIChar.hpk",
+      "source_file": "IntroUIChar.hpk",
+      "sha256": "fc6ec357ca9da5ccbbd7117feb4b884f65ea515044a959340aa5b9569054bf18",
+      "bytes": 1573800
+    },
+    {
+      "file": "IntroUIetc.hpk",
+      "source_file": "IntroUIetc.hpk",
+      "sha256": "e973a9374e4467cddc49acf72a1100c0876498aa8e701e80f7729ebbf2c21b1b",
+      "bytes": 2526074
+    },
+    {
+      "file": "etc.hpk",
+      "sha256": "236514896ff26c9be3f6567f6d55cbf7db750cdf74926569ae12b338ca14d108",
+      "bytes": 3639052,
+      "source_files": [
+        "LOAD_TEXT.BMP",
+        "LOAD_POINT.BMP",
+        "LOAD_MARK.BMP",
+        "LOAD_TYPE1.bmp",
+        "LOAD_TYPE4.bmp"
+      ]
+    },
+    {
+      "file": "Scene/system/IntroObj.txl",
+      "sha256": "3a1b2dccb69c7a88c2cff843df0e940ef66154702bfed9eee87ce532d71db60c",
+      "bytes": 770
+    },
+    {
+      "file": "Scene/resource/map/Map_Intro.cfg",
+      "sha256": "b81af64af1b6400bf9160a0d994f7ccb1754d3b542ac88d7d60b79c7f1e45e7c",
+      "bytes": 6598
+    },
+    {
+      "file": "Scene/resource/object/IntroObjTmb.hpk",
+      "sha256": "b94a9df3d0499d3cbf4b3c169b9260651194e0114a2a93df8c278d177268e15a",
+      "bytes": 991948
+    },
+    {
+      "file": "Scene/resource/object/IntroObjTex.hpk",
+      "sha256": "18b7ef35ea92751b38713bc81635406c4fd7c0d3d75ca4595b53e98f28114ccc",
+      "bytes": 3330492
+    },
+    {
+      "file": "Scene/resource/map/Intro/Map_Intro.tcc",
+      "sha256": "f1f0594eb35f8c2d2a51ae9ae0c581d54101b4309df826f62b8b36d04833b50b",
+      "bytes": 66
+    },
+    {
+      "file": "Scene/resource/map/Intro/Map_Intro.thm",
+      "sha256": "b19997e8bf1fa07f8baccd981a35f80b376ac60f96a164507bfbc68647f93bdd",
+      "bytes": 266792
+    },
+    {
+      "file": "Scene/resource/map/Intro/Map_Intro.tme",
+      "sha256": "c43b83b20b970b47d49493336334ecfc1fb8a528540f85e05f4d5e4625f68ab4",
+      "bytes": 29
+    },
+    {
+      "file": "Scene/resource/map/Intro/Map_Intro.tml",
+      "sha256": "81ee6aa0291957fc73ad22ca9fe74afd8b15a85f2cf735fef2a51f424dfbb701",
+      "bytes": 17803
+    },
+    {
+      "file": "Scene/resource/map/Intro/sky.tmd",
+      "sha256": "90b8fc5bbc4a51af0b9a8cbd19667a78f969d5471e0a730d25ac6d077534abd4",
+      "bytes": 33706
+    },
+    {
+      "file": "Scene/resource/map/Intro/TerrainTex.hpk",
+      "sha256": "8144a541b8f7f5ac7236b493a0b9402aa15d311400396897e23f49478c4689b1",
+      "bytes": 1182264
+    }
+  ],
+  "records": 4820
+}

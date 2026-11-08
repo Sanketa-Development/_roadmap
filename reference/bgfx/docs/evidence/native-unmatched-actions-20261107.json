@@ -1,0 +1,284 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-story-resets-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-unmatched-actions",
+  "source": [
+    {
+      "file": "Tantra/zone/Server.cpp",
+      "lines": "25621-28829",
+      "sha256": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a",
+      "rules": "TriggerEvent has112 active action cases and no default handler; unmatched actions fall through the common proceed/cooldown path."
+    },
+    {
+      "file": "Tantra/zone/Basedef.h",
+      "sha256": "06d0028f615afcc34c0f8aa18d9dfe8af5c9a748ca5144b01dff8d8d0941ed22",
+      "rules": "Explicit action enum IDs for original switch labels."
+    }
+  ],
+  "implemented": [
+    "Generate the original active action-case set from the supplied server source, excluding commented cases and nested switches.",
+    "Validation permits IDs without an original handler. Dispatch records those IDs once per World and performs no invented action.",
+    "Retain the existing implementation/backend/zone guards for every known native action; do not suppress native handler failures.",
+    "Keep the common following-task/proceed/cooldown path after an unmatched action. Expose source_unhandled_actions in native map status."
+  ],
+  "focused_component": {
+    "passed": true,
+    "private_world_cases": 2,
+    "original_handler_count": 112,
+    "unmatched_ids": [
+      0,
+      23100,
+      3020
+    ],
+    "unmatched_path": "Private original class-quest callback56: record three unmatched IDs, run following native Chakra reset, commit and reopen exact state.",
+    "known_unimplemented_path": "Native DropItem1060 rejects before the quest changes/rewards commit; original MOB/revision stay unchanged.",
+    "replay": "cached without another commit",
+    "transport": "direct World/private SQLite, not live TCP/graphical map acceptance"
+  },
+  "static_table_audit": {
+    "source_handled_actions": 112,
+    "task_table_sha256": "3a354333ee9dabb00437061073bdc891aeb852038c20f0af942ba956d7b38fb3",
+    "scope": "Static handler classification only; does not validate backend scope restrictions, zone resources, services or runtime admission.",
+    "zones": [
+      {
+        "zone": 1,
+        "task_rows": 82,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": [
+          1185,
+          1186,
+          2100,
+          2101,
+          10020
+        ]
+      },
+      {
+        "zone": 2,
+        "task_rows": 53,
+        "source_unhandled_ids": [
+          0
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 7,
+        "task_rows": 61,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 8,
+        "task_rows": 2,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 9,
+        "task_rows": 14,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 10,
+        "task_rows": 459,
+        "source_unhandled_ids": [
+          0
+        ],
+        "native_ids_not_in_implementation_allowlist": [
+          2030,
+          2040,
+          4000,
+          20020,
+          23001,
+          23010,
+          23011
+        ]
+      },
+      {
+        "zone": 11,
+        "task_rows": 181,
+        "source_unhandled_ids": [
+          220
+        ],
+        "native_ids_not_in_implementation_allowlist": [
+          1040,
+          1080,
+          1100,
+          2020,
+          20000,
+          20010
+        ]
+      },
+      {
+        "zone": 12,
+        "task_rows": 483,
+        "source_unhandled_ids": [
+          0
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 13,
+        "task_rows": 28,
+        "source_unhandled_ids": [
+          23100
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 14,
+        "task_rows": 28,
+        "source_unhandled_ids": [
+          23100
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 15,
+        "task_rows": 28,
+        "source_unhandled_ids": [
+          23100
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 16,
+        "task_rows": 423,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": [
+          1060,
+          1100,
+          2200,
+          2220,
+          10030,
+          10040,
+          10100,
+          20101,
+          20160,
+          20170,
+          20310,
+          20320
+        ]
+      },
+      {
+        "zone": 17,
+        "task_rows": 413,
+        "source_unhandled_ids": [
+          0,
+          3020,
+          3050,
+          3060,
+          3070,
+          3080,
+          3110
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 21,
+        "task_rows": 367,
+        "source_unhandled_ids": [
+          0
+        ],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 22,
+        "task_rows": 67,
+        "source_unhandled_ids": [],
+        "native_ids_not_in_implementation_allowlist": []
+      },
+      {
+        "zone": 23,
+        "task_rows": 181,
+        "source_unhandled_ids": [
+          220
+        ],
+        "native_ids_not_in_implementation_allowlist": [
+          1040,
+          1080,
+          1100,
+          2020,
+          20000,
+          20010
+        ]
+      }
+    ]
+  },
+  "build": {
+    "production_release_batches": 1,
+    "production_targets": [
+      "TantraZone",
+      "TantraService",
+      "TantraServerManager",
+      "TantraDataTools"
+    ],
+    "verifier_only_rebuilds": 0,
+    "debug_builds": 0,
+    "exit_code": 0
+  },
+  "focused_check_attempts": 1,
+  "logs": [
+    "build-release.log",
+    "map-unmatched-actions.log",
+    "native-case-table-audit.json",
+    "staging.json"
+  ],
+  "accepted_log_sha256": "4f683b58f0d59a3b069179a26f042d677096173714cf453631bd2e67f3c5efbf",
+  "generated_dispatch_sha256": "b5dc01dab3b40ea305d41fe9a50367db2a3d22e3e556ddf128f42fa5dd9ac458",
+  "staged_files": [
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraZone.exe",
+      "sha256": "bd6039569c2e8a3a176bfe2d66dc91f12d15975b8104c3ba403c3fbdd85a612d",
+      "previous_sha256": "b45f258908c0b4c80954d0633230e879bece08b15a7342ba88a7848a678a8ee1"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraService.exe",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraServerManager.exe",
+      "sha256": "3472be46664514d829be1f3cf38ada6f64e34af8b44e05f03376d39f53fff776",
+      "previous_sha256": "6f5a0dd7fd4b13f45952a8b88b87475087e98c1acf13b2796b874970f8f9b1d0"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraDataTools.exe",
+      "sha256": "856c6c8f4ecbd5892f65a908a555e3d345bf49554777c6951e989897fdf9c42c",
+      "previous_sha256": "50143f98578776dfc8d08563eff353fb22db4de2865c3fb913000e8ad7d9b66b"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraZone.exe",
+      "sha256": "bd6039569c2e8a3a176bfe2d66dc91f12d15975b8104c3ba403c3fbdd85a612d",
+      "previous_sha256": "b45f258908c0b4c80954d0633230e879bece08b15a7342ba88a7848a678a8ee1"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraService.exe",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraServerManager.exe",
+      "sha256": "3472be46664514d829be1f3cf38ada6f64e34af8b44e05f03376d39f53fff776",
+      "previous_sha256": "6f5a0dd7fd4b13f45952a8b88b87475087e98c1acf13b2796b874970f8f9b1d0"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraDataTools.exe",
+      "sha256": "856c6c8f4ecbd5892f65a908a555e3d345bf49554777c6951e989897fdf9c42c",
+      "previous_sha256": "50143f98578776dfc8d08563eff353fb22db4de2865c3fb913000e8ad7d9b66b"
+    }
+  ],
+  "client_unchanged_sha256": "4f4aeaae97d003108db3449a5e7409aa3e7dfe4079bdc290c601c78c60d6ad30",
+  "client_rebuilt": false,
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "zone_admission_or_authored_data_changed": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "This supersedes the false missing-handler block for Karya23100 and Biryu3020/3050/3060/3070/3080/3110; it does not invent newer-version semantics.",
+    "The static table audit does not establish backend scope restrictions, resources, services, runtime readiness or gameplay acceptance.",
+    "Full Karya/Biryu admission and connected travel/siege/services remain open, as does the full six-part goal."
+  ]
+}

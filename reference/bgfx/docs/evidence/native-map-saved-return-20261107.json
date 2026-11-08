@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-07T09:59:28.018922+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-task-summons-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-map-saved-return",
+  "source": [
+    "Tantra/zone/Server.cpp:27747-27754",
+    "Tantra/zone/Server.cpp:29508-29546"
+  ],
+  "implemented": {
+    "native_task_action": 20121,
+    "current_gm_clan_exempt": true,
+    "existing_durable_handoff_reused": true,
+    "local_invalid_saved_fields_repaired_with_warp": true,
+    "no_new_client_packet_or_external_trigger": true
+  },
+  "focused_component": {
+    "passed": true,
+    "command": "TantraPlayerDamageTests.exe map-saved-return",
+    "variants": 3,
+    "scheduled_world_dispatch": true,
+    "source_task": 114,
+    "qa_calendar_and_event_routing": true,
+    "private_sqlite": true,
+    "remote_handoff_and_old_owner_fence": true,
+    "destination_claim_and_saved_reopen": true,
+    "gm_exemption": true,
+    "local_fallback_saved_reopen": true,
+    "live_tcp": false,
+    "graphical": false,
+    "live_biryu_or_karya_event": false
+  },
+  "build": {
+    "production_release_batches": 1,
+    "production_rebuild_retries": 0,
+    "additional_verifier_only_builds": 1,
+    "client_rebuilds": 0
+  },
+  "focused_check_attempts": 2,
+  "initial_check_failure": "QA fixture appended an empty TSV row; removed the extra newline without changing the production parser. Original failure log retained.",
+  "logs": {
+    "build-release.log": "35b3f5254de1b3a0221e492cc5792dbd9c77e37c52ecf857b412f887088e70d8",
+    "build-verifier.log": "6cba362f6c1ebbfdd9921873f7a628f2f183d49e488c13d36092b40b83525298",
+    "map-saved-return-corrected.log": "10dcb737b977354464987383646267844f854f5cf2288590e6913ff359f2289b",
+    "map-saved-return.log": "7ddfefd14916f81b585c69eff4e0f4aaaf6b97327076694090ca8c584c689e6b"
+  },
+  "zone_worker_sha256": "2ea48df3d7a478cb90a75e61101ffbde32352d953e4e22c3c24977fb08ff4c36",
+  "final_zone_worker_sha256": "2ea48df3d7a478cb90a75e61101ffbde32352d953e4e22c3c24977fb08ff4c36",
+  "previous_zone_sha256": "e4138ab1f5db3c31b65a6afa7828c38ff8e438d68eaec7037ff58ac98bf42a82",
+  "client_sha256": "2931975b655919b52f4cddec5065b819081df7c05219ae5e5291a4c6afe3efd4",
+  "client_patch_unchanged": 1794013241,
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "Action20120 remains unsupported: its original second pass closes every connection, including GM/pre-world connections. It must not be treated as action20121.",
+    "This component uses a QA calendar/event route on original Zone01 to exercise original task20121. It does not accept the full Biryu siege or Karya closing journey.",
+    "Remaining combat, quests, graphics and original-zone acceptance stays open."
+  ]
+}

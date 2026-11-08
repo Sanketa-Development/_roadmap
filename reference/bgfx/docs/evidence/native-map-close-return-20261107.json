@@ -1,0 +1,159 @@
+{
+  "date": "2026-11-07T10:13:12.754113+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-map-saved-return-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-map-close-return",
+  "source": [
+    "Tantra/zone/Server.cpp:27805-27816",
+    "Tantra/zone/Server.cpp:29508-29546"
+  ],
+  "implemented": {
+    "native_task_action": 20120,
+    "return_all_playing_users_including_gm": true,
+    "close_pass_includes_idle_and_pre_world_connections": true,
+    "flush_handoff_before_transport_close": true,
+    "same_map_same_channel_explicit_handoff_pins_current_live_worker": true,
+    "unchanged_ticket_ownership_expiry_and_single_use_guards": true,
+    "no_new_client_request_or_sql_schema": true,
+    "client_preserves_valid_worker_handoff_after_old_socket_eof": true,
+    "client_suppresses_old_world_ticks_during_handoff": true,
+    "ordinary_disconnect_feedback_preserved": true,
+    "per_owner_return_failures_recorded_without_aborting_close_pass": true
+  },
+  "server_component": {
+    "passed": true,
+    "command": "TantraPlayerDamageTests.exe map-close-return",
+    "variants": 3,
+    "qa_calendar_event_routing": true,
+    "original_action20120_task20_parameters": true,
+    "private_sqlite": true,
+    "native_world_dispatch": true,
+    "gm_returned": true,
+    "idle_and_pre_world_close_requests": true,
+    "source_actor_retired": true,
+    "source_sql_owner_fenced": true,
+    "secure_ticket_redeemed": true,
+    "ticket_replay_rejected": true,
+    "same_instance_reentry": true,
+    "destination_entry_and_saved_reopen": true,
+    "runtime_tcp_listener": false,
+    "tls_transport": false,
+    "graphical": false
+  },
+  "client_component": {
+    "passed": true,
+    "tcp_handoff_then_eof": true,
+    "same_map_transfer": true,
+    "old_world_tick_suppressed": true,
+    "ordinary_eof_reported": true,
+    "real_world_authority": false,
+    "graphical": false
+  },
+  "runtime_transport": {
+    "close_after_flush_implemented": true,
+    "compiled_release": true,
+    "source_reviewed": true,
+    "actual_server_socket_flush_component_executed": false
+  },
+  "build": {
+    "production_server_release_batches": 1,
+    "production_client_release_batches": 1,
+    "production_rebuild_retries": 0,
+    "additional_server_verifier_only_builds": 1,
+    "additional_client_verifier_only_builds": 1,
+    "debug_builds": 0
+  },
+  "focused_check_attempts": {
+    "server": 2,
+    "client": 2
+  },
+  "fixture_corrections": [
+    "Client fixture lacked the authenticated selected-world context required to acknowledge a portal. Add normal recordServerSelection; preserve original failure log.",
+    "Server fixture owner-session accessor was overwritten by its pre-world observer login. Restore the owner accessor after observer setup; preserve original failure log."
+  ],
+  "logs": {
+    "build-client-release.log": "97cdf0dbfe827f3d9f4444340d76b28a21fd9d493d716ffdac2c5546660dedb9",
+    "build-client-verifier.log": "ffb75088ca440367489f9498a3170dae64cc7e1b4754460af80a74ac31625b0d",
+    "build-server-release.log": "5d377db42ba999e879afd81e2572f326357d175504640b84ad124734cc99670d",
+    "build-server-verifier.log": "0c05f05ce843840141157d20b8ea1936cc672fcbc46948c8a6b259bb6ecdfd78",
+    "client-map-close-corrected.log": "dbd6327c9255fc0844188cb6bf84c5e5b2df52f51e85462026fc0538832602df",
+    "client-map-close.log": "55a8f635848c7e3990a343887f472f87e0b50b964b9cb5a08a0fed11ecde8ca9",
+    "publish-patches.log": "a0f8f75a5b75e6d68e7e2cb08117374c9042bda21195a7012837088a7611dc63",
+    "server-map-close-corrected.log": "76f17c91a61e00e339295586fa4bdde8729846e99bea5932d7076612a24a9df3",
+    "server-map-close.log": "98e700d0b21df6ab91cd8e0abfb4f63bcf9a0b0928a556d33be5a9a3d2cfbe22",
+    "stage-client.log": "62812566006d2994f7c5ed146b43873624b58ad3729de4703a428fe6dcce5505"
+  },
+  "installed_server_files": [
+    {
+      "deployment": "_server_cpp",
+      "application": "TantraZone",
+      "sha256": "453cb84be0ca27d9dc8c66b102418176727cc51a44e3afb29eac2e1ee4ae807a",
+      "previous_sha256": "2ea48df3d7a478cb90a75e61101ffbde32352d953e4e22c3c24977fb08ff4c36"
+    },
+    {
+      "deployment": "_server_final",
+      "application": "TantraZone",
+      "sha256": "453cb84be0ca27d9dc8c66b102418176727cc51a44e3afb29eac2e1ee4ae807a",
+      "previous_sha256": "2ea48df3d7a478cb90a75e61101ffbde32352d953e4e22c3c24977fb08ff4c36"
+    },
+    {
+      "deployment": "_server_cpp",
+      "application": "TantraService",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "5ea4c5fbb6bcd3b14587a28959a8857aa5cbfb254ef8d95812b605efcd2e0cad"
+    },
+    {
+      "deployment": "_server_final",
+      "application": "TantraService",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "5ea4c5fbb6bcd3b14587a28959a8857aa5cbfb254ef8d95812b605efcd2e0cad"
+    },
+    {
+      "deployment": "_server_cpp",
+      "application": "TantraServerManager",
+      "sha256": "362ab749b96b9a0b890e4dbcf59bf95eaf33196742e3d9b878b16d2e901de230",
+      "previous_sha256": "52e6e57be8fabb9bb4f8b86e797f868eb9abe64da1e7cb47ed9a2d943c522d28"
+    },
+    {
+      "deployment": "_server_final",
+      "application": "TantraServerManager",
+      "sha256": "362ab749b96b9a0b890e4dbcf59bf95eaf33196742e3d9b878b16d2e901de230",
+      "previous_sha256": "52e6e57be8fabb9bb4f8b86e797f868eb9abe64da1e7cb47ed9a2d943c522d28"
+    },
+    {
+      "deployment": "_server_cpp",
+      "application": "TantraDataTools",
+      "sha256": "ae51e202cbfc3ecca9791da3c11848ce567f0489fee13ab9b12d8d39e2fad6a4",
+      "previous_sha256": "35187b256d21b1a77bade12457059bb506e4d0d0015cbb2465708a3632e4a61d"
+    },
+    {
+      "deployment": "_server_final",
+      "application": "TantraDataTools",
+      "sha256": "ae51e202cbfc3ecca9791da3c11848ce567f0489fee13ab9b12d8d39e2fad6a4",
+      "previous_sha256": "35187b256d21b1a77bade12457059bb506e4d0d0015cbb2465708a3632e4a61d"
+    }
+  ],
+  "client_sha256": "ae06ddbcca8564032ceae14e1ae75f953855c9c0d7537b8b93a17c54fbc0b28c",
+  "previous_client_sha256": "2931975b655919b52f4cddec5065b819081df7c05219ae5e5291a4c6afe3efd4",
+  "patch": {
+    "version": 1794017500,
+    "files": 5313,
+    "bytes": 1635560029,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "Authority checks use a QA calendar/event route on original Zone01; they do not accept a full Karya closing or Biryu journey.",
+    "The client TCP component sends a handoff followed by EOF from its private peer. It does not run the production Zone TCP listener or prove its full transport flush behavior.",
+    "Private native ticket protocol checks do not claim a live TLS connection, MariaDB run or graphical map transfer.",
+    "Karya13-15 remain unaccepted; other source-action/data gaps including23100 remain recorded.",
+    "Existing downloadable ZIPs are not regenerated at this checkpoint; full combat, quest, graphics and zone acceptance remains open."
+  ]
+}

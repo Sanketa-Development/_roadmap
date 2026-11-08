@@ -1,0 +1,212 @@
+{
+  "updated_at": "2026-11-06T13:04:23.642571+08:00",
+  "configuration": "Release",
+  "game_name": "Global Tantra",
+  "full_goal_complete": false,
+  "client_sha256": "e0c6d397e8f2801358d946bf8efc08d2db7387cf480cb6519c245bcece1332cd",
+  "patch": {
+    "version": 1793941228,
+    "files": 5313,
+    "bytes": 1635379708,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "source_review": {
+    "native_texture_conversion": "HT3DHeaven RVA3264B..32714, documented in NativeTmbTexture.h: TGA maps to _TGA.dds; other three-character authoring extensions map to .dds.",
+    "original_model": {
+      "mount": "resource\\object\\Kathana4CaveObjTmb.hpk",
+      "entry": "k04_dg_jroom_03_02_01.tmb",
+      "sha256": "e0f9e7ab638d13d01fef91226230d042a43babd1d5005592a722e07df8ddbc7f",
+      "type": 3,
+      "vertices": 2685,
+      "materials": 36,
+      "material_group": 23,
+      "group_triangles": 24,
+      "authored_texture": "k04_wall_ba_24.psd",
+      "resolved_texture": "k04_wall_ba_24.dds",
+      "exact_packed_dds_exists": true
+    },
+    "correction_to_previous_report": "Zone28 material23 is an original PSD authoring filename, not corrupt filename bytes. The texture normalization was already implemented; RigidTmb rejected the suffix too early.",
+    "other_resource_findings": [
+      "Both the old type1 Biryu gate and the supplied Global type3 gate retain the same invalid material7 name bytes.",
+      "The Global source Ruin gate is already covered by the current exact Ruin HPK.",
+      "Removed the newly staged Biryu override after checking its exact hash because it did not repair the source material.",
+      "The staging helper formerly compared reference HPKs; coverage now compares the installed HPK, or an archive being installed by the same operation."
+    ],
+    "hpk_extractions": 0,
+    "canonical_workbooks_changed": false,
+    "zone_admission_changed": false,
+    "skill_resources_changed": false,
+    "forge_gpu_failure_before": {
+      "native_zone": 22,
+      "native_model": "J03_FOR_CenterR1_13_01",
+      "vertices": 4,
+      "indices": 6,
+      "texture_ready": true,
+      "dynamic_vertex_buffers": 4094,
+      "max_dynamic_vertex_buffers": 4096,
+      "index_buffers": 4096,
+      "max_index_buffers": 4096,
+      "cause": "Per-material GPU geometry allocates an index buffer for every unique material section; the entire Forge map exceeds the native bgfx handle pool."
+    },
+    "gpu_geometry_fix": "Use one immutable full-source vertex/index pair per static map mesh, retaining each material section as its original range. Reuse the existing model cache across placements. Both color and shadow submission bind the shared pair/range. Dynamic actors, skinning and effects retain existing mutable buffers."
+  },
+  "implemented": [
+    "Original PSD authoring references resolve through the existing native DDS convention.",
+    "Static world meshes share immutable vertex/index buffers between original material sections; existing model caching shares them across placements.",
+    "Color and shadow submission preserve each material index range and texture.",
+    "Staging duplicate detection uses installed exact HPKs; explicit client-relative resource files are supported."
+  ],
+  "forge": {
+    "passed": true,
+    "zone": 22,
+    "portal": 239,
+    "models": 254,
+    "placements": 283,
+    "referenced_payloads": 777,
+    "missing_map_textures": 0,
+    "spawn_cell": [
+      450,
+      124
+    ],
+    "native_camera": true,
+    "actual_d3d11_render": true,
+    "network_session": false,
+    "zone_admitted": false,
+    "full_zone_acceptance": false,
+    "geometry": {
+      "static_buffer_pairs": 254,
+      "native_material_sections": 5078,
+      "placed_objects": 283,
+      "object_triangles": 260166
+    },
+    "arrival_camera_visually_accepted": false,
+    "camera_issue": "First native portal239 center arrival retracts the camera into the player; geometry upload/render passes but camera acceptance remains open."
+  },
+  "naga_dungeon": {
+    "passed": true,
+    "zone": 28,
+    "portal": 271,
+    "models": 57,
+    "placements": 1505,
+    "referenced_payloads": 176,
+    "missing_map_textures": 0,
+    "spawn_cell": [
+      86,
+      83
+    ],
+    "native_camera": true,
+    "actual_d3d11_render": true,
+    "network_session": false,
+    "zone_admitted": false,
+    "full_zone_acceptance": false,
+    "geometry": {
+      "static_buffer_pairs": 57,
+      "native_material_sections": 1001,
+      "placed_objects": 1505,
+      "object_triangles": 304995
+    },
+    "arrival_camera_visually_accepted": true,
+    "image_identical_before_after_sharing": true
+  },
+  "marana_components": [
+    {
+      "passed": true,
+      "zone": 31,
+      "portal": 276,
+      "models": 16,
+      "placements": 622,
+      "referenced_payloads": 85,
+      "missing_map_textures": 0,
+      "spawn_cell": [
+        863,
+        862
+      ],
+      "native_camera": true,
+      "actual_d3d11_render": true,
+      "network_session": false,
+      "zone_admitted": false,
+      "full_zone_acceptance": false,
+      "captured_before_geometry_sharing": true,
+      "arrival_image_inspected": true
+    },
+    {
+      "passed": true,
+      "zone": 32,
+      "portal": 277,
+      "models": 16,
+      "placements": 622,
+      "referenced_payloads": 85,
+      "missing_map_textures": 0,
+      "spawn_cell": [
+        863,
+        862
+      ],
+      "native_camera": true,
+      "actual_d3d11_render": true,
+      "network_session": false,
+      "zone_admitted": false,
+      "full_zone_acceptance": false,
+      "captured_before_geometry_sharing": true,
+      "arrival_image_inspected": true
+    }
+  ],
+  "images": [
+    {
+      "file": "D:\\Tantra-Beta\\Expansion-20261106\\later-ordinary-zones\\zone22-shared\\arrival.png",
+      "sha256": "4c5583c8d74d04e8300709bf7ef8f7ebc5ce57adb5f5376aed5f37e21a398efc",
+      "inspected": true,
+      "usable_arrival": false
+    },
+    {
+      "file": "D:\\Tantra-Beta\\Expansion-20261106\\later-ordinary-zones\\zone28-shared\\arrival.png",
+      "sha256": "0c67806f11005281c8d4f58c8ec547e98eb04e058ec9afec607dfc8c21a88492",
+      "inspected": true,
+      "usable_arrival": true
+    },
+    {
+      "file": "D:\\Tantra-Beta\\Expansion-20261106\\later-ordinary-zones\\zone31-render\\arrival.png",
+      "sha256": "6e4c05db67581df0f913fc1cb16abe4d3e152626e12413e0a42e56ec4e101a8a",
+      "inspected": true,
+      "usable_arrival": true
+    },
+    {
+      "file": "D:\\Tantra-Beta\\Expansion-20261106\\later-ordinary-zones\\zone32-render\\arrival.png",
+      "sha256": "756782827bd784014361754f1e89a734231c0408c8e57117cb877369360da9dc",
+      "inspected": true,
+      "usable_arrival": true
+    }
+  ],
+  "debug_builds": 0,
+  "server_rebuilt_or_restarted": false,
+  "server_binaries_match_previous_deployment": true,
+  "server_update_remains": {
+    "archive": "D:\\Tantra-Beta\\Expansion-20261106\\Global-Tantra-Server-Update-20261106-class-trial.zip",
+    "sha256": "deeed09f5235c053a1f3dd5a57fb700e4f608fea0868213439c38d130e30d99a",
+    "files": 78,
+    "bytes": 11780671,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "normal_player_data_manually_edited": false,
+  "canonical_workbooks_changed": false,
+  "native_server_datasets_changed": false,
+  "skill_resources_changed": false,
+  "zone_admission_changed": false,
+  "hpk_extractions": 0,
+  "copied_biryu_override_retained": false,
+  "network_journeys_repeated": false,
+  "shadow_binding_updated": true,
+  "new_shadow_parity_session": false,
+  "full_zone_acceptance": false,
+  "remaining": [
+    "Forge arrival camera clipping; native entry/rule review and connected travel.",
+    "Existing actor resource gaps and invalid source materials in other maps.",
+    "Broader K3 skill/FX presentation, selected quest journeys, Zone06 boss and remaining original zones."
+  ],
+  "evidence_root": "D:\\Tantra-Beta\\Expansion-20261106\\later-ordinary-zones"
+}

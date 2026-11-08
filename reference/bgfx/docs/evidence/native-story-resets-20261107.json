@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "pc-voices-death-loops-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-story-resets",
+  "source": [
+    {
+      "file": "Tantra/zone/CMOB.CPP",
+      "lines": "5481-5563",
+      "sha256": "3421c51069c245603784168aa8ea2c276798d480b9749d8e9124734ad0715a46",
+      "rules": "ResetSkill, ResetStat and ResetClass compiled from original method bodies"
+    },
+    {
+      "file": "Tantra/zone/Server.cpp",
+      "lines": "25677-25692",
+      "rules": "TriggerEvent1130/1140/1150; ignores ResetClass return value"
+    },
+    {
+      "file": "_server_cpp/data/rules/quests/TaskList.tsv",
+      "sha256": "3a354333ee9dabb00437061073bdc891aeb852038c20f0af942ba956d7b38fb3",
+      "rules": "Original Zone01 tasks41/42/43; no matching Mandara EventList links"
+    }
+  ],
+  "implemented": [
+    "Native actions1130/1140/1150 pass event validation and dispatch to an authenticated live owner.",
+    "Chakra reset restores tribe bases through native Init; skill reset clears learned skills and cooldowns through native Init and emits the native skill-reset message.",
+    "Class reset restores first class, clears only quests31-35, retains skills/Chakra/live status, and is a no-op for class<2.",
+    "World persists before publishing owner snapshots/class appearance; busy or trading owners are rejected.",
+    "Original unlinked tasks remain unlinked; no invented NPC dialogue or client reset menu."
+  ],
+  "focused_component": {
+    "passed": true,
+    "native_status_cases": 24,
+    "tribes": 8,
+    "actions": [
+      1130,
+      1140,
+      1150
+    ],
+    "promoted_class_reset": "native status component; skills/effect/Chakra retained; only quests31-35 cleared",
+    "unpromoted_class_reset": "native status no-op plus World callback no-op",
+    "world_callback": "private Event56 wiring to original Mandara tasks41-43; original class-quest request through World and private SQLite Store",
+    "saved_reopen": "exact",
+    "request_replay": "cached without another commit",
+    "normal_event_data_changed": false
+  },
+  "build": {
+    "production_release_batches": 1,
+    "production_rebuild_retries": 0,
+    "production_targets": [
+      "TantraZone",
+      "TantraService",
+      "TantraServerManager",
+      "TantraDataTools"
+    ],
+    "verifier_only_rebuilds": 2,
+    "debug_builds": 0,
+    "first_batch_production_targets_linked": true,
+    "first_batch_overall_exit": 1,
+    "corrections": [
+      "Verifier compile used nonexistent narrow helper; changed to project utf8 helper.",
+      "Verifier refund assertion omitted native promoted-class Chakra bonus; corrected to preserve native total."
+    ]
+  },
+  "focused_check_attempts": 2,
+  "logs": [
+    "build-release.log",
+    "build-verifier-corrected.log",
+    "build-verifier-refund.log",
+    "story-resets.log",
+    "story-resets-corrected.log",
+    "staging.json"
+  ],
+  "accepted_log_sha256": "721714d9fa61882d531d5ce5644c71a9db4288ae37cbe8338249124d03788b57",
+  "staged_files": [
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraZone.exe",
+      "sha256": "b45f258908c0b4c80954d0633230e879bece08b15a7342ba88a7848a678a8ee1",
+      "previous_sha256": "453cb84be0ca27d9dc8c66b102418176727cc51a44e3afb29eac2e1ee4ae807a"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraService.exe",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraServerManager.exe",
+      "sha256": "6f5a0dd7fd4b13f45952a8b88b87475087e98c1acf13b2796b874970f8f9b1d0",
+      "previous_sha256": "362ab749b96b9a0b890e4dbcf59bf95eaf33196742e3d9b878b16d2e901de230"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraDataTools.exe",
+      "sha256": "50143f98578776dfc8d08563eff353fb22db4de2865c3fb913000e8ad7d9b66b",
+      "previous_sha256": "ae51e202cbfc3ecca9791da3c11848ce567f0489fee13ab9b12d8d39e2fad6a4"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraZone.exe",
+      "sha256": "b45f258908c0b4c80954d0633230e879bece08b15a7342ba88a7848a678a8ee1",
+      "previous_sha256": "453cb84be0ca27d9dc8c66b102418176727cc51a44e3afb29eac2e1ee4ae807a"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraService.exe",
+      "sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraServerManager.exe",
+      "sha256": "6f5a0dd7fd4b13f45952a8b88b87475087e98c1acf13b2796b874970f8f9b1d0",
+      "previous_sha256": "362ab749b96b9a0b890e4dbcf59bf95eaf33196742e3d9b878b16d2e901de230"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraDataTools.exe",
+      "sha256": "50143f98578776dfc8d08563eff353fb22db4de2865c3fb913000e8ad7d9b66b",
+      "previous_sha256": "ae51e202cbfc3ecca9791da3c11848ce567f0489fee13ab9b12d8d39e2fad6a4"
+    }
+  ],
+  "client_unchanged_sha256": "4f4aeaae97d003108db3449a5e7409aa3e7dfe4079bdc290c601c78c60d6ad30",
+  "client_rebuilt": false,
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "No live graphical reset-service acceptance. Original Mandara tasks are unlinked by authored EventList data.",
+    "Kala-core drop still requires the missing world/inventory authority; existing native guard remains. This does not finish High Kruma.",
+    "The full combat, selected quests, graphics and remaining-zone goal stays open."
+  ]
+}

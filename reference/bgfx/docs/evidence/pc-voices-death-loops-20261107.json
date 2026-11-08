@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-07T10:29:07.537332+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-map-close-return-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\pc-voices-death-loops",
+  "source": [
+    "Tantra/HTlauncher/HTIDDef.h:24-31",
+    "Tantra/HTlauncher/HTResMgr.h:157-196",
+    "Tantra/HTlauncher/HTResMgr.h:320-355",
+    "Tantra/HTlauncher/HTEngineHandler.cpp:4253-4306",
+    "Tantra/HTlauncher/HTEngineHandler.cpp:11746-11864",
+    "Tantra/HTlauncher/HTOtherObject.cpp:1425-1449",
+    "Tantra/HTlauncher/HTOtherCharacter.cpp:1039-1048",
+    "Tantra/HTlauncher/HTextern.cpp:467-480"
+  ],
+  "implemented": {
+    "native_voice_column_mapping": [
+      0,
+      2,
+      1,
+      3,
+      4,
+      6,
+      5,
+      7
+    ],
+    "owner_and_peer_attack_voice_selection_fixed": true,
+    "peer_hit_and_idle_owner_hit_voices": true,
+    "death_voice_once_per_life_including_status_only_death": true,
+    "source_gm_has_no_invented_voice": true,
+    "missing_voice_bindings_recorded_and_skipped": true,
+    "peer_death_hit_posture_animations_play_once": true,
+    "native_idle_movement_sitting_still_loop": true,
+    "server_authority_or_skill_data_changed": false
+  },
+  "focused_component": {
+    "passed": true,
+    "tribes": 8,
+    "voice_cases": 56,
+    "decoded_samples": 41,
+    "death_clips_once": 8,
+    "missing_recorded": 3,
+    "muted_miniaudio": true,
+    "gpu_component": true,
+    "injected_presentation_events": true,
+    "tcp": false,
+    "live_world": false
+  },
+  "missing_original_voice_ids": [
+    31141,
+    31142
+  ],
+  "missing_resource_records": [
+    "Missing native combat sound PCSound id=31141",
+    "PCSound/ItemSound id=31141",
+    "PCSound/ItemSound id=31142"
+  ],
+  "build": {
+    "production_client_release_batches": 1,
+    "production_rebuild_retries": 0,
+    "additional_verifier_only_builds": 1,
+    "server_builds": 0,
+    "debug_builds": 0
+  },
+  "focused_check_attempts": 2,
+  "verifier_correction": "Initial fixture required every sound ID to exist in PCSound. Use the production PCSound/ItemSound fallback and record unbound original IDs; no production rebuild needed. Preserve first failure log.",
+  "logs": {
+    "build-release.log": "4e47a133c420c0bf66c0c417bb3022b4b9cb99a6f8e39f3f5b19916c82f1f71d",
+    "build-verifier.log": "220503bd3097b66dbf8f9920b5e1a60542c2d1d30c073a0f17523b820f8dce98",
+    "pc-voices-corrected.log": "691a2b12dc0df099ba4e4d33fb89d205185adc5ff6461f54a97f83dc353c1c2b",
+    "pc-voices.log": "a2772db1298136eeb3e19dde5ee08c84952fe87ab69d6510f3a2f7d7798129a4",
+    "publish-patches.log": "58116d2c557d360358fe390e07676fb2e43d93374881ce42135dce8e0a493c2e",
+    "stage-client.log": "62812566006d2994f7c5ed146b43873624b58ad3729de4703a428fe6dcce5505"
+  },
+  "component_result_sha256": "b051d8b68159edaa78d9df90544416091eda27eb3699912d62c1eaad5d5cf360",
+  "client_sha256": "4f4aeaae97d003108db3449a5e7409aa3e7dfe4079bdc290c601c78c60d6ad30",
+  "previous_client_sha256": "ae06ddbcca8564032ceae14e1ae75f953855c9c0d7537b8b93a17c54fbc0b28c",
+  "zone_worker_unchanged_sha256": "453cb84be0ca27d9dc8c66b102418176727cc51a44e3afb29eac2e1ee4ae807a",
+  "patch": {
+    "version": 1794018496,
+    "files": 5313,
+    "bytes": 1635564637,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "The component injects presentation events; it is not a live TCP/server encounter or fresh-character balance check.",
+    "Eight authored body death clips complete through the actual renderer using the shared peer-loop selector; the check does not run the entire network peer-instantiation path.",
+    "Miniaudio decodes/starts41 original samples with master volume0; audible human listening and complete graphics parity are not claimed.",
+    "Unbound voice IDs31141/31142 remain recorded, with no substitute or asset search.",
+    "Owner cast/attack interruption and broader combat/quest/graphics/zone acceptance remain open."
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-event-items-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-event-controls",
+  "source": [
+    {
+      "path": "Tantra/zone/Server.cpp",
+      "lines": "25624-25635;25823-25833;25900-25937",
+      "sha256": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a"
+    },
+    {
+      "path": "Tantra/zone/CMob2.cpp",
+      "lines": "7078-7098",
+      "sha256": "50cd5a0bbe8d5287d44ced2bd893013f33c8c472b09982890db11caee3c65e8b"
+    },
+    {
+      "path": "Tantra/zone/Basedef.h",
+      "lines": "3253-3264",
+      "sha256": "06d0028f615afcc34c0f8aa18d9dfe8af5c9a748ca5144b01dff8d8d0941ed22"
+    }
+  ],
+  "implemented_actions": [
+    1030,
+    1080,
+    1090,
+    1100,
+    1120
+  ],
+  "implemented": [
+    "CheckItemOnly preserves the ten-slot partial-positive count and active capacity without consumption.",
+    "CheckQuest compares the exact native byte; invalid user/quest indices retain native results.",
+    "SetClan uses effective player clan; preflight filters player triggers and bypasses system/NPC triggers.",
+    "SetAvailableTime and SetDuration accept native target0-255 and preserve process-local overrides and unsigned arithmetic.",
+    "Preflight keeps source error ordering, inclusive duration end and expiry switching off/clearing its deadline.",
+    "The older Karya verifier now disables only its copied private destination profile, independent of normal Zone13 admission."
+  ],
+  "component": {
+    "path": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-event-controls-summary-bebb8fd3f83631baa4475d315eb830d41169d330f39a983b5797f521069ea0de.json",
+    "sha256": "a4b2bc694f36c1122e2ef35861d91fcafbf677ad103b9b3c6bfbd343c84936b5",
+    "summary": {
+      "graphical_acceptance": false,
+      "live_tcp": false,
+      "passed": true,
+      "pure_cases": 14,
+      "world_cases": [
+        {
+          "case": "partial-item-match",
+          "fixture": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-event-controls-0995be3ca634261473e759d4b62b3ec15f9f31cec43b6df0e2584945eaf5352c",
+          "result": {
+            "calendar_system_clan_bypass": true,
+            "case": "partial-item-match",
+            "items_not_consumed": true,
+            "overrides_applied": true,
+            "passed": true,
+            "saved_reopen_exact": true,
+            "world_expiry_checked": true
+          },
+          "result_sha256": "f155c56cb60adef5d1a7f8af8f900bd88995ae740d03678bba99fba632b9f936"
+        },
+        {
+          "case": "quest-mismatch",
+          "fixture": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-event-controls-c5459a2008583a16d60d363369ccecc18fb39968be523e487d72498e7c1167c7",
+          "result": {
+            "calendar_system_clan_bypass": false,
+            "case": "quest-mismatch",
+            "items_not_consumed": true,
+            "overrides_applied": false,
+            "passed": true,
+            "saved_reopen_exact": true,
+            "world_expiry_checked": false
+          },
+          "result_sha256": "3fe2b4006ae36da03304ea18580714a564b2b392ac2942877c7ce5d00d81f0ce"
+        },
+        {
+          "case": "missing-item",
+          "fixture": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-event-controls-eec8c2f622bc608dd3ca9a43ac9bde6729a5455a0774d4b8894a3ee572eb2fa9",
+          "result": {
+            "calendar_system_clan_bypass": false,
+            "case": "missing-item",
+            "items_not_consumed": true,
+            "overrides_applied": false,
+            "passed": true,
+            "saved_reopen_exact": true,
+            "world_expiry_checked": false
+          },
+          "result_sha256": "4094292fc820b1270237808e7ea4f0a4fde8790a34c8945354a70e4c2be9e798"
+        },
+        {
+          "case": "sequential-proceed",
+          "fixture": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-event-controls-990c20011a5cba2a6814b326a36b997f111f23fefd308baff470fb5ea1f7be97",
+          "result": {
+            "calendar_system_clan_bypass": true,
+            "case": "sequential-proceed",
+            "items_not_consumed": true,
+            "overrides_applied": true,
+            "passed": true,
+            "saved_reopen_exact": true,
+            "world_expiry_checked": true
+          },
+          "result_sha256": "1be8776575c3ebeddc51298d07a13f1eac8116f2b0faf113b229bca2986178d8"
+        }
+      ],
+      "zone_admission_changed": false
+    }
+  },
+  "logs": {
+    "build-release.log": "adda1fd83b2431c3b4a0fff09587be36f5ea0106961ef53d299503a28c77a845",
+    "build-verifier.log": "0c05f05ce843840141157d20b8ea1936cc672fcbc46948c8a6b259bb6ecdfd78",
+    "focused-world.log": "32a46350ed695827abb00479f0bec8e9a9d975c688082570f433bfca78dfa921",
+    "focused-world-02.log": "e601b767b3195e93378fbf931a14b39eec7adf1b8074371ac92162c8da0d4546"
+  },
+  "server_binaries": {
+    "TantraServerManager.exe": "11c6ccfec2f05170f0319c6ea7fa379131148bc2b2350d24c29538d453260c43",
+    "TantraDataTools.exe": "02f6f18d974f050687d8ba0baa04c5612571d60c31fa8f31b55d9f2472b62030",
+    "TantraZone.exe": "4e941f1aefc64bdd3e84ad5e0eff5259fd5577704b235e41b7cf088aa2d06da8",
+    "TantraService.exe": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7"
+  },
+  "build_and_checks": {
+    "production_release_batches": 1,
+    "production_retries": 0,
+    "verifier_only_rebuilds": 1,
+    "focused_attempts": 2,
+    "first_attempt_failure": "Verifier calendar dates differed from Scene login wall-clock1000; corrected its fixture clock.",
+    "debug_builds": 0,
+    "client_builds": 0,
+    "previous_journeys_replayed": false,
+    "older_karya_component_replayed": false
+  },
+  "normal_database_changed": false,
+  "normal_workers_restarted": false,
+  "canonical_workbooks_or_zone_data_changed": false,
+  "zone_admission_changed": false,
+  "client_patch_unchanged": 1794028917,
+  "remaining": [
+    "Full Chaturanga/Nar Durga source backends, services, combat and connected travel remain incomplete.",
+    "This is private World/SQLite/calendar authority, not live TCP or graphical acceptance.",
+    "The full six-part expansion remains open."
+  ]
+}

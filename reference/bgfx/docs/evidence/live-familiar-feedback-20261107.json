@@ -1,0 +1,198 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "component": "connected rank-one K3 familiar presentation and original combat feedback",
+  "component_passed": true,
+  "full_goal_complete": false,
+  "evidence_root": "D:\\Tantra-Beta\\Expansion-20261107\\familiar-presentation",
+  "original_source": {
+    "Tantra/HTlauncher/HTMainCharacter.cpp": "6e7b5ee760a729fbc8afad3b4aa59a61ed394e51ba9e3f601037c2fa6226e08d",
+    "Tantra/HTlauncher/HTMonster.cpp": "67332b25c19e12c260a74e68ac9f2a5768a786857f886855f231418abb7cdce3",
+    "Tantra/HTlauncher/HTOtherObject.cpp": "211d0cfebbd41170bf883cabf85ad8543a8b2899dc350d63f16b82fbe290a363"
+  },
+  "source_contract": {
+    "original_skill_feedback": "HT_vMainChar_SCP_Skill_CastSkill_Broadcast retains zero-result type0 feedback and uses ordinary outgoing damage1108/incoming1107, not unused skill-name variants1123/1124.",
+    "support": "Phase6 support events do not create damage messages, hit glyphs or impacts for owner or peer.",
+    "death": "Separate phase2 death acknowledgements remain lifecycle events; no second hit glyph/impact. Native NPC death cue is requested once per actor life; revival permits another cue.",
+    "reserved": "Do not invent English labels or alter K3 tables to mask authored Reserved names."
+  },
+  "changed_source": {
+    "_remake_bgfx/src/client/OfflineWorldGameplay.h": "cb9e95aa32ac6fedcca298f1e462e285a3a7ea509d9273f8e6328f77c728965e",
+    "_remake_bgfx/src/client/CppServerCombat.inc": "e501d8262f808d6d4a4d48a46a1538614358b97ae66ad3664564fe16ffdbd87b",
+    "_remake_bgfx/src/app/WorldChatHistory.h": "d183dfafc979728b2b18b8d51cedadd0fba245fa6a0599262c3cf826e66ffb36",
+    "_remake_bgfx/src/app/NativeWorldFx.h": "dc9e52c1c700421a25930f9ce2975644acc068b08fc30820eda7c66b9e8ec629",
+    "_remake_bgfx/src/rendering/HtRenderFacade/WorldCombatPresentation.h": "13174502b068d7f07fdbf6c14a9d2f04c179b3ae428851c4fc1d1b16579bfb00",
+    "_remake_bgfx/src/tools/native_chat_ui_probe.cpp": "c1584a5b4c642fff6e5cf8c8752dd30d6b8fd500b07977b79e26ee4dcc864104",
+    "_remake_bgfx/src/app/LiveOnlineProbe.h": "9f10514e63d46e13c8332c81d244d12c33c6ec6b36aa3441903359f8b95d3f7e",
+    "_remake_bgfx/src/app/LiveFamiliarPresentation.inc": "d3859198b17cc13b572f66fb5361aaceaf1931658e357eb360ddef97e6c3352a",
+    "_server_cpp/tests/world_runtime_tests.cpp": "8dd314abec75ea7eeecf3d7483ebe41f38a28584dbaa9ad04b197fb9fd0eefc6",
+    "_server_cpp/tests/familiar_presentation_fixture.inc": "8f151e88da7c87c452d13a6dbb5c90b18230cc9a0f641867821813e830bf5f6b",
+    "_server_cpp/tools/verify-familiar-presentation.py": "00f8cac7d3d7ca3c344753ff7fec9d67b67a5057d125d4e7dbb681658139c6f6"
+  },
+  "live_session": {
+    "result": "D:\\Tantra-Beta\\Expansion-20261107\\familiar-presentation\\session-01\\RESULT.json",
+    "sha256": "5c8d38f7bb9f9fedead8d6755450472aa15bf434938cca5c34246beef3f09cfa",
+    "attempts": 1,
+    "passed": true,
+    "skills": [
+      3115,
+      3331,
+      3332
+    ],
+    "rank": 1,
+    "tested_binaries": {
+      "TantraZone.exe": "3170d82a2b812dd2bc9b749348688df1074f44c3bc0dd8b1349f6fd1951ce9c0",
+      "TantraService.exe": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "ZFLauncher.exe": "a7750c3b37cfc330af14393b1868d7650d54da77ff1b507690ff66ebb4174669"
+    },
+    "clients": [
+      {
+        "passed": true,
+        "role": 1,
+        "real_network": true,
+        "models": [
+          2801,
+          2804,
+          2807
+        ],
+        "positive_attack_models": [
+          2801,
+          2804,
+          2807
+        ],
+        "phase_clips": 6,
+        "required_phase_clips": 6,
+        "fx_skill_count": 3,
+        "required_fx_skill_count": 3,
+        "removed": true,
+        "cast_loops_cleared": true,
+        "missing": []
+      },
+      {
+        "passed": true,
+        "role": 2,
+        "real_network": true,
+        "models": [
+          2801,
+          2804,
+          2807
+        ],
+        "positive_attack_models": [
+          2801,
+          2804,
+          2807
+        ],
+        "phase_clips": 6,
+        "required_phase_clips": 6,
+        "fx_skill_count": 3,
+        "required_fx_skill_count": 3,
+        "removed": true,
+        "cast_loops_cleared": true,
+        "missing": []
+      }
+    ],
+    "saved_characters": [
+      {
+        "name": "WorldHero",
+        "summary": {
+          "zone": 1,
+          "cell": [
+            527,
+            352
+          ],
+          "prana": 1,
+          "hp": 2000,
+          "tp": 4266,
+          "money": 1000,
+          "inventory": [],
+          "equipment_sha256": "5341e6b2646979a70e57653007a1f310169421ec9bdd9f1a5648f75ade005af1"
+        },
+        "beyond_vitals_matches": true
+      },
+      {
+        "name": "BgfxPeer",
+        "summary": {
+          "zone": 1,
+          "cell": [
+            528,
+            352
+          ],
+          "prana": 1,
+          "hp": 3073,
+          "tp": 4389,
+          "money": 1000,
+          "inventory": [],
+          "equipment_sha256": "7e0e2b6b11537332e1193c8c2642c2896b8547deea886671daaf5ef50e354dd3"
+        },
+        "beyond_vitals_matches": true
+      }
+    ],
+    "private_fixture": {
+      "database": "new SQLite",
+      "transport": "legacy-local loopback",
+      "accounts_admin": false,
+      "level": 100,
+      "qa_attributes_overallocated": true,
+      "generator_substitutions": 160,
+      "substitute_monster": 2034,
+      "source_tables_modified": false
+    },
+    "source_files_unchanged": true,
+    "normal_database_changed": false,
+    "all_private_clients_and_workers_exited": true,
+    "images_inspected": {
+      "role-1/captures/familiar-model-2804.png": "ee8d226dbf002cb65dda9ad2aafceb651a8a9761d26b9c39f7267e1c2819f254",
+      "role-2/captures/familiar-fx-3115.png": "ef1838c1feb5efab7090ace9ce55070257d285bd4d566f0d484081304056fdcc"
+    },
+    "image_finding": "Visible Reserved damage text exposed by image review; corrected afterward using original feedback semantics."
+  },
+  "focused_feedback": {
+    "passed": true,
+    "checks": 15,
+    "source_damage_templates": true,
+    "reserved_skill_label_not_used": true,
+    "zero_result_retained": true,
+    "support_not_damage": true,
+    "death_not_hit": true,
+    "death_notice_once": true,
+    "native_death_cue_requests_per_life": 1,
+    "actual_audio_playback": false,
+    "graphical_session_repeated": false,
+    "result": "D:\\Tantra-Beta\\Expansion-20261107\\familiar-presentation\\feedback\\COMBAT_FEEDBACK_RESULT.json",
+    "sha256": "c6afab94e50c751e51810e3e8a25d5ffb6e22aed0944c74d4d7d179984486c5c",
+    "log": "feedback-02.log"
+  },
+  "builds": {
+    "client_harness": "build-client.log: Release success",
+    "fixture_only": "build-fixture.log: Release success",
+    "feedback_batch": "build-feedback.log: production client success; probe compile failed missing introClientTribe declaration",
+    "probe_correction": "build-feedback-probe.log: probe-only Release success after compatibility include",
+    "old_probe_attempt": "feedback.log: exit2 because the old binary lacked the new option; no checks ran",
+    "redirect_typo": "First corrected-probe invocation did not start because the log folder was mistyped; corrected invocation is feedback-02.log",
+    "debug_builds": 0,
+    "production_server_rebuilds": 0,
+    "successful_graphical_journey_repeats": 0
+  },
+  "staging": {
+    "log": "stage-feedback.log",
+    "exe_sha256": "99c0154589965290a34e4b59cd698c56f08a24114a7e92a39ea3ad7becb36a84",
+    "separate_session_binary": true
+  },
+  "patch": {
+    "version": 1794035849,
+    "files": 5313,
+    "bytes": 1635603549,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "limits": [
+    "Only rank1 of three familiar families was rendered; all eleven template levels remain covered by prior authority checks only.",
+    "No balance, fresh progression, TLS/public-connectivity, capacity or complete skill-family acceptance.",
+    "Focused death/audio checks inspect callback requests, not actual audio playback.",
+    "The post-review feedback correction was checked separately; the successful graphical journey was not replayed.",
+    "Remaining combat, quests, graphics/audio and special-zone work is still open."
+  ]
+}

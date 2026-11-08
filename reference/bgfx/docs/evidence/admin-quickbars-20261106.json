@@ -1,0 +1,138 @@
+{
+  "updated_at": "2026-11-06T14:24:01.266712+08:00",
+  "game_name": "Global Tantra",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "client_sha256": "731e558e5aa695293b564a967acbd491bc2df46b8ecf2539569da2085877b021",
+  "patch": {
+    "version": 1793946039,
+    "files": 5313,
+    "bytes": 1635452924,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "server_binaries": {
+    "TantraZone.exe": "a54089c3192842d30ae2057a590c1493554b28eda98e249f83f693cb063b29f5",
+    "TantraService.exe": "d93ab1211ed9c80f9aacdfee996dea2c1a2702d0aa85cdf3835294f05ebcbe14",
+    "TantraServerManager.exe": "b49775ae042a5494eabedfc85f85bf8e7a9dfdf8438dbba336191bd585fe2da3",
+    "TantraDataTools.exe": "ed6d9878c47718171002bb440daf3e67b963b2ff82634f1919f5b3433602523a"
+  },
+  "server_update": {
+    "archive": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\Global-Tantra-Server-Update-20261106-admin.zip",
+    "sha256": "c47f8fefa182493f2dd3ab20a757ceb5486a11f54726be1964fb4065d50954af",
+    "files": 78,
+    "bytes": 11814142,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "server_manager_pid": 31132,
+  "normal_native_worlds_ready": 11,
+  "normal_admin_stub_ready": true,
+  "scope": {
+    "maximum_zone_id": 34,
+    "removed_zone_backup": "D:\\Tantra-Beta\\Expansion-20261106\\zone-scope-34\\removed-zones",
+    "manifest": "D:\\Tantra-Beta\\Expansion-20261106\\zone-scope-34\\ZONE_SCOPE.json",
+    "source_reference_files_deleted": false
+  },
+  "admin": {
+    "receiver": "ASHESHDEV",
+    "required_userLevel": 1,
+    "fresh_authorization_each_request": true,
+    "old_recipients_rejected": true,
+    "replay_and_demotion_verified": true,
+    "panel_command": "/erichgwapo",
+    "offline_schema": 5,
+    "offline_default_userLevel": 0,
+    "automatic_promotion": false,
+    "self_only_online_subset": true,
+    "unsupported_commands_unavailable": true,
+    "full_live_online_admin_ui_session_verified": false
+  },
+  "quickbars": {
+    "bars": 2,
+    "rows_minimum": 1,
+    "rows_maximum": 3,
+    "slots_per_page": 60,
+    "preserved_pages": 5,
+    "legacy_bindings_preserved": 50,
+    "file_bytes": 2424,
+    "keys": [
+      [
+        "1..0",
+        "F1..F10",
+        "Ctrl+1..0"
+      ],
+      [
+        "Shift+1..0",
+        "Alt+1..0",
+        "mouse only"
+      ]
+    ],
+    "saved_layout_and_bindings": true,
+    "actual_live_drag_rowbutton_gameplay_verified": false
+  },
+  "ui_component": {
+    "passed": true,
+    "checks": 140,
+    "isolated_temp_profile": true,
+    "default_level0_denied": true,
+    "level2_denied": true,
+    "level1_authorized": true,
+    "retired_recipients_denied": true,
+    "actual_sdl_input": true,
+    "search_example_execute": true,
+    "money_delta": 123,
+    "reopen_persistence": true,
+    "quickbar_cells": 60,
+    "quickbar_rows": 6,
+    "hotkey_labels": 50,
+    "bound_row_icons": 6
+  },
+  "tests": {
+    "server_authority": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\server-admin-test.log",
+    "native_skill_status": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\skills-status-test.log",
+    "parser": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\command-parser.log",
+    "hotkeys": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\hotkeys.log",
+    "quickbar_persistence": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\quickbar-persistence.log",
+    "class_dialogue": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\class-dialogue\\RESULT.json",
+    "ui": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\accepted-ui\\ADMIN_UI_RESULT.json"
+  },
+  "presentation_images": {
+    "admin-panel-open.png": {
+      "path": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\accepted-ui\\admin-panel-open.png",
+      "sha256": "633cc1b8d7d1faed0fd070806dc059822dd5ebeec4a8b5b854cd4adcb8244b78"
+    },
+    "admin-money-executed.png": {
+      "path": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\accepted-ui\\admin-money-executed.png",
+      "sha256": "c1b053d2f0190ec55af9485057a5adc1cbc7d40740e9099b5cc46429509b6c97"
+    },
+    "quickbars-two-expanded.png": {
+      "path": "D:\\Tantra-Beta\\Expansion-20261106\\admin-security\\accepted-ui\\quickbars-two-expanded.png",
+      "sha256": "bb21004f632ff4107da1f3cfb6cbb5c90bcedd3d57a132c5d3dfe074361ce142"
+    }
+  },
+  "no_normal_account_privileges_modified": true,
+  "new_k3_recipient_status_skills": [
+    3213,
+    3263,
+    3357
+  ],
+  "beta_enabled_skills": 217,
+  "beta_disabled_skills": 6,
+  "beta_maps_admitted_unchanged": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    12
+  ]
+}

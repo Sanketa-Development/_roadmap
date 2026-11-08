@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-07T08:28:27.176178+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\map-missing-object-skip",
+  "previous_checkpoint": "peer-attack-timing-20261107.json",
+  "source": [
+    "Tantra/HTLauncher/HTEngineHandler.cpp:760-771"
+  ],
+  "implemented": {
+    "skip_missing_object_binding": true,
+    "skip_empty_filename": true,
+    "skip_absent_model_payload": true,
+    "deduplicate_and_count_warnings": true,
+    "budgeted_gpu_upload_skips_recorded_objects": true,
+    "original_placement_and_tcc_retained": true,
+    "malformed_files_and_unsafe_paths_remain_fatal": true,
+    "replacement_assets": false
+  },
+  "verification": {
+    "release_builds": 1,
+    "server_rebuilds": 0,
+    "changed_targets": [
+      "tantra_remake",
+      "native_zone_arrival_render_probe"
+    ],
+    "build_passed": true,
+    "build_log": "D:\\Tantra-Beta\\Expansion-20261107\\map-missing-object-skip\\release-build.log",
+    "accepted_journeys_replayed": false,
+    "mudha_render_attempts": 1,
+    "mudha_full_render_check_passed": false,
+    "mudha_resource_loading_and_gpu_geometry_initialization_passed": true,
+    "mudha_initial_frames_rendered": 4,
+    "mudha_missing_object_resources": 385,
+    "mudha_skipped_placements": 503,
+    "mudha_skip_reasons": [
+      "Missing object-table binding"
+    ],
+    "mudha_render_failure": "shared static geometry with native material ranges:",
+    "mudha_failure_explanation": "Required static scenery is missing; the existing render acceptance requires native shared object geometry.",
+    "mudha_capture_inspected": false,
+    "mudha_live_server_session": false,
+    "mudha_enabled": false,
+    "skip_report": "D:\\Tantra-Beta\\Expansion-20261107\\map-missing-object-skip\\Zone21\\SKIPPED_OBJECTS.tsv"
+  },
+  "existing_audio_recovery": {
+    "evidence": "skill-audio-tomb-story-20261107.json",
+    "log": "D:\\Tantra-Beta\\Expansion-20261107\\skill-audio-tomb-story\\audio-recovery.log",
+    "passed": true,
+    "rerun": false,
+    "scope": "miniaudio native BGM, same-ID restart, region voice reset, music toggle, map fade and category gains; no OS device-loss or graphical acceptance"
+  },
+  "client_sha256": "f67f569bd3d98d3f51643759e80f9cef685faa1c7717c96afbb8c0aca64c336d",
+  "client_k3_fx_sha256": "e1992e5a8690efa00247e02abe11b0aa79c5388f03c619f76f5ba7c3daeb9216",
+  "probe_sha256": "3926003300203423133c1be002e8b61c7dd40337f95b86ea801cef8664c61b15",
+  "patch": {
+    "version": 1794011240,
+    "files": 5313,
+    "bytes": 1635538575,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "remaining": [
+    "Mudha missing object-table definitions and full native services/encounters/travel acceptance.",
+    "Remaining combat/quest, graphics parity and original zones within01-34."
+  ]
+}

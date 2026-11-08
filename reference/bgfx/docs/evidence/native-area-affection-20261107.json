@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-07",
+  "component": "Mandara native area affections",
+  "configuration": "Release",
+  "component_passed": true,
+  "full_goal_complete": false,
+  "original_source": {
+    "Tantra/zone/Server.cpp": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a",
+    "Tantra/zone/CMob2.cpp": "50cd5a0bbe8d5287d44ced2bd893013f33c8c472b09982890db11caee3c65e8b",
+    "Tantra/zone/Basedef.h": "06d0028f615afcc34c0f8aa18d9dfe8af5c9a748ca5144b01dff8d8d0941ed22"
+  },
+  "changed_source": {
+    "_server_cpp/src/zone/NativeMapWorldEvents.inc": "89ca4b9d93e77b40fb38283cf1f5a87e10b2b28eca839ab19ccbe4c0c2cf5d04",
+    "_server_cpp/src/zone/world_map_events.inc": "5517fbea909208affdb69bfc13d091bf1e6f0200757999f8d9bf23bb981e4072",
+    "_server_cpp/src/zone/world_story_events.inc": "7105284700d7eb8b103a10bb546f82c70d26547d7b4663d1ace38cb7a6769792",
+    "_server_cpp/src/rules/compatibility/HtPcStatProjection.cpp": "ee3d5737327a883a8a76fb69c5e6c2d5f5dc35a4fef834be2880c52cdcbf26d7",
+    "_server_cpp/src/rules/compatibility/HtPcStatProjection.h": "bf0f910c49584ea53c339f700b9f1a0d46b162d2698dea659b98ad92fac4ddb4",
+    "_server_cpp/tools/rules/generate-native-pc-stat-core.py": "c57ad31f65518eb0994199c8313914e73d2c73cb49276eb32c693ace97326006",
+    "_remake_bgfx/src/compatibility/HtPcStatProjection.cpp": "fd29eb566f08f6ac8eeb799bcdb2efb1b1acee0aeeb8360b58de29c07297382b",
+    "_remake_bgfx/src/compatibility/HtPcStatProjection.h": "0b79cd8269ffc040644501fccb37482b4c40191e2f8a3636b674a2ff13837ed0",
+    "_remake_bgfx/tools/legacy/generate-native-pc-stat-core.py": "1e72a34c7c1ab8f2aedb5021c2d41068bd17a60336b9a726053b010b8d180857",
+    "_server_cpp/tests/player_map_area_affection.inc": "e5df8f6221a326cfd586b9c9a7c0dbe5978fb73cea1cd114f788923ac602b49c"
+  },
+  "native_contract": {
+    "actions": [
+      2100,
+      2101
+    ],
+    "original_tasks": [
+      54,
+      55
+    ],
+    "original_event_links": [
+      29,
+      30,
+      31
+    ],
+    "selection": "normalized half-open rectangle; row-major occupied mob grid; living PC handles1..999; exempt current GM clan",
+    "effect": {
+      "id": 2005,
+      "name": "Hold2",
+      "duration_ms": 300000,
+      "param1": 100,
+      "param2": 0,
+      "caster_and_party_leader": "recipient self"
+    },
+    "removal": "original compiled CMob::TurnOffAffection with visual-bit guard; existing RemoveEffect callers retain defaults",
+    "publication": "original status broadcast plus current authoritative active-effect snapshot",
+    "persistence": "existing per-owner commit/revision fence; exact saved reopening"
+  },
+  "focused_result": {
+    "actions": [
+      2100,
+      2101
+    ],
+    "applications": 2,
+    "both_maximum_edges_excluded": true,
+    "effect_duration_ms": 300000,
+    "gm_and_dead_excluded": true,
+    "graphical_acceptance": false,
+    "live_tcp": false,
+    "nonvisual_removal_guard": true,
+    "ordinary_remove_effect_preserved": true,
+    "original_task_table_sha256": "3a354333ee9dabb00437061073bdc891aeb852038c20f0af942ba956d7b38fb3",
+    "original_tasks": [
+      54,
+      55
+    ],
+    "participants": [
+      {
+        "affected": true,
+        "name": "DamageHero",
+        "saved_reopen_exact": true,
+        "x": 857,
+        "z": 202
+      },
+      {
+        "affected": true,
+        "name": "AreaPeer2",
+        "saved_reopen_exact": true,
+        "x": 858,
+        "z": 202
+      },
+      {
+        "affected": false,
+        "name": "AreaPeer3",
+        "saved_reopen_exact": true,
+        "x": 859,
+        "z": 202
+      },
+      {
+        "affected": false,
+        "name": "AreaPeer4",
+        "saved_reopen_exact": true,
+        "x": 939,
+        "z": 204
+      },
+      {
+        "affected": false,
+        "name": "AreaPeer5",
+        "saved_reopen_exact": true,
+        "x": 890,
+        "z": 288
+      },
+      {
+        "affected": false,
+        "name": "AreaPeer6",
+        "saved_reopen_exact": true,
+        "x": 860,
+        "z": 202
+      }
+    ],
+    "passed": true,
+    "removals": 2,
+    "repeated_absent_removal_noop": true,
+    "saved_reopen_exact": true,
+    "status_and_active_effect_published": true
+  },
+  "fixture": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-map-area-affection-46d5110c25a8aa686fec132f0246fcfb89e8326a4635dbb653b5a7d63742ff65",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-area-affection",
+  "original_task_table_unchanged_in_fixture": true,
+  "private_event_wrappers_used": true,
+  "logs": {
+    "build-release.log": "b90db6a6d6f41c101e018206dc44a11c5f3e668561105fba9c1c461e8420534c",
+    "focused-world.log": "84b2d29141b06be7dd1e316f25b7ccd050fac078ea9f1c488cd54808505d46d8"
+  },
+  "server_binaries": {
+    "TantraZone.exe": "3170d82a2b812dd2bc9b749348688df1074f44c3bc0dd8b1349f6fd1951ce9c0",
+    "TantraService.exe": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+    "TantraServerManager.exe": "329751e885081e7f46fe263e3e1ce9700b652bb598b67f9efab7e45e281ec9ce",
+    "TantraDataTools.exe": "117b905949eb4bc8dc2303832ec7c52c31bcbce54421aa5d0e48358a81b57b04"
+  },
+  "staged_copies": {
+    "_server_cpp/bin": {
+      "TantraZone.exe": true,
+      "TantraService.exe": true,
+      "TantraServerManager.exe": true,
+      "TantraDataTools.exe": true
+    },
+    "_server_final/bin": {
+      "TantraZone.exe": true,
+      "TantraService.exe": true,
+      "TantraServerManager.exe": true,
+      "TantraDataTools.exe": true
+    }
+  },
+  "build_and_checks": {
+    "production_release_batches": 1,
+    "verifier_only_rebuilds": 0,
+    "focused_attempts": 1,
+    "focused_passed_first_attempt": true,
+    "debug_builds": 0,
+    "client_builds": 0,
+    "previous_journeys_replayed": false
+  },
+  "normal_database_changed": false,
+  "normal_workers_restarted": false,
+  "canonical_workbooks_or_zone_data_changed": false,
+  "zone_admission_changed": false,
+  "client_patch_unchanged": 1794028917,
+  "remaining": [
+    "This component uses private World/SQLite authority, not live TCP or graphical acceptance.",
+    "The full source Mandara arena event/teleport journey remains unaccepted; only its authored area-effect tasks are covered here.",
+    "The existing unsupported full CMob::Init lifecycle for BlessOfGod remains unchanged; this authored Hold2 component does not complete it.",
+    "The full six-part expansion remains open."
+  ]
+}

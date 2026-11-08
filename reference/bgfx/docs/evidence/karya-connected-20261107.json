@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-map-calendars-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected",
+  "implemented": [
+    "Nonzero relative native runtime clock; initialize optional map calendars before player requests.",
+    "Match HTEngineHandler.cpp2734-2741 HideAllMesh for a single zero mesh: preserve bounds, sockets and picking; suppress geometry and shadows independently of actor visibility.",
+    "Skip zero texture overrides and include actor/texture IDs in nonzero binding errors."
+  ],
+  "original_source": {
+    "path": "Tantra/HTlauncher/HTEngineHandler.cpp",
+    "lines": "2734-2761",
+    "sha256": "dec2f71e6b25091e54c7742d8d85a00b4c4658865cfaff61b0d12f4836bf5500"
+  },
+  "client_sha256": "be43fdf983ea30fc1d32ce94c5bb47959784cad310b746d0bf1b9320e397ca48",
+  "server_binaries": {
+    "TantraZone.exe": {
+      "sha256": "ca51f2a0038fddc1521fa7c8ee0f8e7746ecadf60590c3c1035ee99add81dc40",
+      "both_staged_copies_match": true
+    },
+    "TantraService.exe": {
+      "sha256": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "both_staged_copies_match": true
+    },
+    "TantraServerManager.exe": {
+      "sha256": "5a34622408fddef27d2a656badeefcb7bfeb004ffd4d3670f8317605bf6b34d2",
+      "both_staged_copies_match": true
+    },
+    "TantraDataTools.exe": {
+      "sha256": "7c72ece69521202821aa430e79af45572907c4418817eee78e3a94018e4131db",
+      "both_staged_copies_match": true
+    }
+  },
+  "build_logs": [
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\build-client.log",
+      "sha256": "82d07b48974708aa1789337c08b460abe2f5015c374ea5f1060af02be3b7aa44",
+      "result": "Release build completed"
+    },
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\build-fixture.log",
+      "sha256": "eef6c07b5c1c8292955610000bf0070294b45a26909db0e7a29ae97cf0562be9",
+      "result": "Release build completed"
+    },
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\build-runtime-clock.log",
+      "sha256": "4d489ea8cf2360dae9a91ae7046ecddce138b0f0ed751e1a37c4eac5769c6183",
+      "result": "Release build completed"
+    },
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\build-hidden-carrier.log",
+      "sha256": "0203ff54b90c71a682cf12878f809e90bd504a8b956fea21c5ef7148da45fa8a",
+      "result": "Release build completed"
+    }
+  ],
+  "connected_attempts": [
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\session-01\\RESULT.json",
+      "sha256": "d53e80365fa1ef66144c4ca455f703c1cb38c28c92a93a597198d12fbaaebbb5",
+      "passed": false,
+      "error": "[Errno 2] No such file or directory: 'D:\\\\Tantra-Beta\\\\Expansion-20261107\\\\karya-connected\\\\session-01\\\\role-1\\\\captures\\\\KARYA_RESULT.json'",
+      "summary": "Gate calendar did not fire; nonzero clock/proactive initialization corrected afterward.",
+      "last_stages": [
+        "0\t1",
+        "0\t2"
+      ],
+      "source_files_unchanged": true
+    },
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\session-02\\RESULT.json",
+      "sha256": "2fd0c6fb31d977fa7d75e6a1e3a0664060e9847ca4e96ab6b8b7aa8b9faeb8b6",
+      "passed": false,
+      "error": "Role1 did not finish the Karya journey; inspect its stage/launcher logs",
+      "summary": "Gate opened, but actor texture0 binding aborted rendering; HideAllMesh corrected afterward.",
+      "last_stages": [
+        "0\t1",
+        "0\t2",
+        "0\t3"
+      ],
+      "source_files_unchanged": true
+    },
+    {
+      "path": "D:\\Tantra-Beta\\Expansion-20261107\\karya-connected\\session-03\\RESULT.json",
+      "sha256": "3220a231892c26b98dc140d239fa334340f9fcb4025d60ae3ae928e0366ccb84",
+      "passed": false,
+      "error": "Role1 did not finish the Karya journey; inspect its stage/launcher logs",
+      "summary": "Gate opened and rendering continued; destination-menu wait timed out. No travel accepted.",
+      "last_stages": [
+        "0\t1",
+        "0\t2",
+        "0\t3"
+      ],
+      "source_files_unchanged": true
+    }
+  ],
+  "patch": {
+    "version": 1794026462,
+    "files": 5313,
+    "bytes": 1635578973,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "remaining": [
+    "Diagnose the final gate-menu wait before any further connected attempt.",
+    "Retain the original automatic middle tier46-61 versus canonical Portal minimum68 conflict; no invented bypass.",
+    "Accept actual travel, fees, closing handoffs and saved return before normal map admission."
+  ],
+  "normal_profiles_13_15_enabled": false,
+  "normal_database_changed": false,
+  "normal_services_restarted": false,
+  "committed_or_pushed": false,
+  "superseded_by": "native-owner-revisions-karya-20261107.json",
+  "subsequent_scoped_acceptance": {
+    "low13_and_high15": true,
+    "original_failures_retained": true,
+    "zone14_admitted": false,
+    "evidence": "native-owner-revisions-karya-20261107.json"
+  }
+}

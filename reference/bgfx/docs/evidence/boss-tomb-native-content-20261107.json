@@ -1,0 +1,737 @@
+{
+  "date": "2026-11-07T03:39:19.767936+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "skill-audio-tomb-story-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\boss-tomb-native-content",
+  "client_sha256": "c42ab2411dfdd461d0e2ce2c3916e6a5f6d32d16eb9827e0662f4113e71f845b",
+  "server_sha256": {
+    "TantraZone.exe": "7778497cbc494eecd73bc1ac57a9c0134800c410592c3ed6c35e38530fd3705d",
+    "TantraService.exe": "337de042c171836de12f09a76e5d2ba6f70d75b831ed29f49d884c81217d8f31",
+    "TantraServerManager.exe": "cff1e9a5980a893f5376bfee3a96e895091b5f43e9271ee0c518b255ff08c509",
+    "TantraDataTools.exe": "223848b2f0ab28ec351c46f1e91596e4ffdab626761bc7cf17d4c42310872ebb"
+  },
+  "patch": {
+    "version": 1793993819,
+    "files": 5313,
+    "bytes": 1635519119,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "server_update": {
+    "archive": "D:\\Tantra-Beta\\Global-Tantra-Server-Update-20261107-ZoneImporter-Boss.zip",
+    "sha256": "b5737d9e97f588ab47e66c85f042c90d45ae043a5ce65c05c160ac8ac4bb86c7",
+    "files": 82,
+    "bytes": 12012718,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "zone_registration": {
+    "implemented": true,
+    "native_id_range": [
+      1,
+      34
+    ],
+    "compiled_per_map_allowlist_removed": true,
+    "verified_inventory_separate": true,
+    "ordinary_import": "enabled cpp-native-world; inherits same-world bind and advertised addresses",
+    "required_files": [
+      "GenerationArea.idx",
+      "MapData.tcm",
+      "NPCGener.txt",
+      "Data/Settings.ini",
+      "Data/WorldSettings.ini"
+    ],
+    "folder_picker": true,
+    "controller_thread_analysis": true,
+    "native_review_dialog": true,
+    "invalid_import_disabled": true,
+    "identical_existing_dataset_reused": true,
+    "conflicting_data_not_overwritten": true,
+    "source_and_profile_hash_rechecked": true,
+    "optional_start": true,
+    "new_special_profiles": "disabled cpp-administration; native services still required",
+    "existing_special_profiles_preserved": true,
+    "core_result": {
+      "collision_and_instance_guards": true,
+      "game_processes_started": 0,
+      "guided_config_backup_and_redaction": true,
+      "invalid_dataset_rejected": true,
+      "ordinary_native_special_disabled": true,
+      "passed": true,
+      "same_world_primary_addresses_inherited": true,
+      "source_preserved": true,
+      "temporary_output": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-core-2111874b0bab",
+      "zone_profiles": 12
+    },
+    "release_built": true,
+    "dialog_interactive_capture_verified": false,
+    "existing_disabled_zones_activated": false
+  },
+  "type1_rigid_lods": {
+    "source": "HT3DHeaven loader RVA3518B-35454 and original WPN_LWS_24.tmb",
+    "counted_records": 6,
+    "drawable_lods": 4,
+    "vertices": [
+      236,
+      198,
+      116,
+      82
+    ],
+    "triangles": [
+      428,
+      360,
+      204,
+      136
+    ],
+    "trail_markers_separate": 2,
+    "table_texture_bound_before_upload": true,
+    "gpu_four_lods_verified": true,
+    "map_material_policy_rechecked": true,
+    "zone26_resource_preparation_passed": true,
+    "compact_type3_full_lod_acceptance": false,
+    "native_binary": {
+      "path": "C:\\_GitHub\\TantraSrc\\TantraClient\\HT3DHeaven.dll",
+      "bytes": 552960,
+      "sha256": "b818b89edbc9f8e49bb1b79200371740eaa157dabac23bbf1e2d52e40ff99941",
+      "image_base": "0x20000000",
+      "method": "read-only pefile and Capstone x86/32 disassembly; no execution",
+      "companion_tool": "_remake_bgfx/tools/legacy/inspect-native-rigid-materials.py"
+    }
+  },
+  "online_monster_fx": {
+    "implemented": true,
+    "authoritative_packet_skill_used": true,
+    "offline_template_required_only_for_zero_id": true,
+    "source": "HTMonster.cpp691-705",
+    "native_map_binding_preserved": true,
+    "live_boss_graphs": [
+      1200007,
+      1200105,
+      1210074,
+      1210077,
+      1210079
+    ]
+  },
+  "multipart_actor_textures": {
+    "implemented": true,
+    "original_catalog_part_ids_retained": true,
+    "model_family_texture_root": true,
+    "live_boss2072_parts": [
+      13037,
+      13038
+    ]
+  },
+  "managed_native_summons": {
+    "implemented": true,
+    "existing_source_class12_callback_connected": true,
+    "source": "Server.cpp14438-14447",
+    "native_follow_and_orphan_cleanup_not_reinvented": true
+  },
+  "native_tomb_startup": {
+    "actual_world_passed": true,
+    "guardians": 4,
+    "traps": 12,
+    "opened_door_cells": 1722,
+    "native_ticks": 160,
+    "trap_selections": 240,
+    "source_tcm_unchanged": true,
+    "full_room_actions_complete": false,
+    "open_actions": [
+      1160,
+      2060,
+      2070,
+      2080,
+      2085,
+      1035,
+      22000,
+      20330
+    ]
+  },
+  "missing_native_npc_content": {
+    "source_zero_slots_preserved": true,
+    "missing_ids_reported": true,
+    "npc_missing_content_component_passed": true,
+    "sentinel_index0_retained": true,
+    "pc_lookups_strict": true,
+    "replacement_skills_or_ai_invented": false
+  },
+  "zone06_boss_manual_encounter": {
+    "schema": 1,
+    "kind": "human_assisted_connected_zone06_boss_encounter",
+    "accepted_manual_encounter": true,
+    "accepted_automated_scenario": false,
+    "zone": 6,
+    "boss": 2072,
+    "transport": "two actual graphical clients over TCP",
+    "source_event_injection": false,
+    "human_assistance": {
+      "character": "BgfxPeer",
+      "user_confirmed_playing": true,
+      "confirmation": "Yes, I was playing it",
+      "effect": "BgfxPeer legitimately picked all four native boss drops; owner-only automated pickup expectation was invalid for this human-assisted run"
+    },
+    "automation": {
+      "harness_exit": 1,
+      "client_exit": 8,
+      "failure": "stage=4 Boss pickup did not update owned inventory/currency",
+      "original_failure_file": "role-1\\captures\\LIVE_ONLINE_FAILURE.txt",
+      "failure_sha256": "b2f8c3695ed81a2abcf6643678edd23f50dc7d215a89e461bfeea4fca1467b77",
+      "preserved_not_rewritten_as_pass": true
+    },
+    "roles": {
+      "1": {
+        "character": "WorldHero",
+        "boss_key": 1016,
+        "four_source_skill_events": true,
+        "positive_player_hit_events": 22,
+        "animation_capture_count": 4,
+        "fx_capture_count": 5,
+        "summon_model_capture_count": 3,
+        "boss_death_capture": true,
+        "prana_collection_capture": true,
+        "artifacts": [
+          {
+            "file": "role-1\\captures\\boss-animation-41030.png",
+            "bytes": 2865319,
+            "sha256": "455153d0288a459bea1501b87cf320db6c0f0cc506dabcf433d524fbf9ba1d83"
+          },
+          {
+            "file": "role-1\\captures\\boss-animation-41412.png",
+            "bytes": 3044612,
+            "sha256": "9c14655ded5ce1611dc82c5a165185567dcb236c40e498ebfba726fe860fd1aa"
+          },
+          {
+            "file": "role-1\\captures\\boss-animation-41411.png",
+            "bytes": 3062973,
+            "sha256": "4c7952dfc6055cb22d81a2d832c43c77d898d7e4bbdae1d2dc2e16e2015487d4"
+          },
+          {
+            "file": "role-1\\captures\\boss-animation-41489.png",
+            "bytes": 2982126,
+            "sha256": "3662d6a916d9bb54d3a415a1b218302f3de10b9815874d09ae2b53218ccea7d3"
+          },
+          {
+            "file": "role-1\\captures\\boss-fx-1200007.png",
+            "bytes": 3065695,
+            "sha256": "13b8aad1e100bf9c08c9b095fe9a15c9fa1198c83a10678ce1389f6506c76c87"
+          },
+          {
+            "file": "role-1\\captures\\boss-fx-1200105.png",
+            "bytes": 2984692,
+            "sha256": "31bedcfbf6960b3a1527431fb3085415d09efcfdf8ac010c33a2ffc4007adb47"
+          },
+          {
+            "file": "role-1\\captures\\boss-fx-1210074.png",
+            "bytes": 3064599,
+            "sha256": "93e336eae8ee77a9001b6e0f1def520bb29c64f3972ccbb7cf36c2a55b63eee0"
+          },
+          {
+            "file": "role-1\\captures\\boss-fx-1210077.png",
+            "bytes": 3043236,
+            "sha256": "b600bcd4b44d1388d3dd3c6225dfe0f8533b946963bd2dcedb83806558bcbc8e"
+          },
+          {
+            "file": "role-1\\captures\\boss-fx-1210079.png",
+            "bytes": 3043872,
+            "sha256": "e4bcc963a671bfdab9a46863a06da7d15ec6b80290e0dee9e72721cbdf51c9b8"
+          },
+          {
+            "file": "role-1\\captures\\boss-summon-2068.png",
+            "bytes": 2980873,
+            "sha256": "ef18b451f55b909d9bc3dcc5e70b4a2c01ee1d28e0d3b07f941c24acea2c80a9"
+          },
+          {
+            "file": "role-1\\captures\\boss-summon-2069.png",
+            "bytes": 2980873,
+            "sha256": "ef18b451f55b909d9bc3dcc5e70b4a2c01ee1d28e0d3b07f941c24acea2c80a9"
+          },
+          {
+            "file": "role-1\\captures\\boss-summon-2070.png",
+            "bytes": 2980877,
+            "sha256": "312beabc476acb344443d7c64efeca036d2d11cecb9252ba5b92d155012a1595"
+          },
+          {
+            "file": "role-1\\captures\\boss-connected-scene.png",
+            "bytes": 3038393,
+            "sha256": "e1ccb62228c73093792bf464a5682424694ffc8f33981fdb810894ad7f56314b"
+          },
+          {
+            "file": "role-1\\captures\\boss-help-threshold.png",
+            "bytes": 2961515,
+            "sha256": "67ec64db07ad884ee08733a646f81a7dd6613d5e63183da3806b8925ca6be44b"
+          },
+          {
+            "file": "role-1\\captures\\boss-four-skills.png",
+            "bytes": 2980877,
+            "sha256": "312beabc476acb344443d7c64efeca036d2d11cecb9252ba5b92d155012a1595"
+          },
+          {
+            "file": "role-1\\captures\\boss-death.png",
+            "bytes": 3006376,
+            "sha256": "a21d8dfb0e38f5edc7a8bd3dd2a380618de25d342b5e08c2ca757ccea9f20e4c"
+          },
+          {
+            "file": "role-1\\captures\\boss-prana-collection.png",
+            "bytes": 3006378,
+            "sha256": "ce7203aa137e498fa9b9dffcf79b0b078780e65e1dfa061010cc479db2973f4d"
+          },
+          {
+            "file": "role-1\\captures\\BOSS_EVENTS.tsv",
+            "bytes": 6968,
+            "sha256": "e7aa2632282839985af19977f95073cb77af2028d1fd4fe1af11798702fe33b8"
+          },
+          {
+            "file": "role-1\\captures\\BOSS_CLIPS.tsv",
+            "bytes": 380,
+            "sha256": "bfe5d3d69ac89f0a97f33d88aadc4e0338a9bf6888aa39e89f1517a7b22dfcd1"
+          }
+        ]
+      },
+      "2": {
+        "character": "BgfxPeer",
+        "boss_key": 1016,
+        "four_source_skill_events": true,
+        "positive_player_hit_events": 22,
+        "animation_capture_count": 4,
+        "fx_capture_count": 5,
+        "summon_model_capture_count": 3,
+        "boss_death_capture": true,
+        "prana_collection_capture": false,
+        "artifacts": [
+          {
+            "file": "role-2\\captures\\boss-animation-41030.png",
+            "bytes": 3264772,
+            "sha256": "145d7558937f60862d97d97a2bdd0ab89e803990a2ef8ef3f7c86ac3643ebd4a"
+          },
+          {
+            "file": "role-2\\captures\\boss-animation-41412.png",
+            "bytes": 3075603,
+            "sha256": "7f941c945be7fdc63fddc18cee14f3be5d82eae80fcdcfe50033bd1568cb377e"
+          },
+          {
+            "file": "role-2\\captures\\boss-animation-41411.png",
+            "bytes": 3121969,
+            "sha256": "c559cde300d3047334966cad9def05f9d50dd60bd6b5f427b310a2a772748fd4"
+          },
+          {
+            "file": "role-2\\captures\\boss-animation-41489.png",
+            "bytes": 3163472,
+            "sha256": "68131bd5a1f0d2f5bf85f165f83a6e9b48281c909528fb45e4f67e544e5020c4"
+          },
+          {
+            "file": "role-2\\captures\\boss-fx-1200007.png",
+            "bytes": 3225297,
+            "sha256": "95141c1d245a312fe5230407442f54d26089064f7ee57a0fdfcc1161fc907d7a"
+          },
+          {
+            "file": "role-2\\captures\\boss-fx-1200105.png",
+            "bytes": 3163795,
+            "sha256": "63357ed1976aff3866916dca3c29c910a623d6ed55c37fab7a265e8ccdd616c6"
+          },
+          {
+            "file": "role-2\\captures\\boss-fx-1210074.png",
+            "bytes": 3120571,
+            "sha256": "b964e528559c3fbee5f66a7bd3d20d3997cdac23bd6a046ca87d54b51523a5ac"
+          },
+          {
+            "file": "role-2\\captures\\boss-fx-1210077.png",
+            "bytes": 3086277,
+            "sha256": "77a1a6f1d3a3af347f2cf0984d7544b917f2c7b766006def95ae86989e60f2cd"
+          },
+          {
+            "file": "role-2\\captures\\boss-fx-1210079.png",
+            "bytes": 3076206,
+            "sha256": "59377eed9f4c30d8c12475d58329e2836726650eedae6bf77f8963a26f370384"
+          },
+          {
+            "file": "role-2\\captures\\boss-summon-2068.png",
+            "bytes": 3161590,
+            "sha256": "250a2880d03e6fa81e482d59ae0fa8028cc88de105eefe7fd18b8b735ce70faa"
+          },
+          {
+            "file": "role-2\\captures\\boss-summon-2069.png",
+            "bytes": 3161590,
+            "sha256": "250a2880d03e6fa81e482d59ae0fa8028cc88de105eefe7fd18b8b735ce70faa"
+          },
+          {
+            "file": "role-2\\captures\\boss-summon-2070.png",
+            "bytes": 3161590,
+            "sha256": "250a2880d03e6fa81e482d59ae0fa8028cc88de105eefe7fd18b8b735ce70faa"
+          },
+          {
+            "file": "role-2\\captures\\boss-connected-scene.png",
+            "bytes": 3089692,
+            "sha256": "01a022dfe83019bb9aeefa754f4cb97d630d3bda7e58cb3ce1e90e8c513c5e9c"
+          },
+          {
+            "file": "role-2\\captures\\boss-four-skills.png",
+            "bytes": 3161590,
+            "sha256": "250a2880d03e6fa81e482d59ae0fa8028cc88de105eefe7fd18b8b735ce70faa"
+          },
+          {
+            "file": "role-2\\captures\\boss-death.png",
+            "bytes": 3173232,
+            "sha256": "47132fb80fc79ddba1c0bb22b26ce9b2fee81585aa3cc1ff053c9c504984a393"
+          },
+          {
+            "file": "role-2\\captures\\BOSS_EVENTS.tsv",
+            "bytes": 6998,
+            "sha256": "0c3a2dea72915dabdea61635393ba1d4e73dc1b8b10d681aa64129ecff7a1c0e"
+          },
+          {
+            "file": "role-2\\captures\\BOSS_CLIPS.tsv",
+            "bytes": 380,
+            "sha256": "bfe5d3d69ac89f0a97f33d88aadc4e0338a9bf6888aa39e89f1517a7b22dfcd1"
+          }
+        ]
+      }
+    },
+    "saved_characters": [
+      {
+        "character": "BgfxPeer",
+        "prana": 23024400,
+        "hp": 296916,
+        "rupiah": 61825,
+        "zone": 6,
+        "cell": [
+          129,
+          217
+        ],
+        "inventory": [
+          {
+            "item_id": 5750,
+            "count": 1
+          },
+          {
+            "item_id": 5550,
+            "count": 1
+          },
+          {
+            "item_id": 6154,
+            "count": 1
+          }
+        ],
+        "revision": 38
+      },
+      {
+        "character": "WorldHero",
+        "prana": 17050500,
+        "hp": 177159,
+        "rupiah": 10000,
+        "zone": 6,
+        "cell": [
+          128,
+          217
+        ],
+        "inventory": [],
+        "revision": 107
+      }
+    ],
+    "loot": {
+      "commit_loot_receipt_count": 4,
+      "receipts_redacted": [
+        {
+          "owners": [
+            "BgfxPeer"
+          ],
+          "kind": "rupiah",
+          "rupiah": 51825,
+          "rupiah_remaining": 0,
+          "rounding": 0,
+          "remaining_item_count": 0
+        },
+        {
+          "owners": [
+            "BgfxPeer"
+          ],
+          "kind": "item",
+          "rupiah": 0,
+          "rupiah_remaining": 0,
+          "rounding": 0,
+          "remaining_item_count": 0,
+          "item_id": 5750,
+          "item_count": 1
+        },
+        {
+          "owners": [
+            "BgfxPeer"
+          ],
+          "kind": "item",
+          "rupiah": 0,
+          "rupiah_remaining": 0,
+          "rounding": 0,
+          "remaining_item_count": 0,
+          "item_id": 5550,
+          "item_count": 1
+        },
+        {
+          "owners": [
+            "BgfxPeer"
+          ],
+          "kind": "item",
+          "rupiah": 0,
+          "rupiah_remaining": 0,
+          "rounding": 0,
+          "remaining_item_count": 0,
+          "item_id": 6154,
+          "item_count": 1
+        }
+      ],
+      "source_gold": 51825,
+      "gold_conserved": true,
+      "source_item_ids": [
+        5750,
+        5550,
+        6154
+      ],
+      "items_conserved": true,
+      "pickup_owner": "BgfxPeer",
+      "no_raw_receipts_or_tokens_in_report": true
+    },
+    "source": {
+      "monster_original": "B:\\__TANTRA\\TantraDataScripts\\Global\\TantraParam.xml",
+      "monster_original_sha256": "1295cbfe56eda35218a7d7d707ec81021ac975e462da6112543882cabb0164e5",
+      "derived_monster": "C:\\_GitHub\\TantraSrc\\_server_cpp\\data\\rules\\world-gameplay\\Monster.tsv",
+      "derived_monster_sha256": "1d3e755997b40006dac372ab5cfdd73a71ffccead5fb5be01dbd06856bdd198c",
+      "monster_fields_match_original": true,
+      "boss_row": {
+        "ID": 2072,
+        "nHP": 319389,
+        "nRewardGold": 51825,
+        "nRewardPrana": 400750,
+        "sItem0ID": 5750,
+        "sItem0DropRate": 750,
+        "sItem1ID": 5550,
+        "sItem1DropRate": 1000,
+        "sItem2ID": 6154,
+        "sItem2DropRate": 1000
+      },
+      "native_map_files": {
+        "NPCGener.txt": {
+          "sha256": "ef48eee51c304337fecfb7c760a9f4d48792d586092ddcadc4fc9fc1c250a159",
+          "original": "E:\\Global-server\\Zone06\\NPCGener.txt",
+          "staged": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone06\\NPCGener.txt",
+          "private": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-world-route-44758730346a\\zones\\Zone06\\NPCGener.txt",
+          "unchanged": true
+        },
+        "MapData.tcm": {
+          "sha256": "6efc02d2f8fb6b7a42b87cb3e3d29113b46136fb3b4304ed7964a6712689425b",
+          "original": "E:\\Global-server\\Zone06\\MapData.tcm",
+          "staged": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone06\\MapData.tcm",
+          "private": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-world-route-44758730346a\\zones\\Zone06\\MapData.tcm",
+          "unchanged": true
+        }
+      },
+      "mob_format_source": "_server_cpp/src/native/NativeCharacterRecords.cpp",
+      "mob_bytes": 1688
+    },
+    "private_sql_checkpoint": {
+      "file": "earned-encounter.private.sqlite3",
+      "sha256": "0fda82d8c52f495b47611a6925d3ba6550cf6ae3a7c0bdf1933f2726ff6b0659",
+      "consistent_sqlite_backup": true,
+      "fresh_connection_saved_values_match": true,
+      "source_database_unchanged": true,
+      "contains_private_fixture_state": "Keep this backup external; do not publish raw account/session/receipt tables"
+    },
+    "qa_fixture": {
+      "balance_acceptance": false,
+      "boss": 2072,
+      "chakra": [
+        30000,
+        30000,
+        30000,
+        12
+      ],
+      "level": 90,
+      "qa_stats_overallocated": true,
+      "roles": 2,
+      "source_data_unchanged": true,
+      "tribe": 1,
+      "weapon": 4089,
+      "zone": 6
+    },
+    "boundaries": {
+      "fresh_graphical_relogin": false,
+      "displayed_position_matches_persisted_sql": false,
+      "balance_acceptance": false,
+      "fully_automated_owner_pickup": false,
+      "full_expansion_goal_complete": false
+    },
+    "notes": [
+      "Actual capture presence and saved SQL values were checked without repeating the fight or replaying pickup.",
+      "Persisted SQL coordinates are recorded; graphical-to-SQL position agreement and fresh graphical reentry were not reverified.",
+      "Exact per-character Prana totals are recorded; this report does not infer a new Prana distribution formula from them."
+    ],
+    "build_scope": "Captured before the subsequent zone-registration policy rebuild; no combat/rendering changes followed the encounter."
+  },
+  "deployment": {
+    "manager_pid": 37352,
+    "schema": 10,
+    "verified_backup": {
+      "schema": 10,
+      "sha256": "04efbb161d41eec93c7c263bc782fef44b26b9767e18da604e504c570cd5d2a9",
+      "bytes": 157342,
+      "passed": true,
+      "created": 1793990690
+    },
+    "world_readiness": {
+      "ready": true,
+      "native_worlds": 11,
+      "admin_stub_worlds": 1,
+      "require_empty": false,
+      "worlds": {
+        "zones/World1_Zone1_Channel2/zone.toml": {
+          "native": true,
+          "pid": 38696,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1666,
+          "population_ticks": 65
+        },
+        "zones/Zone01/zone.toml": {
+          "native": true,
+          "pid": 29708,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1666,
+          "population_ticks": 74
+        },
+        "zones/Zone02/zone.toml": {
+          "native": true,
+          "pid": 35128,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1135,
+          "population_ticks": 56
+        },
+        "zones/Zone03/zone.toml": {
+          "native": true,
+          "pid": 22976,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 548,
+          "population_ticks": 55
+        },
+        "zones/Zone04/zone.toml": {
+          "native": true,
+          "pid": 31588,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 357,
+          "population_ticks": 51
+        },
+        "zones/Zone05/zone.toml": {
+          "native": true,
+          "pid": 29984,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 380,
+          "population_ticks": 47
+        },
+        "zones/Zone06/zone.toml": {
+          "native": true,
+          "pid": 41696,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 0,
+          "population_ticks": 45
+        },
+        "zones/Zone07/zone.toml": {
+          "native": true,
+          "pid": 41232,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 412,
+          "population_ticks": 36
+        },
+        "zones/Zone08/zone.toml": {
+          "native": true,
+          "pid": 34724,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 422,
+          "population_ticks": 27
+        },
+        "zones/Zone09/zone.toml": {
+          "native": true,
+          "pid": 22536,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 229,
+          "population_ticks": 15
+        },
+        "zones/Zone10/zone.toml": {
+          "native": false,
+          "pid": 31788,
+          "players": 0,
+          "connections": null,
+          "entry_ready": null,
+          "game_listener_bound": null,
+          "authored_hit_timing_ready": null,
+          "npc_alive": null,
+          "population_ticks": null
+        },
+        "zones/Zone12/zone.toml": {
+          "native": true,
+          "pid": 25164,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 35,
+          "population_ticks": 1
+        }
+      },
+      "errors": {}
+    },
+    "hpk_extractions": 0,
+    "workbooks_changed": false,
+    "normal_character_data_manually_edited": false,
+    "debug_builds": 0
+  },
+  "open_boundaries": [
+    "All supported K3 skill/weapon families still need broader gameplay and graphical coverage",
+    "Remaining selected quests and fresh-player combined journey",
+    "Boss encounter fresh graphical relogin/position agreement remains unverified; automated owner-only pickup script failed during confirmed human play",
+    "Tomb eight room actions and remaining native special-zone services",
+    "All source zones through34 still need their actual gameplay/content acceptance; runtime eligibility is not a claim of parity",
+    "Compact type3 rigid model LOD parity and wider graphics/audio parity"
+  ],
+  "no_commit_or_push": true
+}

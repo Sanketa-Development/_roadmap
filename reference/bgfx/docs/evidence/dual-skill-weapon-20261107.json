@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-07T09:01:46.943990+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "mudha-original-object-table-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\dual-skill-weapon",
+  "source": [
+    "Tantra/HTLauncher/HTEngineHandler.cpp:8102-8137"
+  ],
+  "cause": "Combined dual basic-attack row916 was incorrectly passed as the skill weapon type, selecting fist clips and timings instead of the actual right-hand item group.",
+  "fixes": {
+    "right_hand_skill_weapon_separate_from_basic_attack": true,
+    "owner_peer_and_offline_skill_bindings": true,
+    "skill_fx_and_main_character_animations": true,
+    "server_authored_timing_and_projectile_binding_selection": true,
+    "server_empty_right_hand_does_not_force_dual_attack": true,
+    "normal_dual_attack_still916": true,
+    "native_skill_tables_or_timing_catalogs_regenerated": false
+  },
+  "focused_binding_result": {
+    "passed": true,
+    "cases": 12,
+    "primary_types": [
+      901,
+      902
+    ],
+    "genders": 2,
+    "normal_dual_attack": 916,
+    "skill_group": "original_right_hand_1H",
+    "source_phase_and_apron_fields": true,
+    "decoded_tab_clips": 8,
+    "skills": [
+      3007,
+      3011,
+      3012
+    ],
+    "unarmed_offhand_remains_fist": true,
+    "live_authority_or_graphical_session": false
+  },
+  "production_release_batch": {
+    "client_passed": true,
+    "zone_passed": true,
+    "production_rebuild_retries": 0
+  },
+  "probe_only_correction": {
+    "initial_log": "D:\\Tantra-Beta\\Expansion-20261107\\dual-skill-weapon\\bindings.log",
+    "reason": "Ready/cast animation clips do not require attack markers. Decode their TAB timelines instead.",
+    "additional_probe_builds": 1,
+    "corrected_log": "D:\\Tantra-Beta\\Expansion-20261107\\dual-skill-weapon\\bindings-corrected.log"
+  },
+  "focused_check_attempts": 2,
+  "accepted_encounters_replayed": false,
+  "client_sha256": "2931975b655919b52f4cddec5065b819081df7c05219ae5e5291a4c6afe3efd4",
+  "zone_worker_sha256": "a26b00c5ac3772df8ecb3874a7832e39de21fe00bc108618f613204d7931e3a9",
+  "previous_zone_sha256": "5160e19a0e2833fcc98b39aa4b844295be2b5660ddff50a90666cb0597c21831",
+  "k3_fx_sha256": "e1992e5a8690efa00247e02abe11b0aa79c5388f03c619f76f5ba7c3daeb9216",
+  "patch": {
+    "version": 1794013241,
+    "files": 5313,
+    "bytes": 1635559517,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "limitations": [
+    "The focused component verifies source binding fields and decoded clips, not a live World attack or graphical/audio encounter.",
+    "Server changes compile and are installed; no new live authoritative dual-skill encounter is claimed.",
+    "Remaining full-goal combat, quest, graphics and zone work stays open."
+  ]
+}

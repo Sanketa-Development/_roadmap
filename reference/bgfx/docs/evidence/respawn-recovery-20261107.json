@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-07T07:05:52.264855+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-events-quest26-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\respawn-combat-relogin",
+  "client_sha256": "8beeeb98b0dcc1d32312d781f49b14f7b92f268a93fd83d86a4cb826582e5918",
+  "server_sha256": {
+    "TantraZone.exe": "5160e19a0e2833fcc98b39aa4b844295be2b5660ddff50a90666cb0597c21831",
+    "TantraService.exe": "5ea4c5fbb6bcd3b14587a28959a8857aa5cbfb254ef8d95812b605efcd2e0cad",
+    "TantraServerManager.exe": "52e6e57be8fabb9bb4f8b86e797f868eb9abe64da1e7cb47ed9a2d943c522d28",
+    "TantraDataTools.exe": "123e75924a6236ae1c5ab683c95f250a46300df77f37d68e65543a66a768ea7b"
+  },
+  "patch": {
+    "version": 1794006239,
+    "files": 5313,
+    "bytes": 1635523727,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "server_update": {
+    "archive": "D:\\Tantra-Beta\\Global-Tantra-Server-Update-20261107-Respawn-Recovery.zip",
+    "sha256": "6b9784ca646af7a0cef8b2850fd4f3942e524605693204cd53b0908736ed7ee1",
+    "files": 85,
+    "bytes": 12062244,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "respawn": {
+    "original_reference": "Tantra/HTLauncher/HTGameSystem.cpp:958",
+    "update_status_preserves_ui_speed": true,
+    "both_health_transitions_clear_transient_actions": true,
+    "server_dash_cast_action_locks_retired": true,
+    "genuine_cooldowns_and_replay_protection_preserved": true,
+    "online_first_tick_movement": "passed",
+    "offline_revive_pending_posture": "passed",
+    "offline_entry": "_client_bgfx/Start-Offline.cmd",
+    "earlier_fixture_timeout": "Zone-settings handler consumed the public Frame contract; fixed to update relations and still pass the frame upward. Focused run passed."
+  },
+  "projectile_component": {
+    "passed": true,
+    "skipped": false,
+    "reason": "",
+    "component_replay": true,
+    "actual_client_tcp": true,
+    "production_bgfx": true,
+    "network_replica": true,
+    "skill_family": "K3",
+    "monster": 2004,
+    "skill": 41400,
+    "follow": 1200065,
+    "hp_zero_retained_and_advanced": true,
+    "retained_advance_native_units": 22.5,
+    "new_flight_while_dead": true,
+    "matching_removal_cleared_carrier_and_follow": true,
+    "live_world": false,
+    "two_client_authority": false,
+    "tls_verified": false,
+    "sql": false,
+    "full_scene_acceptance": false,
+    "hpk_extractions": 0
+  },
+  "fresh_zone06_saved_return": {
+    "passed": true,
+    "external_result": "D:\\Tantra-Beta\\Expansion-20261107\\boss-preserved-fresh-relogin\\RESULT.json",
+    "fresh_graphical_clients": 2,
+    "combat_or_pickup_run": false,
+    "normal_servers_or_profiles_modified": false,
+    "original_checkpoint_sha256": "0fda82d8c52f495b47611a6925d3ba6550cf6ae3a7c0bdf1933f2726ff6b0659",
+    "state_items_money_prana_and_positions_preserved": true,
+    "screenshots_inspected": true,
+    "balance_acceptance": false,
+    "original_boss_encounter_repeated": false
+  },
+  "god_pvp": {
+    "source_zone_ids": [
+      20,
+      25
+    ],
+    "policy_check": "passed",
+    "atomic_fatal_victory_rollback_replay_item_check": "passed",
+    "profiles_enabled": false,
+    "client_pc_targeting_complete": false,
+    "connected_acceptance": false,
+    "zone10_card_kala_bp_contracts_complete": false
+  },
+  "execution_limits": {
+    "debug_builds": 0,
+    "new_subagents": 0,
+    "accepted_journeys_repeated": false,
+    "full_beta_zip_regenerated": false,
+    "normal_database_migration": false,
+    "commit_or_push": false
+  },
+  "remaining": [
+    "Full client PvP and connected Z20/25 acceptance; Z10 card/Kala/BP contracts",
+    "Broader skill/weapon/monster acceptance",
+    "Remaining selected quests, graphics/audio and special-zone contracts; recorded missing resources stay skipped"
+  ]
+}

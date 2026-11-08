@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "skill_source": "K3",
+  "animation_phases": 6,
+  "male_and_female": true,
+  "cast_repeats_at_native_rate": true,
+  "attack_ready_once": true,
+  "active_ready_loops": true,
+  "cast_loops": true,
+  "activate_once": true,
+  "rendered": true,
+  "network_session": false,
+  "profile_modified": false,
+  "updated_at": "2026-11-06T01:58:54.575916+00:00",
+  "game_name": "Global Tantra",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "client_sha256": "288f9629a4d3c268f796c52debe9bfd71f6f26a98829b8bf83eef5e6c788e237",
+  "cast_capture_sha256": "341d3649b02c3e09e1f7689c353b1476742b4db22cd4cf7e32299e60cd608a1d",
+  "server_binaries_changed": false,
+  "canonical_workbooks_changed": false,
+  "normal_player_data_changed": false,
+  "source_references": [
+    {
+      "file": "Tantra/HTlauncher/HTEngineHandler.cpp",
+      "lines": [
+        8148,
+        8185,
+        8220,
+        8328,
+        8343,
+        8356
+      ],
+      "rule": "READY/CAST/ACTIVATE animation loops 1/-1/1"
+    },
+    {
+      "file": "Tantra/HTlauncher/HTEngineHandler.h",
+      "lines": [
+        353,
+        354
+      ],
+      "rule": "Default fPlayTime is0"
+    },
+    {
+      "file": "Tantra/HTlauncher/HTMainCharacter.cpp",
+      "lines": [
+        1475,
+        1545,
+        1551,
+        2940
+      ],
+      "rule": "Attack READY once; active READY and CAST FX loop; CAST uses native clip time"
+    },
+    {
+      "file": "Tantra/HTlauncher/HTOtherCharacter.cpp",
+      "lines": [
+        395,
+        397,
+        1013
+      ],
+      "rule": "Peer CAST animation/FX loops and attack READY is once-only"
+    }
+  ],
+  "scope": [
+    "Production owner and peer skill animation path",
+    "K3 skill3306/3159 phase FX",
+    "Male and female animation loop metadata and native-speed repeated cycles"
+  ],
+  "not_accepted": [
+    "Live two-client skill presentation",
+    "All weapon/tribe/skill families",
+    "Full lighting or FX visual parity"
+  ],
+  "matching_k3_runtime_rules": true,
+  "patch": {
+    "version": 1793930289,
+    "files": 5215,
+    "bytes": 1449646988,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  }
+}

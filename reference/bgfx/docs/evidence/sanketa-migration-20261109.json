@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-09",
+  "scope": "Workspace migration; not full gameplay or public beta acceptance",
+  "source_commit": "d72d58319c0c603d6b1b0a87653393e4dd17ce11",
+  "release_build": {
+    "client": true,
+    "server_apps": 5,
+    "debug_builds": 0
+  },
+  "checks": {
+    "client-stage": {
+      "exit_code": 0,
+      "seconds": 2.97
+    },
+    "server-stage": {
+      "passed": true,
+      "applications": 5
+    },
+    "server-manager": {
+      "exit_code": 0,
+      "seconds": 2.72
+    },
+    "initial_manager_check": {
+      "passed": false,
+      "reason": "Unsupported startup page supplied by the check; corrected to Overview, no production change or rebuild"
+    },
+    "data-tools": {
+      "exit_code": 0,
+      "seconds": 1.99
+    },
+    "offline-start": {
+      "exit_code": 0,
+      "seconds": 4.94
+    },
+    "offline-capture": {
+      "passed": true,
+      "file": "offline-intro.png"
+    },
+    "publish-lan": {
+      "exit_code": 0,
+      "seconds": 2.65
+    },
+    "signed-lan-check": {
+      "exit_code": 0,
+      "seconds": 3.47
+    },
+    "initial_lan_check": {
+      "passed": false,
+      "reason": "Existing Apache HTTP host was stopped; started it and repeated only the signed connection check"
+    },
+    "scope": {
+      "animation_lod_added": false,
+      "live_gameplay_repeated": false,
+      "database_reset": false,
+      "original_workspace_preserved": true,
+      "database_datadir_retained": "C:/_GitHub/TantraSrc/_server_final/database/data"
+    }
+  },
+  "patch_feed": {
+    "version": 1794156591,
+    "files": 123,
+    "bytes": 38239256,
+    "web_root": "C:\\_GitHub\\Sanketa-Development\\_update",
+    "patch_url": "http://172.16.90.12/sanketa-patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "private_datadir": "C:/_GitHub/TantraSrc/_server_final/database/data",
+  "old_workspace_preserved": true,
+  "repos_private": true,
+  "player_updates": "LAN"
+}

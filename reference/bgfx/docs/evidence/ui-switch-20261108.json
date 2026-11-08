@@ -1,0 +1,295 @@
+{
+  "passed": true,
+  "checks": 90,
+  "live_round_trip": true,
+  "saved_selection": true,
+  "inventory_hit_and_drag": true,
+  "intro": true,
+  "loading": true,
+  "normal_profile_untouched": true,
+  "date": "2026-11-08",
+  "scope": "Focused SDL3/D3D11 UI/INTRO component rendering plus a fresh-process launcher settings and 32-frame offline game startup check; no network/player journey",
+  "source": "B:\\Tantra-Files\\_TantraClients\\K2108",
+  "asset_provenance": "k2-ui-import.json",
+  "command": "build/Release/c05_ui_probe.exe ../_client_bgfx build/evidence/k2-intro-settings/cache build/evidence/k2-intro-settings --ui-switch",
+  "build_configuration": "Release",
+  "screenshots": [
+    "build/evidence/k2-intro-settings/k2-character-overview.png",
+    "build/evidence/k2-intro-settings/k2-character.png",
+    "build/evidence/k2-intro-settings/k2-creation.png",
+    "build/evidence/k2-intro-settings/k2-face-camera.png",
+    "build/evidence/k2-intro-settings/k2-inventory.png",
+    "build/evidence/k2-intro-settings/k2-loading.png",
+    "build/evidence/k2-intro-settings/k2-login.png",
+    "build/evidence/k2-intro-settings/k2-server.png",
+    "build/evidence/k2-intro-settings/k2-settings.png",
+    "build/evidence/k2-intro-settings/k3-before.png",
+    "build/evidence/k2-intro-settings/k3-restored.png"
+  ],
+  "adaptation": "K2 native INTRO/loading and inventory/status/menu artwork plus source-based chat, Options, Skills and Quest adapters. K3 gameplay identities,24 skill cells/four class pages and current1-4-row quickbar remain shared; other supplemental dialogs retain adapted classic chrome.",
+  "patch_version": 1794111047,
+  "staged_files": {
+    "ZFLauncher.exe": "7cc53fe4b38a5f2b25dd11df9efe14d41d7f9f487cdee08600dcdfe3461d3f1c",
+    "Tantra.exe": "1d684712ea1a76937592e2ed562d33e3c0abcdbfab7e001dd23dcc190dd96701"
+  },
+  "rust_reference": {
+    "root": "A:\\zEngineK2",
+    "read_only": true,
+    "files": [
+      "client/src/ZF/Formats/zFmtUiSys.rs",
+      "client/src/ZF/Game/Intro/ZFIntroResources.rs",
+      "client/src/ZF/Game/Intro/ZFUiAssetResolver.rs",
+      "client/src/ZF/MainUI/ZFHUD.rs",
+      "client/src/ZF/MainUI/Dialogs/ZFInventoryDialog.rs",
+      "client/src/ZF/Game/Intro/ZFIntroCamera.rs",
+      "client/src/ZF/Game/Intro/ZFIntroCharacter.rs"
+    ],
+    "confirmed": "SYS versions1002/1003, resource-ID image lookup and visual-to-source equipment mapping. BGFX retains family-specific packed assets and the existing gameplay protocol. K2108 camera poses, 0.95 transition grade, height-adjusted face framing and roster/creation positions.",
+    "equipment_check": "Native right hand6 and necklace3 retain their original places under the authored K2 socket images."
+  },
+  "protected_k3_ui": {
+    "MainUIInfo.sys": "493515412e665ecfffcddcb77f7d906a5baab8fc4b774b7e2038811aa3ed4889",
+    "IntroUIInfo.sys": "4570aa9102d4092f441262d51f15acde52ad5cc145d3345fd9e07aa5194b8392",
+    "LoadingUI.sys": "c9ed86760090fdc98d9f488df6c878b39e21e76b8a5d2c94b5b3586b61d03855",
+    "MAINUI.hpk": "980ab072ff1ff75b3f1c6c92dd705f5212bb1dc17c98b9ff93350aa363a7c6a9",
+    "INTROUI.hpk": "7eaad5d33ae8846e8d42fe0decbeebab754790f2b342b6113fb8234a67aceede"
+  },
+  "protected_k3_unchanged": true,
+  "patch_assets_current": true,
+  "classic_intro": {
+    "scene_root": "resource/UI/K2/Scene",
+    "native_scene_files": 10,
+    "source_scene_and_catalog": "K2108 resource/map/Intro and system/IntroObj.txl",
+    "source_archives_remain_packed": true,
+    "k3_gates_disabled_in_k2_only": true,
+    "camera_views": [
+      "login/server",
+      "overview",
+      "selected character",
+      "creation",
+      "face/hair"
+    ],
+    "source_positions_and_full_placement_matrices": true,
+    "missing_intro_models": "Skip with existing diagnostics; do not search for replacements."
+  },
+  "launcher_settings": {
+    "passed": true,
+    "launcher_fresh_restart": true,
+    "cancel_does_not_save": true,
+    "original_and_additional_settings_restored": {
+      "version": "1",
+      "width": "1600",
+      "height": "1000",
+      "windowMode": "0",
+      "textureQuality": "1",
+      "shadowQuality": "3",
+      "filtering": "1",
+      "drawDistance": "115",
+      "brightness": "120",
+      "fog": "0",
+      "terrainDetail": "1",
+      "vsync": "1",
+      "linearColor": "1",
+      "uiSkin": "1",
+      "terrainQuality": "2",
+      "modelQuality": "1",
+      "cameraRange": "2",
+      "fxRange": "1",
+      "objectRange": "2",
+      "imageCursor": "0",
+      "speakerChannels": "6"
+    },
+    "connection_button_removed": true,
+    "normal_profile_read_only": true,
+    "game_start_frames": 32,
+    "game_window_pixels": [
+      1600,
+      1000
+    ],
+    "k2_scene_selected": true,
+    "k3_gate_monsters_absent": true,
+    "game_log": "C:\\_GitHub\\TantraSrc\\_remake_bgfx\\build\\evidence\\patcher-gui-1794094301400010900\\game-logs-current",
+    "capture": "C:\\_GitHub\\TantraSrc\\_remake_bgfx\\build\\evidence\\patcher-gui-1794094301400010900\\game-k2-login-current.png",
+    "note": "Launcher checks passed before discovering the old live patch had replaced staged binaries. Restored current binaries and repeated only failed game startup.",
+    "screenshot": "build/evidence/patcher-gui-1794094301400010900/launcher-options-reloaded.png"
+  },
+  "settings_storage": {
+    "graphics": "Profile system/Graphics.cfg (shared launcher and game)",
+    "sound": "resource/UI/Interface.sys (isolated copy for validation)",
+    "legacy_audio_providers": "Only available miniaudio is displayed; legacy provider controls/text removed.",
+    "speaker_layouts": [
+      2,
+      4,
+      "5.1",
+      "7.1"
+    ],
+    "terrain_quality": "Detail-texture mip bias; existing terrain geometry is retained."
+  },
+  "build_notes": "One batched Release build, then affected targets only after the probe missing-include error and final camera-panel correction. No Debug or server rebuild. Launcher restart controls passed; repeated only game startup after discovering the older live patch replaced the newly staged executable/shader.",
+  "ultra_and_available_audio_only": {
+    "launcher": {
+      "passed": true,
+      "available_audio_only": [
+        "miniaudio"
+      ],
+      "unavailable_provider_controls_absent": true,
+      "ultra_apply_restart_highlight": true,
+      "saved_graphics": {
+        "version": "1",
+        "width": "1600",
+        "height": "900",
+        "windowMode": "0",
+        "textureQuality": "2",
+        "shadowQuality": "3",
+        "filtering": "2",
+        "drawDistance": "150",
+        "brightness": "100",
+        "fog": "1",
+        "terrainDetail": "1",
+        "vsync": "0",
+        "linearColor": "1",
+        "uiSkin": "0",
+        "terrainQuality": "2",
+        "modelQuality": "2",
+        "cameraRange": "2",
+        "fxRange": "2",
+        "objectRange": "2",
+        "imageCursor": "1",
+        "speakerChannels": "2"
+      },
+      "normal_preferences_unchanged": true,
+      "screenshot": "C:\\_GitHub\\TantraSrc\\_remake_bgfx\\build\\evidence\\patcher-gui-1794096293568492600\\ultra-launcher-reloaded.png"
+    },
+    "native_settings": {
+      "passed": true,
+      "checks": 18,
+      "ultra_shadow_quality": 3,
+      "draw_distance": 150,
+      "saved_and_rendered": true
+    },
+    "screenshot": "build/evidence/ultra-native/ultra-native-settings.png",
+    "preset": "Highest supported detail/ranges,4096-pixel shadows,150% draw distance; preserve resolution/window mode,UI,sound,fog,VSync and brightness."
+  },
+  "live_switch_repair": {
+    "passed": true,
+    "checks": 247,
+    "bars": 1,
+    "default_rows": 1,
+    "maximum_rows": 4,
+    "cells": 40,
+    "key_labels": 40,
+    "bound_row_icons": 4,
+    "actual_sdl_row_controls": true,
+    "row_limits": true,
+    "saved_layout_and_bindings": true,
+    "retired_alt_keys_inactive": true,
+    "private_offline_profile": true,
+    "date": "2026-11-08",
+    "configuration": "Release",
+    "patch_version": 1794099810,
+    "native_frame": true,
+    "custom_header_removed": true,
+    "source_reference": "Tantra/HTlauncher/HTQuickSlot.cpp: HT_vQuick_CreateWindow",
+    "saved_position_suffix": {
+      "version": 2,
+      "legacy_v1_converted": true
+    },
+    "k2_switch": {
+      "zero_extent_tp_prana_supported": true,
+      "scaled_bar_state_preserved": true,
+      "four_row_panel_height": 157,
+      "action_cache_refreshed": true,
+      "previous_ui_restoration_on_failure": "Implemented; allocation failure not injected"
+    },
+    "screenshots": [
+      "build/evidence/native-quickbar-layout/quickbar-four-rows.png",
+      "build/evidence/native-quickbar-layout/quickbar-k2-four-rows.png"
+    ],
+    "scope": "Isolated SDL/D3D11 quickbar and live skin-switch components; no normal player/save or network journey",
+    "staged_client_sha256": "2a9f70af7946bfb9ad00bfee94df2b64cbf67eeac66fcc6a33116d3955d80c95"
+  },
+  "world_resident_switch_repair": {
+    "passed": true,
+    "full_mandara": true,
+    "resolution": [
+      1600,
+      900
+    ],
+    "settings_pointer_apply": true,
+    "k2_k3_round_trip": true,
+    "private_settings": true,
+    "user_logged_failure": "Native HUD sprite panel=10002 control=50 size=104x19; previous UI restoration failed",
+    "reproduction": "Full Mandara geometry/textures plus retained-session texture pressure to3400 handles. The old build failed rebuilding the HUD and could not restore it. The world-only2170-handle case passed.",
+    "fix": [
+      "Submit two zero-delta world frames after releasing HUD textures so bgfx retires destroyed handles before allocating the replacement",
+      "Initialize label raster dimensions to avoid duplicate label textures on first refresh",
+      "Retire partial resources before restoring the old UI; reset rejected graphics draft"
+    ],
+    "texture_handles_before_k2": 3400,
+    "texture_handles_before_k3_return": 3460,
+    "texture_pool_limit": 4096,
+    "reproduction_log": "build/world-skin-budget-check.log",
+    "screenshots": [
+      "build/evidence/world-skin-budget-fixed/world-k2.png",
+      "build/evidence/world-skin-budget-fixed/world-k3-restored.png"
+    ],
+    "scope": "Full static Mandara and actual settings pointer/Apply path at1600x900 with controlled texture pressure. No normal account/session changed.",
+    "patch_version": 1794104949
+  },
+  "k2_main_panels": {
+    "passed": true,
+    "full_mandara": true,
+    "resolution": [
+      1600,
+      900
+    ],
+    "settings_pointer_apply": true,
+    "k2_k3_round_trip": true,
+    "private_settings": true,
+    "k2_panels": [
+      "chat",
+      "options_basic",
+      "options_video",
+      "options_sound",
+      "options_game",
+      "skills",
+      "quest"
+    ],
+    "sound_slider": true,
+    "skill_tab_geometry": true,
+    "quest_selection": true,
+    "source": "B:/Tantra-Files/_TantraClients/K2108/resource/UI/MainUIInfo.sys",
+    "definition_names": [
+      "resource/UI/K2/MainUIInfo.K2.sys",
+      "resource/UI/K2/IntroUIInfo.K2.sys",
+      "resource/UI/K2/LoadingUI.K2.sys"
+    ],
+    "renamed_sys_byte_identical": true,
+    "k3_definitions_and_archives_unchanged": true,
+    "packed_images": "resource/UI/K2/MAINUI.HPK, INTROUI.hpk and original UI/background archives; no runtime extraction",
+    "geometry": "K2 split chat histories and recipient/draft bounds; native four-page Options; native Quest lists/details; skill shell extended by one61px row to preserve24 K3 skill cells/four class pages",
+    "source_font_height": 12,
+    "fractional_bitmap_scales_preserved": true,
+    "shared_gameplay_handlers": true,
+    "scope": "Graphical component and pointer checks with isolated preferences, synthetic chat/quest display and native skill-icon identities; no normal account/save/database or network journey. Remaining supplemental windows retain adapted layouts.",
+    "build": "Release batch, then resource-only correction/relink after captures exposed covered close buttons and a duplicate skill title; no Debug/server build.",
+    "logs": [
+      "build/k2-main-panels-release.log",
+      "build/k2-main-panels-layer-fix-release.log",
+      "build/k2-main-panels-fixed-check.log"
+    ],
+    "captures": "build/evidence/k2-main-panels-fixed",
+    "patch_version": 1794107828
+  },
+  "k3_intro_fire_repair": {
+    "passed": true,
+    "cause": "Global ClientRes map40100 names missing fxMAPnewIntro; K3 scene ships fxMAPIntro",
+    "fix": "Use the complete original K3 TXL/MonsterEtc TFX pair when the configured family is unavailable; keep the binding and curve validation",
+    "effect": "1300143 intro_MFire",
+    "runtime": "two groups, four fire/smoke emitters,118 live quads; original curves, blend, GPU positions/colors, looping and release/recreate verified",
+    "normal_profile_unchanged": true,
+    "logs": "build/evidence/k3-intro-fire-fixed/logs/ZFLauncherDiagnostics.tsv",
+    "screenshot": "build/evidence/k3-intro-fire-fixed/k3-fire.png",
+    "patch_version": 1794111047
+  }
+}

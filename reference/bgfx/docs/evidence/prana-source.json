@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-28",
+  "source_files": [
+    {
+      "path": "C:\\_GitHub\\TantraSrc\\Tantra\\HTlauncher\\HTMonster.cpp",
+      "sha256": "67332b25c19e12c260a74e68ac9f2a5768a786857f886855f231418abb7cdce3"
+    },
+    {
+      "path": "C:\\_GitHub\\TantraSrc\\Tantra\\HTlauncher\\HTAttackManager.cpp",
+      "sha256": "2b5b3797426c13ef9773dc4a1ed4c6774b505483676348f664fb41db6789cafd"
+    },
+    {
+      "path": "C:\\_GitHub\\TantraSrc\\Tantra\\HTlauncher\\HTAttackManager.h",
+      "sha256": "d3629e32b7613baf9fb189e27aa5ada058149431cc9b747f29bfbef5ff2a3b20"
+    },
+    {
+      "path": "C:\\_GitHub\\TantraSrc\\Tantra\\HTlauncher\\HTEngineHandler.cpp",
+      "sha256": "dec2f71e6b25091e54c7742d8d85a00b4c4658865cfaff61b0d12f4836bf5500"
+    }
+  ],
+  "rules": {
+    "follow": "DieActivateFX + 1",
+    "movement": "JKS_HOMER; live recipient position + 12 Y",
+    "speed": 100,
+    "velocity_correction_factor": 5,
+    "lifetime_seconds": 3,
+    "launch_random_words": 6
+  },
+  "probe": {
+    "monster": 2001,
+    "follow_fx": 1300006,
+    "checks_per_configuration": 570,
+    "moving_recipient": true,
+    "recipient_rebind": true,
+    "expiry_and_missing_owner_cleanup": true
+  },
+  "actual_sdl": "build/evidence/prana-sdl-combat1",
+  "release_sha256": "9eb9c21304218af4148054c97a26b73e4fd54c1957433eddc06b11da55e2dc72",
+  "c08_status": "paused; phase gate remains open"
+}

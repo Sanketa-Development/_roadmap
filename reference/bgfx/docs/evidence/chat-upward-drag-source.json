@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-28",
+  "scope": "Upward Prana, chat presentation, dragged icons, English commands and verified Wing/posture/stacking fixes",
+  "sources": [
+    {
+      "path": "Tantra/HTlauncher/HTChatting.cpp",
+      "sha256": "a3d0ffb7006a90b701e3b0105fbc49a09c3699e181b743c4037ac55452199088"
+    },
+    {
+      "path": "Tantra/HTlauncher/HTInfoLoad.cpp",
+      "sha256": "f0dcf92ec4cc0b75564ca4e0366a58fc1fb858297fdc7e0c539faf1e83b9f0e8"
+    },
+    {
+      "path": "Tantra/HTlauncher/HTMainCharacter.cpp",
+      "sha256": "6e7b5ee760a729fbc8afad3b4aa59a61ed394e51ba9e3f601037c2fa6226e08d"
+    },
+    {
+      "path": "Tantra/HTlauncher/HTInterface.cpp",
+      "sha256": "ec0c0942971f74bcc50f3ad3d79ec17a4dfac28b79ce5cdebde112bc9cf43844"
+    },
+    {
+      "path": "Tantra/HTlauncher/HTEngineHandler.cpp",
+      "sha256": "dec2f71e6b25091e54c7742d8d85a00b4c4658865cfaff61b0d12f4836bf5500"
+    },
+    {
+      "path": "Tantra/zone/Server.cpp",
+      "sha256": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a"
+    }
+  ],
+  "findings": {
+    "wing": "All eight client bodies have a Wing socket attached to WeaponSpine; use the socket transform, not a nonexistent Wing bone. Retain native type-4 model rotation.",
+    "posture": "823 sit-down and 824 stand-up, one-second playback override. Movement waits for the same scaled native clock STOP boundary as rendering; no first-frame skip for these transitions.",
+    "pickup": "Existing compatible stacks precede empty slots. Partial pickup leaves ground remainder; ordinary full-stack/nonstackable drag swaps records.",
+    "prana": "Individual corpse-born motes use native homing with explicitly requested upward launch bias; absorbed on contact, no player-side replacement graph.",
+    "chat": "Native visible panel, distinct bounded chat/system histories, category colours and authoritative damage/reward events. Group and whisper receive presentation is implemented; remote services remain unavailable offline.",
+    "commands": "201 English runtime entries from 287 GM source rows plus 19 early-whisper rows; 32 implemented offline commands, other services explicitly unavailable."
+  },
+  "evidence": [
+    "build/evidence/prana-upward-release2",
+    "build/evidence/prana-upward-debug1",
+    "build/evidence/chat-ui-release2",
+    "build/evidence/chat-ui-debug1",
+    "build/evidence/chat-item-drag-sdl1",
+    "build/evidence/chat-upward-combat-final1",
+    "build/evidence/english-commands-parser1",
+    "build/evidence/sit-stack-release3",
+    "build/evidence/wing-posture-render3",
+    "build/evidence/posture-hotkeys-final1",
+    "build/evidence/stack-drag-final1",
+    "build/evidence/chat-prana-combat-final2",
+    "build/evidence/commands-english-final1",
+    "build/evidence/keyboard-posture-final1",
+    "build/evidence/requested-fixes-verified1"
+  ],
+  "limits": [
+    "C08 benchmark and wider release acceptance remain paused.",
+    "No multiplayer service or source-only command functionality is claimed.",
+    "No client assets extracted or rewritten."
+  ],
+  "staged_release_sha256": "556e0a2672bceeef195576ff9655c7fd114433718576285ac5f014e3ac1d0757",
+  "build_and_stage": {
+    "passed": true,
+    "entrypoint": "build-zflauncher.bat -Configuration Release -Parallel 6",
+    "log": "build/oneclick-release2.log"
+  },
+  "final_validation": {
+    "posture-hotkeys-final1": {
+      "process": {
+        "exit_code": 0,
+        "protected_unchanged": true,
+        "seed_unchanged": true,
+        "default_profile_unchanged": true,
+        "failure": null
+      },
+      "sha256": "556e0a2672bceeef195576ff9655c7fd114433718576285ac5f014e3ac1d0757"
+    },
+    "stack-drag-final1": {
+      "process": {
+        "exit_code": 0,
+        "protected_unchanged": true,
+        "seed_unchanged": true,
+        "default_profile_unchanged": true,
+        "failure": null
+      },
+      "sha256": "556e0a2672bceeef195576ff9655c7fd114433718576285ac5f014e3ac1d0757"
+    },
+    "chat-prana-combat-final2": {
+      "process": {
+        "exit_code": 0,
+        "protected_unchanged": true,
+        "seed_unchanged": true,
+        "default_profile_unchanged": true,
+        "failure": null
+      },
+      "sha256": "556e0a2672bceeef195576ff9655c7fd114433718576285ac5f014e3ac1d0757"
+    },
+    "commands-english-final1": {
+      "process": {
+        "exit_code": 0,
+        "protected_unchanged": true,
+        "seed_unchanged": true,
+        "default_profile_unchanged": true,
+        "failure": null
+      },
+      "sha256": "69d3d05ada28427093ac787a49b6055e09323aa38e7181959831009841697036",
+      "note": "Same source build before script-only PowerShell hash-check portability fix and relink."
+    }
+  },
+  "latest_verification": {
+    "date": "2026-10-28",
+    "directory": "build/evidence/requested-fixes-verified1",
+    "source_hashes_verified": true,
+    "one_click_build_and_stage_passed": true,
+    "build_log": "build/requested-fixes-build.log",
+    "staged_release_sha256": "d8d127b98b3b1febc25e829ed5ed8c9117f3e60c0aae147d80bbfe40d3e7d618",
+    "focused_checks": {
+      "sit_stack": 474,
+      "wing_posture": 1258,
+      "chat_drag": 30,
+      "english_commands": 2912,
+      "prana": 5059,
+      "keyboard_cases": 4
+    },
+    "staged_scenarios": {
+      "staged-posture": {
+        "process": {
+          "exit_code": 0,
+          "protected_unchanged": true,
+          "seed_unchanged": true,
+          "default_profile_unchanged": true,
+          "failure": null
+        },
+        "results": {
+          "DEFAULT_HOTKEYS_RESULT.json": {
+            "passed": true,
+            "checks": 130,
+            "actual_sdl_input": true,
+            "menus": 9,
+            "native_map_hpk": true,
+            "held_movement": true,
+            "chat_focus": true,
+            "screenshot_release": true,
+            "f11_optional_default_inactive": true,
+            "solo_colleague_filter": true
+          }
+        }
+      },
+      "staged-inventory": {
+        "process": {
+          "exit_code": 0,
+          "protected_unchanged": true,
+          "seed_unchanged": true,
+          "default_profile_unchanged": true,
+          "failure": null
+        },
+        "results": {
+          "C06_INVENTORY_RESULT.json": {
+            "passed": true,
+            "actual_sdl": true,
+            "checks": 55,
+            "money": 100000,
+            "hp": 50,
+            "potion_count": 14,
+            "arrow_count": 12,
+            "equipment_swap": true,
+            "atomic_rejection": true,
+            "split_merge_cancel": true,
+            "native_consumable": true
+          },
+          "PERSISTENCE_RESULT.json": {
+            "passed": true,
+            "native_inventory_matches_sqlite": true,
+            "money_equipment_cargo_and_metadata_conserved": true
+          }
+        }
+      },
+      "staged-commands": {
+        "process": {
+          "exit_code": 0,
+          "protected_unchanged": true,
+          "seed_unchanged": true,
+          "default_profile_unchanged": true,
+          "failure": null
+        },
+        "results": {
+          "COMMANDS_RESULT.json": {
+            "passed": true,
+            "actual_sdl": true,
+            "checks": 147,
+            "commands_exercised": 32,
+            "money": 100123,
+            "level": 3,
+            "prana": 1,
+            "hp": 40,
+            "karma": 123,
+            "trimurti": 1,
+            "whisper_edit": true,
+            "wrong_code_atomic": true,
+            "source_spelling": true
+          },
+          "PERSISTENCE_RESULT.json": {
+            "passed": true,
+            "native_commands_match_sqlite": true,
+            "original_item_instances_and_cargo_preserved": true
+          }
+        }
+      },
+      "staged-combat-chat": {
+        "process": {
+          "exit_code": 0,
+          "protected_unchanged": true,
+          "seed_unchanged": true,
+          "default_profile_unchanged": true,
+          "failure": null
+        },
+        "results": {
+          "BGFX_COMBAT_RESULT.json": {
+            "passed": true,
+            "outcome": "target_defeated",
+            "target_id": 2001,
+            "target_key": 1017,
+            "player_hp_before": 50,
+            "player_hp_after": 50,
+            "attack_observed": true,
+            "target_damage_observed": true,
+            "death_pose_and_zero_hp_presented": false,
+            "prana_before": 0,
+            "prana_after": 60,
+            "cell": [
+              473,
+              369
+            ]
+          },
+          "C06_TARGET_RESULT.json": {
+            "passed": true,
+            "actual_sdl_e_r": true,
+            "selected_fx": true,
+            "attack_fx": true,
+            "player_facing": true,
+            "monster_facing": true,
+            "finite_attack": true
+          },
+          "GROUND_LOOT_HOTKEYS_RESULT.json": {
+            "passed": true,
+            "actual_sdl_alt": true,
+            "earned_drop_label": true,
+            "actual_sdl_f": true,
+            "auto_approach": true,
+            "money_before": 100000,
+            "money_after": 100011,
+            "loot_key": 1
+          },
+          "MONSTER_IMPACT_FX_RESULT.json": {
+            "passed": true,
+            "actor_id": 2001,
+            "skill_id": 41004,
+            "impact_fx": 1200007,
+            "event_sequence": 7,
+            "damage": 2,
+            "vertices": 40,
+            "indices": 60,
+            "depth_test": true,
+            "depth_write": false
+          },
+          "NATIVE_COMBAT_RESULT.json": {
+            "passed": true,
+            "player_impacts": 2,
+            "monster_impacts": 2,
+            "glyphs_presented": 6,
+            "sounds_requested": 10
+          },
+          "PERSISTENCE_RESULT.json": {
+            "passed": true,
+            "combat_result_matches_native_record": true
+          },
+          "REWARD_TRAIL_RESULT.json": {
+            "passed": true,
+            "trail_triangles": 2,
+            "prana_rewards": 1
+          },
+          "WORLD_CHAT_HISTORY_RESULT.json": {
+            "visible_by_default": true,
+            "input_focused": false,
+            "damage_sent": 2,
+            "damage_received": 2,
+            "prana_messages": 1,
+            "history_size": 6
+          }
+        }
+      }
+    },
+    "scope": "Reverified requested fixes and preceding chat, drag, command and Prana work. Remaining five-part goal and full C08 release acceptance stay open."
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "date": "2026-11-07",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "native-unmatched-actions-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\native-map-calendars",
+  "source": [
+    {
+      "file": "Tantra/zone/Server.cpp",
+      "lines": "1226-1235",
+      "sha256": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a",
+      "rules": "TNScheduler.Load runs independently of Karya gate actors."
+    },
+    {
+      "file": "Tantra/zone/TNScheduler.cpp",
+      "lines": "116-190",
+      "sha256": "f4f24d2da776e55773c5daf2b1bde8ef6026175d6487c2de83306b1b2a31b586",
+      "rules": "Optional Data/Schedule.txt, native local calendar and scheduling; original file bytes retained."
+    }
+  ],
+  "implemented": [
+    "Generic calendar loading for maps without Karya gate actors; retain the separate Biryu loader without duplicate loading.",
+    "Import supplied Data/Schedule.txt and Language.txt with the five required native files, including channel cloning and the development stage-only importer.",
+    "Manager review shows optional files, detects registered maps missing them, blocks completion while running and rejects conflicting files.",
+    "Complete only reviewed missing files under the worker lock, preserve existing files/profile/ports, verify source/copied hashes and roll back new files on failure."
+  ],
+  "focused_component": {
+    "passed": true,
+    "cases": [
+      {
+        "result": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-native-map-calendar-2e9c7040211c53ceabaa775d31a8ea21b2282ba954b3e04ef275d6d4df556d79\\RESULT.json",
+        "sha256": "170465482be93bc0871a5fd19270f38873e4b0214896db7e1b8e9761c36fc1c1",
+        "summary": {
+          "calendar_entries": 24,
+          "gate_holder": false,
+          "graphical_acceptance": false,
+          "live_tcp": false,
+          "manager_completion_checks": true,
+          "native_message": 109,
+          "once_only": true,
+          "original_calendar_sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9",
+          "original_language_sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980",
+          "passed": true,
+          "public_admission_changed": false,
+          "saved_reopen_exact": true,
+          "source_event": 27,
+          "zone": 13
+        }
+      },
+      {
+        "result": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-native-map-calendar-8b4d525f40f66beb5477d39fc3e72032963729ed689a69108714be5b7028f5a8\\RESULT.json",
+        "sha256": "963c31e8f8ba8f54038fa192faf962ed99ca3739a787b0dd8ad8fe992435f6f2",
+        "summary": {
+          "calendar_entries": 24,
+          "gate_holder": false,
+          "graphical_acceptance": false,
+          "live_tcp": false,
+          "manager_completion_checks": false,
+          "native_message": 109,
+          "once_only": true,
+          "original_calendar_sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9",
+          "original_language_sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980",
+          "passed": true,
+          "public_admission_changed": false,
+          "saved_reopen_exact": true,
+          "source_event": 27,
+          "zone": 14
+        }
+      },
+      {
+        "result": "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-native-map-calendar-930ae1aab8aabb8b34ae054f39c631affbc1ab369f82376f951ca8f1c6f6734c\\RESULT.json",
+        "sha256": "fa374216b94f7e6322fad9f0f01240cd3405f46c6d7cb9c91569168026bd5b19",
+        "summary": {
+          "calendar_entries": 24,
+          "gate_holder": false,
+          "graphical_acceptance": false,
+          "live_tcp": false,
+          "manager_completion_checks": false,
+          "native_message": 109,
+          "once_only": true,
+          "original_calendar_sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9",
+          "original_language_sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980",
+          "passed": true,
+          "public_admission_changed": false,
+          "saved_reopen_exact": true,
+          "source_event": 27,
+          "zone": 15
+        }
+      }
+    ],
+    "clock": "Controlled Monday2026-11-09 10:24:59 local and consecutive32-second checks; no real-time calendar waiting.",
+    "native_zones": [
+      13,
+      14,
+      15
+    ],
+    "entries_each": 24,
+    "source_event": 27,
+    "exact_english_message": 109,
+    "once_only_on_next_scheduler_check": true,
+    "saved_reopen_exact": true,
+    "manager_completion": "Zone13: missing-file review, running-state refusal, actual worker lock, completion with existing profile/language preservation, conflict refusal and no overwrite.",
+    "transport": "direct World/private SQLite; not live TCP or graphical travel"
+  },
+  "restored_data_files": [
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone13\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone13\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone13\\Language.txt",
+      "source": "E:\\Global-server\\Zone13\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone14\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone14\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone14\\Language.txt",
+      "source": "E:\\Global-server\\Zone14\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone15\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone15\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone15\\Language.txt",
+      "source": "E:\\Global-server\\Zone15\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone13\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone13\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone13\\Language.txt",
+      "source": "E:\\Global-server\\Zone13\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone14\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone14\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone14\\Language.txt",
+      "source": "E:\\Global-server\\Zone14\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone15\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone15\\Data\\Schedule.txt",
+      "sha256": "6f8e6326fbbef6c206620ba35ca0f3b46ffb26114cd66a5f6ae327b455c4cbe9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone15\\Language.txt",
+      "source": "E:\\Global-server\\Zone15\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    }
+  ],
+  "disabled_profiles": [
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone13\\zone.toml",
+      "sha256": "54295ce530af03299668b552c221642b66d4d94a56c1bd51d249e3e69c5d0204",
+      "enabled": false,
+      "implementation": "cpp-administration"
+    },
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone14\\zone.toml",
+      "sha256": "be72578788b1508978d38b00067e21e8744a2bff7469e7ffd92eecd8b47c273c",
+      "enabled": false,
+      "implementation": "cpp-administration"
+    },
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_cpp\\zones\\Zone15\\zone.toml",
+      "sha256": "7749def2b8a492ed3390946195c55ca72bdc80a528d8299ec9923a7ac40bec6f",
+      "enabled": false,
+      "implementation": "cpp-administration"
+    },
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone13\\zone.toml",
+      "sha256": "c0a550217ca2877491845e75917ec6d2e013c141617e3c7f013f71e131ba63f3",
+      "enabled": false,
+      "implementation": "cpp-native-world"
+    },
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone14\\zone.toml",
+      "sha256": "57f38e189a35f5e1a3151c70ddd30c0202de598f8d89cfece8144fb45d441b8b",
+      "enabled": false,
+      "implementation": "cpp-native-world"
+    },
+    {
+      "profile": "C:\\_GitHub\\TantraSrc\\_server_final\\zones\\Zone15\\zone.toml",
+      "sha256": "f185e1c0e5cd47303518211c9a766f961abadcb491ba5c8a113ae0bc053e140d",
+      "enabled": false,
+      "implementation": "cpp-native-world"
+    }
+  ],
+  "staged_files": [
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraZone.exe",
+      "sha256": "b30c01b26a1f214d41605ef3cb0d1d787e3d950f7c8be23bec5100e77cf3727d",
+      "previous_sha256": "bd6039569c2e8a3a176bfe2d66dc91f12d15975b8104c3ba403c3fbdd85a612d"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraService.exe",
+      "sha256": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraServerManager.exe",
+      "sha256": "1cbbe349944864af065206160bc5ff662a8777197a7906db73d7b5e804e16bec",
+      "previous_sha256": "3472be46664514d829be1f3cf38ada6f64e34af8b44e05f03376d39f53fff776"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_cpp\\bin\\TantraDataTools.exe",
+      "sha256": "7c72ece69521202821aa430e79af45572907c4418817eee78e3a94018e4131db",
+      "previous_sha256": "856c6c8f4ecbd5892f65a908a555e3d345bf49554777c6951e989897fdf9c42c"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraZone.exe",
+      "sha256": "b30c01b26a1f214d41605ef3cb0d1d787e3d950f7c8be23bec5100e77cf3727d",
+      "previous_sha256": "bd6039569c2e8a3a176bfe2d66dc91f12d15975b8104c3ba403c3fbdd85a612d"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraService.exe",
+      "sha256": "43cb14b46942bc929047bfc1b68dbff5c66f8794c7b64944a616cc924cdf61c7",
+      "previous_sha256": "339c0f8dc2a71ec37c641604b81b7a9bfed62a2aedabb36b165f9b650cc905f9"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraServerManager.exe",
+      "sha256": "1cbbe349944864af065206160bc5ff662a8777197a7906db73d7b5e804e16bec",
+      "previous_sha256": "3472be46664514d829be1f3cf38ada6f64e34af8b44e05f03376d39f53fff776"
+    },
+    {
+      "target": "C:\\_GitHub\\TantraSrc\\_server_final\\bin\\TantraDataTools.exe",
+      "sha256": "7c72ece69521202821aa430e79af45572907c4418817eee78e3a94018e4131db",
+      "previous_sha256": "856c6c8f4ecbd5892f65a908a555e3d345bf49554777c6951e989897fdf9c42c"
+    }
+  ],
+  "build": {
+    "production_release_attempts": 2,
+    "production_rebuild_corrections": 1,
+    "production_targets": [
+      "TantraZone",
+      "TantraService",
+      "TantraServerManager",
+      "TantraDataTools"
+    ],
+    "verifier_only_rebuilds": 1,
+    "debug_builds": 0,
+    "final_exit_code": 0,
+    "corrections": [
+      "MSVC rejected std::string/JSON hash comparisons; explicitly extract the expected string.",
+      "Verifier omitted the normal immediate owner-snapshot subscription; add initial7f01 before advancing the clock."
+    ]
+  },
+  "focused_check_attempts": 2,
+  "logs": [
+    "build-release.log",
+    "build-release-corrected.log",
+    "build-verifier-subscription.log",
+    "map-calendars.log",
+    "map-calendars-subscribed.log",
+    "source-stage/ZONE_EXPANSION.json",
+    "runtime-stage/ZONE_EXPANSION.json",
+    "staging.json"
+  ],
+  "accepted_log_sha256": "4fe191b3dcccc395c59bf70d652b95a7013e5ec6bc789e2938657090cf0d999d",
+  "client_unchanged_sha256": "4f4aeaae97d003108db3449a5e7409aa3e7dfe4079bdc290c601c78c60d6ad30",
+  "client_rebuilt": false,
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "completed_gameplay_journeys_replayed": false,
+  "limitations": [
+    "Calendar delivery and imports are accepted by the focused component; full Karya admission, connected travel, closing handoff, encounters and graphical acceptance remain open.",
+    "Manager inspection/completion helpers are exercised; no interactive dialog capture is claimed.",
+    "All other service/backend guards and open six-part requirements remain."
+  ]
+}

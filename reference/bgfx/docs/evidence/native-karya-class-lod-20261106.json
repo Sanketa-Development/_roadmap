@@ -1,0 +1,641 @@
+{
+  "date": "2026-11-06T23:31:08.406419+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261106\\native-karya-class-lod",
+  "client_sha256": "eeb4093ddee2e1cc5326b186f637f277c55bf86c3fbc617dc5b7a8b4876ae31d",
+  "server_sha256": {
+    "TantraZone.exe": "1e7a85b312c00d492825f8552a14b972203a890553dbf1b4eec71e72a9c9c996",
+    "TantraService.exe": "6d145d981c0ac3000082c27445765375d6e9fdd6a785cee1cce5b5e6d3891600",
+    "TantraServerManager.exe": "90f4e5a817c555320fd9c5065af200931f631a9558d81e8adc09ddb8886c6469",
+    "TantraDataTools.exe": "7cec3ec41d50365af05ff389569af9ca5e272546b9e19b01e2d900e572c102f4"
+  },
+  "patch": {
+    "version": 1793978914,
+    "files": 5313,
+    "bytes": 1635473849,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "server_update": {
+    "archive": "D:\\Tantra-Beta\\Global-Tantra-Server-Update-20261106-Karya.zip",
+    "sha256": "1db0721a9d15145f30f766f10ca716673c433d1bcdc9711142b87aa9e35fa54c",
+    "files": 82,
+    "bytes": 11965340,
+    "includes_accounts": false,
+    "includes_private_keys": false,
+    "fresh_install": false
+  },
+  "native_karya_world": {
+    "actual_observer_visibility": true,
+    "actual_world": true,
+    "admission_opened": false,
+    "closed_position": [
+      1,
+      1
+    ],
+    "graphical_acceptance": false,
+    "hidden_start": [
+      5,
+      5
+    ],
+    "live_tcp": false,
+    "native_messages": true,
+    "open_position": [
+      490,
+      369
+    ],
+    "original_language_sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980",
+    "original_schedule_sha256": "659ff3c0aa589b32a3c6a9cf796f3ac3b577ee4864d1829ebe0bc34d8d4ee87d",
+    "passed": true,
+    "scheduled_events": [
+      44,
+      45
+    ],
+    "source_npc_mask": true,
+    "startup_pop_wire_observed": false
+  },
+  "native_karya_policy": {
+    "helper_passed": true,
+    "portal_gm_clan_exception": 10,
+    "chakra_caps": {
+      "13": 282,
+      "14": 378
+    },
+    "high_tier_cap": null,
+    "default_opened": false,
+    "normal_disconnect_return_zones": [
+      11,
+      13,
+      14,
+      15
+    ],
+    "normal_disconnect_exact_field_helpers_passed": true,
+    "normal_disconnect_connected_journey": false,
+    "destination_admission_changed": false,
+    "gate_contact_and_portal_selector_implemented": false
+  },
+  "earned_class34_journey": {
+    "actual_ananga_kills": 20,
+    "fixture": {
+      "balance_acceptance": false,
+      "chakra": [
+        1000,
+        1000,
+        3000,
+        300
+      ],
+      "complete_second_promotion": false,
+      "first_class_prerequisite": 1,
+      "fixture_stats_overallocated": true,
+      "initial_money": 20000,
+      "kill_counters_seeded": false,
+      "level": 100,
+      "proof_or_rewards_seeded": false,
+      "quest_flags_seeded": false,
+      "tribe": 1,
+      "weapon": 4001
+    },
+    "graphical_acceptance": false,
+    "last_notice": "",
+    "last_route": {
+      "context": "npc=1132",
+      "from": [
+        433,
+        661
+      ],
+      "requested": [
+        275,
+        695
+      ],
+      "selected": [
+        275,
+        695
+      ],
+      "zone": 7
+    },
+    "live_tcp": false,
+    "passed": true,
+    "positive_player_hits": 51,
+    "quest": 34,
+    "real_world_authority": true,
+    "source_hashes": {
+      "2": {
+        "collision": "023da638a0942b95ba23049984d366c927acd60a67718cee9e6bfa2e2fe87af6",
+        "generators": "f22355d0a10b11ba315556ad7eba5c5c7a4d9c30d25a61922fd18e5500c1084f"
+      },
+      "7": {
+        "collision": "254affbc242253355e33883ccf954239a2025682ef41a6be5ad5858c0b04c3ed",
+        "generators": "a02044bf87e51c9636a8a9a4d3897a57fe237a8ae4e3c2d7ad9862aa01538c4a"
+      }
+    },
+    "trace": [
+      {
+        "kind": "class_trial_earned",
+        "npc": 1132
+      },
+      {
+        "fee": 0,
+        "from": 133,
+        "kind": "portal",
+        "local": false,
+        "to": 132,
+        "zone": 2
+      },
+      {
+        "fee": 0,
+        "from": 116,
+        "kind": "portal",
+        "local": true,
+        "to": 117,
+        "zone": 2
+      },
+      {
+        "choice": 1,
+        "kind": "wrong_first_answer",
+        "source_correct_choice": 2
+      },
+      {
+        "fee": 0,
+        "from": 117,
+        "kind": "portal",
+        "local": true,
+        "to": 116,
+        "zone": 2
+      },
+      {
+        "counter": 1,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 2,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 3,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 4,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 5,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 6,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 7,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 8,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 9,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 10,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 10,
+        "kind": "saved_return",
+        "quest_state": 5,
+        "zone": 2
+      },
+      {
+        "counter": 11,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 12,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 13,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 14,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 15,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 16,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 17,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 18,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 19,
+        "kind": "actual_ananga_kill",
+        "quest_state": 5
+      },
+      {
+        "counter": 0,
+        "kind": "actual_ananga_kill",
+        "quest_state": 6
+      },
+      {
+        "fee": 0,
+        "from": 116,
+        "kind": "portal",
+        "local": true,
+        "to": 117,
+        "zone": 2
+      },
+      {
+        "earned_proof": 8071,
+        "kind": "quiz_passed",
+        "questions": 20
+      },
+      {
+        "counter": 0,
+        "kind": "saved_return",
+        "quest_state": 7,
+        "zone": 2
+      },
+      {
+        "fee": 0,
+        "from": 117,
+        "kind": "portal",
+        "local": true,
+        "to": 116,
+        "zone": 2
+      },
+      {
+        "fee": 1000,
+        "from": 132,
+        "kind": "portal",
+        "local": false,
+        "to": 133,
+        "zone": 7
+      },
+      {
+        "consumed": 8071,
+        "earned": 8068,
+        "kind": "proof_exchanged",
+        "npc": 1132
+      }
+    ]
+  },
+  "native_rigid_sm_grass_lod": {
+    "profile_check_passed": true,
+    "profile_levels": [
+      1,
+      2,
+      3
+    ],
+    "gpu": {
+      "passed": true,
+      "zone": 1,
+      "portal": 101,
+      "models": 323,
+      "placements": 6503,
+      "referenced_payloads": 723,
+      "missing_map_textures": 1,
+      "requested_cell": [
+        513,
+        940
+      ],
+      "spawn_cell": [
+        513,
+        940
+      ],
+      "native_empty_cell_selection": true,
+      "native_camera": true,
+      "native_world_time": true,
+      "authored_noon_phase": 0.25,
+      "actual_d3d11_render": true,
+      "network_session": false,
+      "zone_admitted": false,
+      "full_zone_acceptance": false
+    },
+    "geometry": {
+      "static_buffer_pairs": 323,
+      "native_material_sections": 2147,
+      "placed_objects": 6503,
+      "object_triangles": 380497,
+      "lod_managed": 1791,
+      "arrival_lod_culled": 1715,
+      "far_lod_culled": 1791,
+      "requested_lods": [
+        2,
+        8,
+        19,
+        47
+      ],
+      "selected_authored_lods": [
+        74,
+        2,
+        0,
+        0
+      ],
+      "lod_far_cull_and_restore": true,
+      "small_objects": 334,
+      "small_objects_culled": 333,
+      "small_cutoff": 600,
+      "small_cutoff_checked": true,
+      "small_boundary_distance": 600,
+      "grass_objects": 4712,
+      "grass_objects_culled": 4671,
+      "grass_objects_faded": 7,
+      "grass_cutoff": 300,
+      "grass_alpha_band": 40,
+      "grass_cutoff_checked": true,
+      "grass_fade_checked": true,
+      "grass_boundary_distance": 300,
+      "classification": "TML.property.objectType"
+    },
+    "capture_sha256": "89ea53ec1b681cea5bd1f29f3127bc50f7c16231a0f4ed8cdfbe87d6f2298d40",
+    "original_dark_fixture_retained": "D:\\Tantra-Beta\\Expansion-20261106\\native-karya-class-lod\\mandara-lod\\arrival.png",
+    "full_scene_parity": false
+  },
+  "deployment": {
+    "manager_pid": 30288,
+    "readiness": {
+      "ready": true,
+      "native_worlds": 11,
+      "admin_stub_worlds": 1,
+      "require_empty": true,
+      "worlds": {
+        "zones/World1_Zone1_Channel2/zone.toml": {
+          "native": true,
+          "pid": 37624,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1704,
+          "population_ticks": 457
+        },
+        "zones/Zone01/zone.toml": {
+          "native": true,
+          "pid": 26612,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1704,
+          "population_ticks": 469
+        },
+        "zones/Zone02/zone.toml": {
+          "native": true,
+          "pid": 39960,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1285,
+          "population_ticks": 459
+        },
+        "zones/Zone03/zone.toml": {
+          "native": true,
+          "pid": 21928,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 608,
+          "population_ticks": 481
+        },
+        "zones/Zone04/zone.toml": {
+          "native": true,
+          "pid": 25528,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 437,
+          "population_ticks": 481
+        },
+        "zones/Zone05/zone.toml": {
+          "native": true,
+          "pid": 22932,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 493,
+          "population_ticks": 476
+        },
+        "zones/Zone06/zone.toml": {
+          "native": true,
+          "pid": 21800,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1,
+          "population_ticks": 490
+        },
+        "zones/Zone07/zone.toml": {
+          "native": true,
+          "pid": 23088,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 712,
+          "population_ticks": 461
+        },
+        "zones/Zone08/zone.toml": {
+          "native": true,
+          "pid": 22472,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 972,
+          "population_ticks": 434
+        },
+        "zones/Zone09/zone.toml": {
+          "native": true,
+          "pid": 30880,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 951,
+          "population_ticks": 431
+        },
+        "zones/Zone10/zone.toml": {
+          "native": false,
+          "pid": 31600,
+          "players": 0,
+          "connections": null,
+          "entry_ready": null,
+          "game_listener_bound": null,
+          "authored_hit_timing_ready": null,
+          "npc_alive": null,
+          "population_ticks": null
+        },
+        "zones/Zone12/zone.toml": {
+          "native": true,
+          "pid": 41308,
+          "players": 0,
+          "connections": 0,
+          "entry_ready": true,
+          "game_listener_bound": true,
+          "authored_hit_timing_ready": true,
+          "npc_alive": 1139,
+          "population_ticks": 412
+        }
+      },
+      "errors": {}
+    },
+    "karya_channels": {
+      "Zone01": {
+        "pid": 26612,
+        "players": 0,
+        "native_karya": {
+          "calendar_entries": 24,
+          "calendar_loaded": true,
+          "handles": [
+            2719,
+            0,
+            0
+          ],
+          "loaded": true,
+          "missing_messages": [],
+          "opened": false,
+          "positions": [
+            [
+              5,
+              5
+            ],
+            null,
+            null
+          ],
+          "teleport_failures": 0
+        }
+      },
+      "World1_Zone1_Channel2": {
+        "pid": 37624,
+        "players": 0,
+        "native_karya": {
+          "calendar_entries": 24,
+          "calendar_loaded": true,
+          "handles": [
+            2719,
+            0,
+            0
+          ],
+          "loaded": true,
+          "missing_messages": [],
+          "opened": false,
+          "positions": [
+            [
+              5,
+              5
+            ],
+            null,
+            null
+          ],
+          "teleport_failures": 0
+        }
+      }
+    },
+    "backup_schema": 10,
+    "backup_sha256": "912c3f84c44a56958b4a98526fb5733be11fb0fbe4f89262858fb99f33ea9892",
+    "no_players_during_maintenance": true,
+    "canonical_workbooks_changed": false
+  },
+  "native_runtime_inputs": [
+    {
+      "target": "_server_final\\zones\\Zone01\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone01\\Data\\Schedule.txt",
+      "sha256": "659ff3c0aa589b32a3c6a9cf796f3ac3b577ee4864d1829ebe0bc34d8d4ee87d"
+    },
+    {
+      "target": "_server_final\\zones\\Zone01\\Language.txt",
+      "source": "E:\\Global-server\\Zone01\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    },
+    {
+      "target": "_server_final\\zones\\World1_Zone1_Channel2\\Data\\Schedule.txt",
+      "source": "E:\\Global-server\\Zone01\\Data\\Schedule.txt",
+      "sha256": "659ff3c0aa589b32a3c6a9cf796f3ac3b577ee4864d1829ebe0bc34d8d4ee87d"
+    },
+    {
+      "target": "_server_final\\zones\\World1_Zone1_Channel2\\Language.txt",
+      "source": "E:\\Global-server\\Zone01\\Language.txt",
+      "sha256": "8330b4f960746bbfcc9581ab7979765b4fa53c181f8a17d3151451d6cba0b980"
+    }
+  ],
+  "source_sha256": {
+    "Tantra/zone/server.cpp": "6639ca68a1e18c121e1e8a60fd2c7bbdd8f07b1d73540f645509e58ad9b6da7a",
+    "Tantra/zone/CMob2.cpp": "50cd5a0bbe8d5287d44ced2bd893013f33c8c472b09982890db11caee3c65e8b",
+    "Tantra/zone/GetFunc.cpp": "eae98b7130fef718777ef716746b1916280a7a4a97eeb730efdc0f1ee2537cad",
+    "Tantra/zone/GetFunc.h": "32fc48906032aef35a610324e4ef9b375eb31585e354cabf29b515be87d14c21",
+    "Tantra/zone/TNScheduler.cpp": "f4f24d2da776e55773c5daf2b1bde8ef6026175d6487c2de83306b1b2a31b586",
+    "Tantra/HTlauncher/HTMapSystem.cpp": "959a0b724cd475999e39d8e2fae6dc0f0ff866e518b27d8b6d6a1022eb37dbae",
+    "Tantra/HTlauncher/HTEngineHandler.cpp": "dec2f71e6b25091e54c7742d8d85a00b4c4658865cfaff61b0d12f4836bf5500",
+    "_server_cpp/src/native/NativeKaryaRules.h": "d78e494595dc95a1f6bea8d91cfc22921af331301fa68168cbc81267c0695c15",
+    "_server_cpp/src/zone/world_karya.inc": "1e0fbb91d0af63f296ae24110cac899e2b6acafc5717ec96eb6afd6513af9a50",
+    "_server_cpp/src/zone/npc_escape.cpp": "1990d110236964860cf726fed4d87bf75435f9a3f95a519c3ad2eb8dc7cc6321",
+    "_server_cpp/src/zone/population.cpp": "9e0f4a0c73cee3d49a86f9ed7eb3bb8c0baf3dae27ce468752e8a294bccb342f",
+    "_server_cpp/src/common/config.cpp": "7d4b94b2e6d165b6adc34b3623653aed554a92d0f426ef4ac4d5f6f12fcc1fbb",
+    "_server_cpp/tests/native_karya_world.inc": "f12da1d6439d29a8ac128819b2b0156f47d496683b96c38dc43bd087682d14e5",
+    "_server_cpp/tests/native_karya_rules.inc": "e24780a555040d95bb8e10cc418edb9e7060dac7f7dfe40bfc08810dfed730ea",
+    "_server_cpp/tests/player_class_trial_journey.inc": "f36f86cbc997d9047d134adafe476fbce406eb008188d6f3c0a5a00d963f5bbd",
+    "_remake_bgfx/src/rendering/bgfx/BgfxBackend.cpp": "9b21cc6207076bf71b3758b8c37fdb6f7096d8ef38f81b040eeb96c4dee19223",
+    "_remake_bgfx/src/resources/ClientRenderProfile.cpp": "98e6e224317a1199d7bc512a1ca355c27fcb8a094b9777930980f0a6cbeafbde",
+    "_remake_bgfx/src/compatibility/HtModelLod.h": "e395d31e44f3b1e821dfb8ce4d0dc175cc1adac03ab3d7d305b2df47d114c201",
+    "_remake_bgfx/src/tools/native_zone_arrival_render_probe.cpp": "b212e81ce20b0861efc3c5dedd47974915b2dd89bf4ca0c3406484a2a702f363"
+  },
+  "remaining_gates": [
+    "Broader connected weapon/tribe/skill/buff/familiar presentation and attack audio.",
+    "Other selected quest chains, full second promotion and connected graphical earned journeys.",
+    "Full graphics/audio scene parity, shadows and music recovery.",
+    "Zone06 live graphical boss2072 encounter.",
+    "Karya gate contact/portal-selector services, destination admission and connected saved-return journey.",
+    "Remaining source-specific ordinary/special zones within01-34."
+  ]
+}

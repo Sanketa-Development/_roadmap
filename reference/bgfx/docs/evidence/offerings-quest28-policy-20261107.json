@@ -1,0 +1,210 @@
+{
+  "date": "2026-11-07",
+  "scope": "Four-item goal: item offerings, original Quest28 chain, configurable vending admission and Kruma restrictions",
+  "offerings": {
+    "atomic_inventory_equipment_cargo_currency": true,
+    "identity_revision_and_duplicates_checked": true,
+    "passed": true,
+    "points": 5,
+    "replay_cached": true,
+    "saved_exact": true,
+    "source_divisor": 450
+  },
+  "quest28": {
+    "country": 4,
+    "exact_saved_return": true,
+    "next_quest": 29,
+    "npcs": [
+      1109,
+      1110,
+      1107
+    ],
+    "partial_saved": true,
+    "passed": true,
+    "prana": 150000,
+    "quest": 28,
+    "replay_cached": true,
+    "reward": 5749,
+    "rupiah_cost": 12500,
+    "seeded_materials_and_position_only_travel_fixture": true,
+    "states": [
+      1,
+      3,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      255
+    ]
+  },
+  "policy": {
+    "default_minimum_level": 30,
+    "default_vending_zone": 1,
+    "inventory_and_quickbar_share_7f13": true,
+    "kruma_id_and_function_checks": true,
+    "no_item_or_currency_consumption_on_denial": true,
+    "passed": true,
+    "vending_levels": [
+      {
+        "allowed": false,
+        "custom_minimum": 0,
+        "level": 29,
+        "zone": 1
+      },
+      {
+        "allowed": true,
+        "custom_minimum": 0,
+        "level": 30,
+        "zone": 1
+      },
+      {
+        "allowed": false,
+        "custom_minimum": 0,
+        "level": 30,
+        "zone": 2
+      },
+      {
+        "allowed": true,
+        "custom_minimum": 10,
+        "level": 30,
+        "zone": 2
+      },
+      {
+        "allowed": false,
+        "custom_minimum": 31,
+        "level": 30,
+        "zone": 1
+      }
+    ]
+  },
+  "policy_file": "_server_final/data/GameplayPolicy.json",
+  "public_template": "_server_cpp/data/GameplayPolicy.defaults.json",
+  "default_policy": {
+    "version": 1,
+    "vending": {
+      "allowed_zones": [
+        1
+      ],
+      "minimum_level": 30
+    },
+    "kruma": {
+      "zones": [
+        10,
+        20,
+        25
+      ],
+      "blocked_item_ids": [
+        7011,
+        7028,
+        7034,
+        7072
+      ],
+      "blocked_effect_ids": [
+        3170,
+        3180,
+        3181,
+        3250,
+        3320
+      ]
+    }
+  },
+  "verified_english_item_names": {
+    "7011": "Pustika",
+    "7028": "Ziva Pustika",
+    "7034": "Q. Ziva Pustika",
+    "7072": "Fortress Pustika"
+  },
+  "original_sources": {
+    "offerings": "Tantra/zone/server.cpp _MSG_ItemContribution",
+    "vending": "Tantra/zone/server.cpp _MSG_MobStore 0x1421",
+    "quest28": "Tantra/zone/Quest.cpp eScenario2G, Bibban/Saranew/Karan and Karan aliases",
+    "teleport_effects": "Tantra/zone/Basedef.h 3170/3180/3181/3250/3320 and current authoritative Item.tsv"
+  },
+  "graphical": {
+    "passed": true,
+    "root": "D:\\Tantra-Beta\\Focused-20261107\\offerings-quest28-policy\\ui-final",
+    "client": {
+      "passed": true,
+      "role": 1,
+      "sdl_item_drag": true,
+      "cursor_icon": true,
+      "selection_does_not_consume": true,
+      "server_accepted": true,
+      "rupiah_ui_synced": true,
+      "rupiah": 450,
+      "points": 2
+    },
+    "exact_sql_beyond_live_vitals": true,
+    "protected_sources_unchanged": true,
+    "images_reviewed": [
+      "offering-icon-drag.png",
+      "offering-server-accepted.png"
+    ]
+  },
+  "build": {
+    "configuration": "Release",
+    "initial_client": "_remake_bgfx/build/goal-offerings-quest28-policy-release.log",
+    "initial_server": "_server_cpp/build/goal-offerings-quest28-policy-release.log",
+    "server_correction": "_server_cpp/build/goal-offering-transaction-correction.log",
+    "client_correction": "_remake_bgfx/build/goal-offering-money-ui-correction.log",
+    "actual_failures_resolved": [
+      "Warehouse transfer conservation correctly rejected consumption; add explicit validated offering receipt instead of weakening warehouse rules",
+      "Rendered balance remained stale after accepted payment; display authoritative owner money and retain full-stat fallback before inventory initialization"
+    ],
+    "repeats": "Only the failing offering transaction and changed money UI were rechecked; accepted gate/combat/social/zone journeys were retained"
+  },
+  "patch": {
+    "version": 1794065181,
+    "files": 5313,
+    "bytes": 1635647581,
+    "signed": true,
+    "url": "http://172.16.90.12/patch"
+  },
+  "limits": [
+    "Quest28 materials, level and travel positions are seeded in isolated fixtures; the complete native flag/reward sequence is earned through real authority requests. No new farming/balance or full graphical quest-tour acceptance.",
+    "Vending work covers native store admission/query/close, authoritative zone/level checks and active-store action locks. Full personal-store purchase/UI parity remains separate.",
+    "Kruma restrictions run before item execution through the common inventory/quickbar item-use request; this does not implement previously unsupported teleport services. Ordinary map portals and non-item skills retain their own rules.",
+    "LAN172.16.90.12; no new public-host, separate-PC or benchmark acceptance. Normal workers/player data were not changed."
+  ],
+  "staged_binaries": {
+    "_client_bgfx\\ZFLauncher.exe": "ec2ccc6da853ede4a42ba9b69683cc124d16a3e1d3ee3236e0e296df291d2326",
+    "_server_final\\bin\\TantraZone.exe": "e1092365865bd9dbe1158cda74ce220e52af7f9eb5dca9eb224177ebb8351a1a",
+    "_server_final\\bin\\TantraService.exe": "7394a9bcfdcc23334a6e9ed9cf5c9631e22c100cac35fc4236434846779287a7"
+  },
+  "raw_evidence": {
+    "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-player-damage-22c3cdd2150c8ea5a4a3860e67f0149429944e828d3d497a3418bcd2947c7190\\ITEM_OFFERINGS_RESULT.json": "46b6a7568841c9d28b0849da6aa692074bd805a6a7031accd5efb0bb4402c4fc",
+    "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-player-damage-4c0eb1b3c731a8f9f5c89e3a147b4886351127305ca556a8eb731bf9d1176130\\QUEST28_RESULT.json": "84ca706c1d597516c65dd44a85eed73345319ad44067d831a7423a192996a750",
+    "C:\\Users\\Ashesh\\AppData\\Local\\Temp\\tantra-cpp-player-damage-af3413f14f77ffa846e6603191c92032a3a123cff4c3d2568c9e7820facddb15\\GAMEPLAY_POLICY_RESULT.json": "56405835b1db4a2d4d886054494524546abe0c5e34642f071648e46d569275ee",
+    "D:\\Tantra-Beta\\Focused-20261107\\offerings-quest28-policy\\ui-final\\RESULT.json": "e080690d68447c309c1e9d750952eb8524253f53f0842000227c32d9e6d47bfa"
+  },
+  "packages": {
+    "client": {
+      "archive": "D:\\Tantra-Beta\\2026-11-07\\Global-Tantra-Offerings-Quest28-Policies.zip",
+      "sha256": "77a6d4e5f144593b63175384c2ad8299988ad10b062a8ebc7d329ce0b4c3685c",
+      "bytes": 799793369,
+      "files": 5312,
+      "signed_profile_verified": true,
+      "modified_file_rejected": true,
+      "latest_archived_files_match_staging": true,
+      "clean_player_pc_verified": false
+    },
+    "server": {
+      "archive": "D:\\Tantra-Beta\\2026-11-07\\Global-Tantra-Offerings-Quest28-Policies-Server-Update.zip",
+      "sha256": "5a4c6d1d7abab5e8a41dba20316d96f9c09fe272da5b85a5d50e733d430431b3",
+      "files": 92,
+      "bytes": 12160558,
+      "includes_accounts": false,
+      "includes_private_keys": false,
+      "fresh_install": false
+    },
+    "active_policy_not_overwritten": true,
+    "public_policy_template_included": true,
+    "offline_shortcut_included": true,
+    "hosts": [
+      "172.16.90.12"
+    ]
+  }
+}

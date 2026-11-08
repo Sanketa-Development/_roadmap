@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "actual_cmd_entry": true,
+  "fixture": "Isolated SQLite backup of the failing normal profile",
+  "saved_worlds_restored": 5,
+  "existing_tables_and_records_unchanged": [
+    "offline_profile",
+    "accounts",
+    "offline_worlds",
+    "offline_zones",
+    "characters",
+    "character_deletion_backups",
+    "account_cargo"
+  ],
+  "v4_to_v5_backup_and_migration": true,
+  "normal_save_and_preferences_unchanged": true,
+  "startup_frames": 100,
+  "rendered_offline_login": true,
+  "output": "C:\\_GitHub\\TantraSrc\\_remake_bgfx\\build\\evidence\\offline-saved-worlds-1794097897627063400",
+  "scope": "Existing-profile startup recovery; no player gameplay journey",
+  "patch_version": 1794098064,
+  "staged_client_sha256": "619423605471273009f71a23d8325961eb3064655fa390537e32acbdcb60696a",
+  "root_cause": "Saved offline profile has five worlds; exported online server list changed its world count. OfflineStore previously rejected the mismatch."
+}

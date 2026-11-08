@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-07T09:17:19.324531+08:00",
+  "configuration": "Release",
+  "full_goal_complete": false,
+  "previous_checkpoint": "dual-skill-weapon-20261107.json",
+  "external_evidence": "D:\\Tantra-Beta\\Expansion-20261107\\karya-counts-later-recovery",
+  "source": [
+    "Tantra/zone/Server.cpp:27958-28098",
+    "Tantra/zone/Basedef.h:3029-3031",
+    "_server_cpp/src/native/NativeResurrectionRules.h"
+  ],
+  "implemented": {
+    "native_count_actions": [
+      20130,
+      20140,
+      20150
+    ],
+    "soldier_clans": [
+      5,
+      6,
+      7
+    ],
+    "use_current_clan_and_living_status": true,
+    "dead_soldiers_do_not_block_progress": true,
+    "resurrection_follows_canonical_enabled_native_profiles": true,
+    "source_revival_plan_statues_and_special_locations_retained": true,
+    "disabled_profile_grid_ownership_and_durable_handoff_checks_retained": true
+  },
+  "authority_recovery_check": {
+    "passed": true,
+    "zones": [
+      21,
+      24
+    ],
+    "original_maps_and_generators": true,
+    "real_native_death": true,
+    "normal_saved_resurrection": true,
+    "money_equipment_and_48_usable_slots_preserved": true,
+    "saved_reopening": true,
+    "private_sqlite_characters": true,
+    "live_tcp": false,
+    "graphical_session": false,
+    "runs": 1
+  },
+  "build": {
+    "zone_release_passed": true,
+    "verifier_release_passed": true,
+    "production_rebuild_retries": 0,
+    "client_rebuilds": 0,
+    "verifier_only_correction": "Replace unsupported NativeItem equality with native serialized inventory/equipment comparisons; retain initial build log."
+  },
+  "client_sha256": "2931975b655919b52f4cddec5065b819081df7c05219ae5e5291a4c6afe3efd4",
+  "zone_worker_sha256": "2551bd969d50554aa062207b38958b08ad0aad7ac95abb46f215feb82e42aa34",
+  "previous_zone_sha256": "a26b00c5ac3772df8ecb3874a7832e39de21fe00bc108618f613204d7931e3a9",
+  "client_patch_unchanged": 1794013241,
+  "normal_database_changed": false,
+  "normal_servers_started_or_stopped": false,
+  "limitations": [
+    "The Karya count guards are source-reviewed and compiled; a new wave/event encounter was not run.",
+    "Global Karya tasks reference action23100, absent from the supplied current source action enum/dispatch. Record it without inventing behavior; Zones13-15 remain unaccepted.",
+    "Recovery evidence is World/SQLite authority, not a new TCP or graphical session. Full goal remains open."
+  ]
+}

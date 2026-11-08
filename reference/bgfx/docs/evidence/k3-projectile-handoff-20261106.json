@@ -1,0 +1,188 @@
+{
+  "configuration": "Release",
+  "skill_family": "K3",
+  "game_name": "Global Tantra",
+  "source_reference": "Tantra/HTlauncher/HTAttackManager.cpp FOLLOW/IMPACT lifecycle",
+  "authoritative_projectile_tag": true,
+  "native_critical_and_dodge_bits_preserved": true,
+  "authority_case": {
+    "skill": 3306,
+    "passed": true,
+    "log": "D:\\Tantra-Beta\\Expansion-20261106\\k3-projectile-handoff\\projectile-authority.log"
+  },
+  "render": {
+    "passed": true,
+    "skill_family": "K3",
+    "monster": 2004,
+    "skill": 41400,
+    "follow": 1200065,
+    "impact": 1200067,
+    "rendered": true,
+    "double_flight_rejected": true,
+    "critical_and_dodge_preserved": true,
+    "depth_checked": true,
+    "network_session": false,
+    "profile_modified": false
+  },
+  "normal_deployment": {
+    "ready": true,
+    "native_worlds": 11,
+    "admin_stub_worlds": 1,
+    "require_empty": true,
+    "worlds": {
+      "zones/World1_Zone1_Channel2/zone.toml": {
+        "native": true,
+        "pid": 37648,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 1664,
+        "population_ticks": 97
+      },
+      "zones/Zone01/zone.toml": {
+        "native": true,
+        "pid": 11876,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 1663,
+        "population_ticks": 112
+      },
+      "zones/Zone02/zone.toml": {
+        "native": true,
+        "pid": 24264,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 1262,
+        "population_ticks": 87
+      },
+      "zones/Zone03/zone.toml": {
+        "native": true,
+        "pid": 32148,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 600,
+        "population_ticks": 85
+      },
+      "zones/Zone04/zone.toml": {
+        "native": true,
+        "pid": 26732,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 428,
+        "population_ticks": 80
+      },
+      "zones/Zone05/zone.toml": {
+        "native": true,
+        "pid": 38336,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 484,
+        "population_ticks": 73
+      },
+      "zones/Zone06/zone.toml": {
+        "native": true,
+        "pid": 27220,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 0,
+        "population_ticks": 70
+      },
+      "zones/Zone07/zone.toml": {
+        "native": true,
+        "pid": 34888,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 626,
+        "population_ticks": 55
+      },
+      "zones/Zone08/zone.toml": {
+        "native": true,
+        "pid": 22240,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 618,
+        "population_ticks": 41
+      },
+      "zones/Zone09/zone.toml": {
+        "native": true,
+        "pid": 35576,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 392,
+        "population_ticks": 27
+      },
+      "zones/Zone10/zone.toml": {
+        "native": false,
+        "pid": 14244,
+        "players": 0,
+        "connections": null,
+        "entry_ready": null,
+        "game_listener_bound": null,
+        "authored_hit_timing_ready": null,
+        "npc_alive": null,
+        "population_ticks": null
+      },
+      "zones/Zone12/zone.toml": {
+        "native": true,
+        "pid": 24892,
+        "players": 0,
+        "connections": 0,
+        "entry_ready": true,
+        "game_listener_bound": true,
+        "authored_hit_timing_ready": true,
+        "npc_alive": 138,
+        "population_ticks": 6
+      }
+    },
+    "errors": {}
+  },
+  "exe_sha256": "1cdfc5e8e5844ac49f204b3bc56a813c85e835e61e448af29b01a23751d628aa",
+  "tantra_sha256": "79be3163f696ad4133df8071bfdfa4f989c516df5ff2258a97b735265bd9e7fb",
+  "patch": {
+    "version": 1793926490,
+    "files": 5215,
+    "bytes": 1449647500,
+    "web_root": "C:\\xampp\\htdocs\\patch",
+    "patch_url": "http://172.16.90.12/patch",
+    "signed": true,
+    "private_key_published": false,
+    "bootstrap": "Tantra.exe (combined launcher/patcher, installed with the client)"
+  },
+  "server_update": {
+    "path": "D:\\Tantra-Beta\\Expansion-20261106\\k3-projectile-handoff\\Global-Tantra-Server-Update-20261106-projectiles.zip",
+    "sha256": "68e5e1725326cd2eb8a25ecf86b236110ded4b2864826b3f3fc5381cc0c9bddd",
+    "fresh_install": false
+  },
+  "two_client_network_session": false,
+  "full_goal_complete": false,
+  "evidence_root": "D:\\Tantra-Beta\\Expansion-20261106\\k3-projectile-handoff"
+}
