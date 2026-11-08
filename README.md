@@ -1,29 +1,39 @@
 # Sanketa roadmap
 
-Public website: https://sanketa-development.github.io/_roadmap/
+Website: https://sanketa-development.github.io/_roadmap/
 
-This repository is the `_roadmap` submodule in the Sanketa development workspace.
-The default view is Sanketa (bgfx / ZFLauncher). The historical Tantra-O roadmap
-remains available through its selector. The separate `_docs` repository is private.
-Only the roadmap assets and its cited plan/evidence snapshots are published here.
+Sanketa is the only project shown. The site has Overview, Tasks, Worlds & scope,
+and Updates, with a responsive green-and-gold design.
 
-## Publish
+The roadmap and its source documents are AES-256-GCM encrypted before publication.
+PBKDF2-SHA-256 derives the key from the visitor's password with a random salt and
+600000 iterations. The public repository contains no plaintext password or
+separate password verifier. Decryption happens in the browser over HTTPS.
 
-Push `main`. `.github/workflows/pages.yml` publishes the static website using
-GitHub Actions; repository Settings > Pages must use **GitHub Actions**.
-There is no npm build or Jekyll processing. Relative paths work under `/_roadmap/`.
+**Remember password** is optional and off by default. When enabled, it saves the
+successful password in that browser's local storage and prefills the masked field
+on return. It never unlocks automatically. Turning it off removes the saved value.
+Use it only on a device you trust.
 
-## Refresh and check
+GitHub Pages is static hosting, so this is encrypted shared-password access rather
+than server authentication. Password strength still matters. Older roadmap
+snapshots were public and remain in Git history; this change does not revoke them.
 
-Update the authored snapshots in `reference/`, then run:
+## Update and publish
+
+Editable content and source snapshots belong to private `_docs/roadmap` in the
+main workspace. Refresh there, then run from this repository:
 
 ```powershell
-python tools/update-roadmap.py
-node tools/check-roadmap.cjs
-node tools/check-rendered-content.cjs
+node tools/seal-roadmap.mjs
 ```
 
-From the main workspace, `python _roadmap/tools/update-roadmap.py --bgfx-root
-_client/source` refreshes the bgfx snapshots. Keep private captures, saves and
-credentials out of this public repository. Record component and visual acceptance
-separately; checked task counts do not establish overall gameplay completion.
+Enter the agreed password at the hidden prompt. A custom private source JSON path
+can be supplied as the first argument. Do not put passwords in files or arguments.
+Only `assets/roadmap.enc.json` is written. Do not add plaintext source snapshots to
+this public repository.
+
+Run `node tools/check-roadmap.cjs` and `node tools/check-rendered-content.cjs` with
+the password supplied at their hidden prompts. Push `main` to deploy through the
+existing GitHub Actions Pages workflow. Only `index.html` and `assets/` deploy.
+No npm packages, server, external scripts, or Jekyll build are required.

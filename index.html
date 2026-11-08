@@ -3,40 +3,66 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Tantra Online remake roadmaps: Tantra-O with OGRE and Tantra-B with bgfx. Source checklists, task progress and acceptance gates.">
-  <title>Sanketa — Tantra Online Roadmap</title>
+  <meta name="description" content="The private development roadmap for Sanketa.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="same-origin">
+  <title>Sanketa — Private roadmap</title>
   <link rel="icon" href="assets/tantra.ico">
-  <link rel="stylesheet" href="assets/roadmap.css?v=20261109-1">
-  <script defer src="assets/roadmap-data.js?v=20261109-1"></script>
-  <script defer src="assets/roadmap.js?v=20261109-1"></script>
+  <link rel="stylesheet" href="assets/site.css?v=20261109-2">
+  <script type="module" src="assets/roadmap.mjs?v=20261109-2"></script>
 </head>
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
-  <div class="bg-image" aria-hidden="true"></div>
-  <div class="bg-shade" aria-hidden="true"></div>
-  <div class="geometry" aria-hidden="true"></div>
-  <div class="site">
-  <header class="topbar"><div class="wrap topbar-inner">
-    <a class="brand" href="#tantra-b"><img src="assets/tantra.ico" alt="" width="30" height="30"><span>SANKETA <small>DEVELOPMENT ROADMAP</small></span></a>
-    <nav aria-label="Primary navigation">
-      <a href="#tantra-o" data-route="tantra-o">Tantra-O <small>OGRE</small></a>
-      <a href="#tantra-b" data-route="tantra-b">Tantra-B <small>bgfx</small></a>
-      <a href="#about" data-route="about">About</a>
-      <a href="#gameplay" data-route="gameplay">Gameplay</a>
-      <a href="#tasks" data-route="tasks">Tasks</a>
-      <a href="#changelogs" data-route="changelogs">Changelogs</a>
-    </nav>
-  </div></header>
-  <div id="content" tabindex="-1">
-    <main id="page-tantra-o" class="page" aria-label="Tantra-O roadmap" hidden></main>
-    <main id="page-tantra-b" class="page" aria-label="Sanketa roadmap"></main>
-    <main id="page-about" class="page" hidden></main>
-    <main id="page-gameplay" class="page" hidden></main>
-    <main id="page-tasks" class="page" hidden></main>
-    <main id="page-changelogs" class="page" hidden></main>
+  <section class="access" id="access" aria-label="Roadmap access">
+    <div class="access-frame">
+      <div class="access-story">
+        <div class="brand"><img src="assets/tantra.ico" alt=""><div class="wordmark">SANKETA<small>THE DEVELOPMENT ROADMAP</small></div></div>
+        <div class="access-copy">
+          <span class="eyebrow">A FAMILIAR WORLD. A NEW CHAPTER.</span>
+          <h1>The journey<br>takes shape.</h1>
+          <p>Follow Sanketa’s development, from core systems to the next playable milestone.</p>
+          <div class="access-caption"><span>WINDOWS MMORPG</span><span>BUILT WITH INTENTION ↗</span></div>
+        </div>
+      </div>
+      <div class="access-form-area">
+        <div class="access-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5z"/><path d="M12 14v3"/></svg></div>
+        <span class="eyebrow">PRIVATE ACCESS</span>
+        <h2>A closer look<br>at what’s next.</h2>
+        <p class="access-description">Enter the roadmap password to continue.</p>
+        <form id="access-form">
+          <label class="field-label" for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="off" placeholder="Enter your password" required autofocus aria-describedby="access-error">
+          <label class="remember-row"><input id="remember" type="checkbox" role="switch"><span>Remember password<small>Saves the password on this device.</small></span></label>
+          <button id="enter" type="submit">Enter roadmap →</button>
+          <p class="access-error" id="access-error" role="alert" aria-live="polite"></p>
+        </form>
+        <p class="access-footnote">Your next visit still starts with Enter.</p>
+      </div>
+    </div>
+  </section>
+  <div class="workspace" id="workspace" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="#overview"><img src="assets/tantra.ico" alt=""><div class="wordmark">SANKETA<small>DEVELOPMENT</small></div></a>
+      <p class="nav-label">THE ROAD AHEAD</p>
+      <nav aria-label="Main navigation">
+        <a href="#overview" data-route="overview"><span class="nav-icon" aria-hidden="true">◈</span>Overview</a>
+        <a href="#tasks" data-route="tasks"><span class="nav-icon" aria-hidden="true">☷</span>Tasks</a>
+        <a href="#worlds" data-route="worlds"><span class="nav-icon" aria-hidden="true">◎</span>Worlds & scope</a>
+        <a href="#updates" data-route="updates"><span class="nav-icon" aria-hidden="true">↗</span>Updates</a>
+      </nav>
+      <div class="sidebar-bottom"><p>A world in progress.<br>Every milestone matters.</p><button id="lock" type="button">↪ Lock roadmap</button></div>
+    </aside>
+    <div class="main-column">
+      <header class="workspace-header"><div class="header-breadcrumb"><span>SANKETA</span><span>/</span><h1 id="page-title" tabindex="-1">Roadmap overview</h1></div><span class="private-label">Private roadmap</span></header>
+      <main class="main-content" id="main-content">
+        <div class="view" id="view-overview"></div>
+        <div class="view" id="view-tasks" hidden></div>
+        <div class="view" id="view-worlds" hidden></div>
+        <div class="view" id="view-updates" hidden></div>
+      </main>
+      <footer class="workspace-footer"><span>SANKETA · THE DEVELOPMENT ROADMAP</span><span id="review-date"></span></footer>
+    </div>
   </div>
-  <noscript><div class="wrap notice">Enable JavaScript to view the interactive roadmap. The original plans remain available in the documentation.</div></noscript>
-  <footer><div class="wrap footer-inner"><span>TANTRA ONLINE <small>Built from the original experience.</small></span><span id="review-date"></span><a href="README.md">Documentation</a></div></footer>
-  </div>
+  <dialog id="source-dialog" aria-labelledby="source-title"><div class="source-header"><h2 id="source-title"></h2><button id="close-source" type="button" aria-label="Close source document">Close ×</button></div><pre id="source-text"></pre></dialog>
+  <noscript>Enable JavaScript to unlock the Sanketa roadmap.</noscript>
 </body>
 </html>

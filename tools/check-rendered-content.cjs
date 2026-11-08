@@ -1,39 +1,66 @@
-/* Execute the real page renderer against a minimal DOM adapter. This checks
- * generated content and interaction state; it does not assert browser layout. */
-const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+// Execute production roadmap.mjs against the existing style of minimal CPU DOM.
+// Layout is a separate browser check. No test password is stored in this file.
+const assert = require('node:assert/strict'), fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
+const { pathToFileURL } = require('node:url');
 class Node {
-  constructor(tag="div"){this.tagName=tag;this.children=[];this.attrs={};this.dataset={};this.events={};this.style={setProperty(){}};this.hidden=false;this.value="";this._text="";this.className="";}
-  append(...items){for(const item of items){this.children.push(typeof item==="string"?Object.assign(new Node("#text"),{_text:item}):item);if(this.tagName==="select"&&this.children.length===1)this.value=item.value;}}
-  replaceChildren(...items){this.children=[];this._text="";this.append(...items);}
-  set textContent(value){this.children=[];this._text=String(value);}
-  get textContent(){return this._text+this.children.map(n=>n.textContent).join("");}
-  setAttribute(key,value){this.attrs[key]=String(value);if(key.startsWith("data-"))this.dataset[key.slice(5)]=String(value);}
-  removeAttribute(key){delete this.attrs[key];}
-  addEventListener(name,fn){this.events[name]=fn;}
-  fire(name){assert(this.events[name],name);this.events[name]();}
-  all(){return this.children.flatMap(n=>[n,...n.all()]);}
-  querySelectorAll(selector){return this.all().filter(n=>selector[0]==="."?n.className.split(" ").includes(selector.slice(1)):selector[0]==="["?selector.slice(1,-1) in n.attrs:n.tagName===selector);}
+  constructor(tag = 'div') { this.tagName = tag; this.children = []; this.attrs = {}; this.events = {}; this.dataset = {}; this.style = {}; this.hidden = false; this.value = ''; this.checked = false; this.disabled = false; this.className = ''; this._text = ''; this.open = false; this.classList = { add: value => this.className += ' ' + value, remove: value => this.className = this.className.split(' ').filter(x => x !== value).join(' ') }; }
+  append(...nodes) { this.children.push(...nodes); }
+  replaceChildren(...nodes) { this.children = nodes; this._text = ''; }
+  set textContent(text) { this._text = String(text); this.children = []; }
+  get textContent() { return this._text + this.children.map(node => node.textContent).join(''); }
+  setAttribute(name, value) { this.attrs[name] = String(value); if (name.startsWith('data-')) this.dataset[name.slice(5)] = String(value); }
+  removeAttribute(name) { delete this.attrs[name]; }
+  addEventListener(event, handler) { this.events[event] = handler; }
+  async fire(event) { return this.events[event]?.({ preventDefault() {} }); }
+  querySelectorAll(selector) { const result = []; const match = node => selector.startsWith('.') ? node.className.split(' ').includes(selector.slice(1)) : selector.startsWith('#') ? node.id === selector.slice(1) : selector.startsWith('[') ? node.attrs[selector.slice(1, -1)] !== undefined : node.tagName === selector; const walk = node => { for (const child of node.children) { if (match(child)) result.push(child); walk(child); } }; walk(this); return result; }
+  focus() {} select() {} close() { this.open = false; } showModal() { this.open = true; }
 }
-const body=new Node("body"),pages=["tantra-o","tantra-b","about","gameplay","tasks","changelogs"],nav=new Node("nav");body.append(nav);
-for(const name of pages){const n=new Node("main");n.id="page-"+name;n.className="page";n.hidden=name!=="tantra-o";body.append(n);const a=new Node("a");a.setAttribute("data-route",name);nav.append(a);}
-const date=new Node("span");date.id="review-date";body.append(date);
-const document={body,readyState:"complete",createElement:tag=>new Node(tag),createTextNode:text=>Object.assign(new Node("#text"),{_text:text}),getElementById:id=>body.all().find(n=>n.id===id),querySelectorAll:s=>body.querySelectorAll(s)};
-const handlers={},location={hash:""},window={addEventListener:(name,fn)=>{handlers[name]=fn;},scrollTo(){}};
-const root=path.resolve(__dirname,"..");const context={document,window,location,URLSearchParams};vm.createContext(context);
-for(const file of ["roadmap-data.js","roadmap.js"])vm.runInContext(fs.readFileSync(path.join(root,"assets",file),"utf8"),context);
-const [ogre,bgfx]=window.TANTRA_ROADMAP.projects;
-const page=id=>document.getElementById("page-"+id);
-const visible=()=>document.querySelectorAll(".page").filter(n=>!n.hidden).map(n=>n.id);
-const route=hash=>{location.hash=hash;handlers.hashchange();};
-assert.deepEqual(visible(),["page-tantra-b"]);assert.equal(document.title,"Sanketa — Tantra Online Roadmap");
-assert.equal(page("tantra-o").querySelectorAll("details").length,14);assert.equal(page("tantra-b").querySelectorAll("details").length,10);
-for(const id of ["tantra-o","tantra-b"]){const choices=page(id).querySelectorAll(".project-choice");assert.deepEqual(choices.map(n=>n.href),["#tantra-o","#tantra-b"]);assert(choices.some(n=>n.textContent.includes("OGRE")));assert(choices.some(n=>n.textContent.includes("bgfx")));}
-route("#tasks?project=tantra-o");assert.deepEqual(visible(),["page-tasks"]);assert(document.getElementById("task-result-count").textContent.startsWith(`${ogre.total} of ${ogre.total}`));
-let results=document.getElementById("task-results");assert.equal(results.querySelectorAll("input").length,ogre.total);assert.equal(results.querySelectorAll("input").filter(n=>n.checked).length,ogre.done);
-const search=page("tasks").querySelectorAll("input").find(n=>n.type==="search");search.value="P06-T06";search.fire("input");assert.equal(results.querySelectorAll("input").length,1);
-search.value="";search.fire("input");const status=page("tasks").querySelectorAll("select")[0];status.value="open";status.fire("change");assert.equal(results.querySelectorAll("input").length,ogre.total-ogre.done);
-const buttons=page("tasks").querySelectorAll("button");buttons.find(n=>n.textContent==="Expand all").fire("click");assert(results.querySelectorAll("details").every(n=>n.open));buttons.find(n=>n.textContent==="Collapse all").fire("click");assert(results.querySelectorAll("details").every(n=>!n.open));
-route("#tantra-b");assert.deepEqual(visible(),["page-tantra-b"]);assert.equal(document.title,"Sanketa — Tantra Online Roadmap");route("#tasks");assert(document.getElementById("task-result-count").textContent.startsWith(`${bgfx.total} of ${bgfx.total}`));assert.equal(document.getElementById("task-results").querySelectorAll("input").filter(n=>n.checked).length,bgfx.done);
-route("#tasks?project=tantra-o");assert.equal(document.getElementById("task-results").querySelectorAll("input").length,ogre.total);
-route("");assert.deepEqual(visible(),["page-tantra-b"]);assert.equal(body.dataset.project,"tantra-b");
-console.log(JSON.stringify({result:"passed",renderer:"actual roadmap.js with CPU DOM adapter",ogre:{phases:14,tasks:ogre.total,checked:ogre.done},bgfx:{checkpoints:10,tasks:bgfx.total,checked:bgfx.done},defaultPage:"Sanketa",projectSwitching:"passed",searchStatusExpandCollapse:"passed",browserLayout:"not_run"}));
+(async () => {
+  const root = path.resolve(__dirname, '..');
+  const { readPassword } = await import(pathToFileURL(path.join(__dirname, 'seal-roadmap.mjs')));
+  const { unseal } = await import(pathToFileURL(path.join(root, 'assets/crypto.mjs')));
+  const model = await import(pathToFileURL(path.join(root, 'assets/model.mjs')));
+  const password = await readPassword(), envelope = JSON.parse(fs.readFileSync(path.join(root, 'assets/roadmap.enc.json')));
+  assert(password, 'Supply the password through the hidden prompt or stdin');
+  const data = await unseal(envelope, password), saved = new Map();
+  const localStorage = { getItem: key => saved.get(key) ?? null, setItem: (key, value) => saved.set(key, value), removeItem: key => saved.delete(key) };
+  const code = fs.readFileSync(path.join(root, 'assets/roadmap.mjs'), 'utf8').replace(/^import .*;\r?$/gm, '');
+  function start() {
+    const body = new Node('body'), handlers = {}, location = { hash: '' };
+    const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+    for (const match of html.matchAll(/<([a-z][a-z0-9]*)\b([^>]*\bid="([^"]+)"[^>]*)>/g)) {
+      const node = new Node(match[1]); node.id = match[3]; node.className = /class="([^"]+)"/.exec(match[2])?.[1] || ''; node.hidden = /\bhidden\b/.test(match[2]); body.append(node);
+    }
+    const document = { body, title: '', createElement: tag => new Node(tag), querySelectorAll: selector => body.querySelectorAll(selector), querySelector: selector => body.querySelectorAll(selector)[0] };
+    const window = { addEventListener: (event, fn) => handlers[event] = fn, scrollTo() {} };
+    const context = { document, window, location, URLSearchParams, localStorage, crypto: require('node:crypto').webcrypto, fetch: async () => ({ ok: true, json: async () => envelope }), unseal, ...model, TypeError };
+    vm.createContext(context); vm.runInContext(code, context);
+    return { document, location, window, get: id => document.querySelector('#' + id), route: hash => { location.hash = hash; handlers.hashchange(); } };
+  }
+  const app = start();
+  assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
+  assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  app.get('password').value = password + '!'; app.get('remember').checked = true; await app.get('access-form').fire('submit');
+  assert(app.get('workspace').hidden && app.get('access-error').textContent && !saved.size, 'Wrong password stays locked and is not remembered');
+  app.get('password').value = password; await app.get('access-form').fire('submit');
+  assert(!app.get('workspace').hidden && app.get('access').hidden && !app.get('access-error').textContent, 'Correct password unlocks and clears the error');
+  assert(saved.size === 1 && [...saved.values()][0] === password, 'Only successful password is remembered');
+  assert.equal(app.document.querySelectorAll('.checkpoint').length, data.project.groups.length);
+  app.route('#tasks');
+  const parents = () => app.get('task-list').querySelectorAll('.task').filter(node => !node.className.split(' ').includes('nested'));
+  assert.equal(parents().length, data.project.total);
+  const search = app.document.querySelectorAll('.search')[0]; search.value = 'no-match-zqjx-976123'; await search.fire('input'); assert.equal(parents().length, 0);
+  search.value = ''; await search.fire('input');
+  const filters = app.document.querySelectorAll('.filters')[0]; await filters.querySelectorAll('button').find(node => node.textContent === 'Open').fire('click'); assert.equal(parents().length, data.project.total - data.project.done);
+  await filters.querySelectorAll('button').find(node => node.textContent === 'Checked').fire('click'); assert.equal(parents().length, data.project.done);
+  const expand = app.document.querySelectorAll('.expand-actions')[0]; await expand.querySelectorAll('button')[0].fire('click'); assert(app.document.querySelectorAll('.task-group').every(node => node.open)); await expand.querySelectorAll('button')[1].fire('click'); assert(app.document.querySelectorAll('.task-group').every(node => !node.open));
+  app.route('#worlds'); assert.equal(app.document.querySelectorAll('.world-card').length, data.zones.length);
+  app.route('#updates'); assert.equal(app.document.querySelectorAll('.update').length, data.project.changes.length);
+  await app.document.querySelectorAll('.source-links')[0].querySelectorAll('button')[0].fire('click'); assert(app.get('source-dialog').open && app.get('source-text').textContent, 'Source document opens only after unlock');
+  await app.get('lock').fire('click'); assert(app.get('workspace').hidden && !app.get('source-text').textContent && !app.get('view-tasks').textContent, 'Lock removes decrypted content');
+  const returned = start(); assert(returned.get('workspace').hidden && returned.get('remember').checked && returned.get('password').value === password, 'Return visit is locked with the last successful password prefilled');
+  await returned.get('access-form').fire('submit'); assert(!returned.get('workspace').hidden, 'Enter is still required and unlocks the remembered password');
+  returned.get('remember').checked = false; await returned.get('remember').fire('change'); assert(!saved.size, 'Turning remember off immediately forgets the password');
+  const forgotten = start(); assert(!forgotten.get('password').value && !forgotten.get('remember').checked && forgotten.get('workspace').hidden, 'Forgotten value is not prefilled after a new visit');
+  console.log(JSON.stringify({ result: 'passed', productionRenderer: true, wrongAndCorrectPassword: true, rememberPrefillRequiresEnter: true, forget: true, decryptedContentRemovedOnLock: true, checkpoints: data.project.groups.length, tasks: data.project.total, searchFiltersExpandCollapse: true, worldsAndUpdates: true, sourceViewer: true, browserLayout: 'separate_check' }));
+})().catch(error => { console.error(error.stack); process.exitCode = 1; });
