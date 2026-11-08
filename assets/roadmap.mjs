@@ -67,7 +67,7 @@ function overview() {
   const page = $('#view-overview'), project = payload.project;
   const hero = el('section', 'hero'), copy = el('div', 'hero-copy');
   copy.append(el('span', 'eyebrow', 'THE DEVELOPMENT ROADMAP'), el('h2', '', 'A world worth\ncoming back to.'), el('p', 'hero-lead', project.description));
-  const actions = el('div', 'hero-actions'); actions.append(link('Explore the tasks ↗', '#tasks', 'primary-link'), link('Latest updates', '#updates', 'quiet-link')); copy.append(actions); hero.append(copy, el('span', 'hero-caption', 'SANKETA · WINDOWS MMORPG')); page.append(hero);
+  const actions = el('div', 'hero-actions'); actions.append(link('Explore the tasks ↗', '#tasks', 'primary-link'), link('Latest updates', '#updates', 'quiet-link')); copy.append(actions); hero.append(copy, el('span', 'hero-caption', 'A CLASSIC MMORPG MODERNISED')); page.append(hero);
   const stats = el('section', 'stats');
   for (const [label, value, note] of [
     ['CHECKLIST PROGRESS', `${checklistPercent(project)}%`, `${project.done} of ${project.total} top-level tasks checked`],
