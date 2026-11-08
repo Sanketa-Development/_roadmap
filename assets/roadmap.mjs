@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, validate } from './model.mjs';
+import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261109-3';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -52,8 +52,8 @@ function link(text, href, className = '') { const node = el('a', className, text
 function button(text, action, className = '') { const node = el('button', className, text); node.type = 'button'; node.addEventListener('click', action); return node; }
 function badge(text, recorded = false) { return el('span', `badge${recorded ? ' recorded' : ''}`, text); }
 function progress(group) {
-  const track = el('div', 'progress-track'), fill = el('span'); fill.style.width = `${Math.round(group.done / group.total * 100)}%`;
-  track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', `${group.title}: checked tasks`); track.setAttribute('aria-valuemin', '0'); track.setAttribute('aria-valuemax', String(group.total)); track.setAttribute('aria-valuenow', String(group.done)); track.append(fill); return track;
+  const track = el('div', 'progress-track'), fill = el('span'); fill.style.width = `${checklistPercent(group)}%`;
+  track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', `${group.title || group.name}: checked tasks`); track.setAttribute('aria-valuemin', '0'); track.setAttribute('aria-valuemax', String(group.total)); track.setAttribute('aria-valuenow', String(group.done)); track.setAttribute('aria-valuetext', `${checklistPercent(group)}% of top-level tasks checked (${group.done} of ${group.total})`); track.append(fill); return track;
 }
 function sourceButton(text, key) {
   return button(text + ' ↗', () => {
@@ -70,19 +70,19 @@ function overview() {
   const actions = el('div', 'hero-actions'); actions.append(link('Explore the tasks ↗', '#tasks', 'primary-link'), link('Latest updates', '#updates', 'quiet-link')); copy.append(actions); hero.append(copy, el('span', 'hero-caption', 'SANKETA · WINDOWS MMORPG')); page.append(hero);
   const stats = el('section', 'stats');
   for (const [label, value, note] of [
-    ['TASKS CHECKED', `${project.done} / ${project.total}`, 'Named implementation tasks'],
+    ['CHECKLIST PROGRESS', `${checklistPercent(project)}%`, `${project.done} of ${project.total} top-level tasks checked`],
     ['GATES RECORDED', `${project.accepted} / ${project.groups.length}`, 'Acceptance tracked separately'],
     ['NATIVE WORLD SCOPE', '01—34', 'Full content acceptance stays explicit']
-  ]) { const card = el('div', 'stat'); card.append(el('span', 'eyebrow', label), el('strong', '', value), el('span', 'muted', note)); stats.append(card); } page.append(stats);
+  ]) { const card = el('div', 'stat'); card.append(el('span', 'eyebrow', label), el('strong', '', value), el('span', 'muted', note)); if (label === 'CHECKLIST PROGRESS') card.append(progress(project)); stats.append(card); } page.append(stats);
   const heading = el('div', 'section-heading'); heading.append(el('div', '', 'The next chapters'), link('View all tasks ↗', '#tasks', 'text-link')); page.append(heading);
   const cards = el('div', 'checkpoint-grid');
   for (const group of project.groups) {
     const card = link('', `#tasks?phase=${group.id}`, 'checkpoint');
     const top = el('div', 'card-top'); top.append(el('span', 'chapter-number', group.id), badge(group.gate?.done ? 'Gate recorded' : 'Gate open', group.gate?.done));
     card.append(top, el('h3', '', group.title), progress(group));
-    const bottom = el('div', 'card-bottom'); bottom.append(el('span', '', `${group.done} of ${group.total} tasks checked`), el('span', 'arrow', '↗')); card.append(bottom); cards.append(card);
+    const bottom = el('div', 'card-bottom'); bottom.append(el('span', '', `${group.done} of ${group.total} tasks checked`), el('strong', 'phase-percentage', `${checklistPercent(group)}%`)); card.append(bottom); cards.append(card);
   } page.append(cards);
-  const sources = el('section', 'sources'); sources.append(el('div', '', 'Built from the source records'), el('p', 'muted', 'Task counts describe the implementation checklist. They are not an overall completion score or a release promise.'));
+  const sources = el('section', 'sources'); sources.append(el('div', '', 'How progress is counted'), el('p', 'muted', 'Percentages count checked top-level tasks divided by total top-level tasks, rounded to the nearest whole percent. Nested subtasks and acceptance gates are separate. This is checklist progress, not overall game completion.'));
   const links = el('div', 'source-links'); links.append(sourceButton('Implementation plan', 'plan'), sourceButton('Progress notes', 'progress'), sourceButton('Remaining work', 'parity')); sources.append(links); page.append(sources);
 }
 function taskNode(task, nested = false) {
@@ -100,14 +100,14 @@ function renderTasks() {
   for (const group of groups) {
     const section = el('details', 'task-group'); section.open = !!search || group.id === selected;
     const summary = el('summary'), heading = el('div', 'task-group-title'); heading.append(el('span', 'chapter-number', group.id), el('h3', '', group.title));
-    summary.append(heading, el('span', 'group-count', `${group.done} / ${group.total}`)); section.append(summary);
+    summary.append(heading, el('span', 'group-count', `${checklistPercent(group)}% · ${group.done} / ${group.total}`)); section.append(summary);
     const content = el('div', 'task-group-content'); group.tasks.forEach(task => content.append(taskNode(task)));
     if (group.gate) { const gate = el('div', 'gate-note'); gate.append(badge(group.gate.done ? 'Gate recorded' : 'Gate open', group.gate.done), el('p', '', group.gate.text)); content.append(gate); }
     section.append(content); list.append(section);
   }
 }
 function tasks() {
-  const page = $('#view-tasks'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE IMPLEMENTATION CHECKLIST'), el('h2', '', 'Every step, in view.'), el('p', 'muted', 'Explore the work behind Sanketa. Source checkboxes are read-only; acceptance gates remain separate.')); page.append(intro);
+  const page = $('#view-tasks'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE IMPLEMENTATION CHECKLIST'), el('h2', '', 'Every step, in view.'), el('p', 'muted', `${checklistPercent(payload.project)}% of top-level tasks checked (${payload.project.done}/${payload.project.total}). Source checkboxes are read-only; acceptance gates remain separate.`)); page.append(intro);
   const tools = el('div', 'task-tools'), input = el('input', 'search'); input.type = 'search'; input.placeholder = 'Search systems, tasks, or checkpoint IDs'; input.setAttribute('aria-label', 'Search tasks'); input.value = search;
   input.addEventListener('input', () => { search = input.value; renderTasks(); });
   const filters = el('div', 'filters'); filters.setAttribute('aria-label', 'Task status');

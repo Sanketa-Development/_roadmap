@@ -46,9 +46,16 @@ class Node {
   assert(!app.get('workspace').hidden && app.get('access').hidden && !app.get('access-error').textContent, 'Correct password unlocks and clears the error');
   assert(saved.size === 1 && [...saved.values()][0] === password, 'Only successful password is remembered');
   assert.equal(app.document.querySelectorAll('.checkpoint').length, data.project.groups.length);
+  const percent = group => `${model.checklistPercent(group)}%`;
+  const stats = app.document.querySelectorAll('.stat');
+  assert(stats[0].textContent.includes(percent(data.project)) && stats[0].textContent.includes(`${data.project.done} of ${data.project.total}`), 'Overall percentage retains its checklist denominator');
+  const cards = app.document.querySelectorAll('.phase-percentage');
+  assert.deepEqual(cards.map(node => node.textContent), data.project.groups.map(percent), 'Each phase shows its own checklist percentage');
+  assert.equal(model.checklistPercent({ done: 0, total: 0 }), 0);
   app.route('#tasks');
   const parents = () => app.get('task-list').querySelectorAll('.task').filter(node => !node.className.split(' ').includes('nested'));
   assert.equal(parents().length, data.project.total);
+  assert(app.get('task-list').querySelectorAll('.group-count').every((node, index) => node.textContent.startsWith(percent(data.project.groups[index]))), 'Task-board headers show the phase percentage');
   const search = app.document.querySelectorAll('.search')[0]; search.value = 'no-match-zqjx-976123'; await search.fire('input'); assert.equal(parents().length, 0);
   search.value = ''; await search.fire('input');
   const filters = app.document.querySelectorAll('.filters')[0]; await filters.querySelectorAll('button').find(node => node.textContent === 'Open').fire('click'); assert.equal(parents().length, data.project.total - data.project.done);

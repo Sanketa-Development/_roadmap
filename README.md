@@ -3,7 +3,13 @@
 Website: https://sanketa-development.github.io/_roadmap/
 
 Sanketa is the only project shown. The site has Overview, Tasks, Worlds & scope,
-and Updates, with a responsive green-and-gold design.
+and Updates, with a responsive red, bronze and gold design using the supplied
+`bg0.jpg` and `site-background.jpg` Tantra artwork.
+
+Overall and phase percentages show checked top-level tasks divided by total
+top-level tasks, rounded to whole percentages. Counts remain visible; acceptance
+gates and nested tasks stay separate. This is checklist progress, not a weighted
+overall game-completion score.
 
 The roadmap and its source documents are AES-256-GCM encrypted before publication.
 PBKDF2-SHA-256 derives the key from the visitor's password with a random salt and

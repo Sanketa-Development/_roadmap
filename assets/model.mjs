@@ -1,4 +1,7 @@
 export const routes = ['overview', 'tasks', 'worlds', 'updates'];
+export function checklistPercent({ done, total }) {
+  return total ? Math.round(done / total * 100) : 0;
+}
 export function route(hash) {
   const name = String(hash || '').replace(/^#/, '').split('?')[0].toLowerCase();
   return routes.includes(name) ? name : 'overview';
