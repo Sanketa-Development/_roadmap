@@ -4,7 +4,7 @@ import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
-let payload, envelope, search = '', status = 'all';
+let payload, envelope, search = '', status = 'all', skillStatus = 'all';
 
 function recall() {
   try { const saved = localStorage.getItem(storageKey); remember.checked = saved !== null; password.value = saved || ''; }
@@ -128,10 +128,25 @@ function skills() {
   page.append(intro);if (!catalog) return;
   const entries = catalog.groups.flatMap(group => group.skills), counts = el('div', 'skill-counts');
   counts.append(badge(`${catalog.implemented} implemented`, true), badge(`${entries.filter(skill => skill.status === 'partial').length} partial`), badge(`${entries.filter(skill => skill.status === 'unconfirmed').length} unconfirmed`));page.append(counts);
-  for (const [index, group] of catalog.groups.entries()) {
+  const tools = el('div', 'task-tools'), filters = el('div', 'filters skill-filters');filters.setAttribute('aria-label', 'Skill status');
+  for (const [value, label] of [['all', 'All'], ['done', 'Done'], ['open', 'Not done']]) {
+    const control = button(label, () => {skillStatus = value;filters.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === control)));renderSkills();});
+    control.setAttribute('aria-pressed', String(skillStatus === value));filters.append(control);
+  }
+  tools.append(filters);page.append(tools);
+  const count = el('p', 'muted skill-result-count');count.id = 'skill-count';count.setAttribute('role', 'status');count.setAttribute('aria-live', 'polite');
+  const list = el('div');list.id = 'skills-list';page.append(count, list);renderSkills();
+}
+function renderSkills() {
+  const catalog = payload.skills, list = $('#skills-list');list.replaceChildren();
+  let visible = 0;
+  for (const [index, original] of catalog.groups.entries()) {
+    const matches = original.skills.filter(skill => skillStatus === 'all' || (skillStatus === 'done' ? skill.implemented : !skill.implemented));
+    if (!matches.length) continue;
+    visible += matches.length;const group = {...original, skills: matches};
     const section = el('details', 'task-group skill-group');section.open = true;
     const summary = el('summary'), title = el('div', 'task-group-title');title.append(el('span', 'chapter-number', String(index + 1).padStart(2, '0')), el('h3', '', group.title));
-    summary.append(title, el('span', 'group-count', `${group.skills.filter(skill => skill.implemented).length} / ${group.skills.length} implemented`));section.append(summary);
+    summary.append(title, el('span', 'group-count', `${group.skills.length} shown · ${original.skills.filter(skill => skill.implemented).length} / ${original.skills.length} implemented`));section.append(summary);
     const list = el('div', 'task-group-content');
     for (const skill of group.skills) {
       const row = el('article', `skill-row ${skill.status}`), checkbox = el('input', 'skill-checkbox');checkbox.type = 'checkbox';checkbox.checked = skill.implemented;checkbox.disabled = true;checkbox.setAttribute('aria-label', `${skill.id}: ${skill.name} — ${skill.status}`);
@@ -147,8 +162,10 @@ function skills() {
       copy.append(meta);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.status === 'implemented' ? 'Implemented' : skill.status === 'partial' ? 'Partially implemented' : 'Not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
       row.append(checkbox, copy);list.append(row);
     }
-    section.append(list);page.append(section);
+    section.append(list);$('#skills-list').append(section);
   }
+  $('#skill-count').textContent = `${visible} of ${catalog.total} skills shown`;
+  if (!visible) list.append(el('p', 'empty-state', 'No skills match this status.'));
 }
 function worlds() {
   const page = $('#view-worlds'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE WORLD OF SANKETA'), el('h2', '', 'Familiar places.\nNew foundations.'), el('p', 'muted', 'Native zone identities are preserved. Recorded entry and travel baselines are distinct from complete gameplay acceptance.')); page.append(intro);

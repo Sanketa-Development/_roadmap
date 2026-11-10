@@ -55,6 +55,14 @@ class Node {
     }
     assert.equal(rows.filter(row => row.querySelectorAll('input')[0].checked).length, data.skills.implemented);
     for (const group of data.skills.groups) assert(app.get('view-skills').textContent.includes(group.title));
+    const filters = app.get('view-skills').querySelectorAll('.skill-filters')[0];
+    const shown = () => app.get('view-skills').querySelectorAll('.skill-row');
+    await filters.querySelectorAll('button').find(node => node.textContent === 'Done').fire('click');
+    assert.equal(shown().length, data.skills.implemented);assert(shown().every(row => row.querySelectorAll('input')[0].checked));
+    assert(app.get('skill-count').textContent.startsWith(String(data.skills.implemented)));
+    await filters.querySelectorAll('button').find(node => node.textContent === 'Not done').fire('click');
+    assert.equal(shown().length, data.skills.total - data.skills.implemented);assert(shown().every(row => !row.querySelectorAll('input')[0].checked));
+    await filters.querySelectorAll('button').find(node => node.textContent === 'All').fire('click');assert.equal(shown().length, data.skills.total);
     await app.get('lock').fire('click');assert(!app.get('view-skills').textContent && app.get('workspace').hidden, 'Lock clears decrypted skills');
     console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
   }

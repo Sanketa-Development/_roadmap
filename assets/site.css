@@ -42,3 +42,10 @@
 @media(max-width:480px){.skill-row{gap:11px;padding:18px 0}.skill-name{font-size:14px}.skill-meta{gap:5px 12px}.skill-counts{gap:7px}.skill-group .group-count{white-space:nowrap}}
 
 @media(max-width:480px){.sidebar nav{flex-wrap:wrap;justify-content:flex-start}.sidebar nav a{padding-left:8px;padding-right:8px}.skill-description,.skill-meta{overflow-wrap:anywhere}}
+
+/* Completed skills stay green even when the status checkbox is read-only. */
+.skill-checkbox{appearance:none;-webkit-appearance:none;display:grid;place-content:center;border:1px solid var(--line);border-radius:4px;background:#1b1115}
+.skill-checkbox:checked{background:#7dd497;border-color:#7dd497;color:#12351f}
+.skill-checkbox:checked::after{content:"";width:9px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-1px) rotate(-45deg)}
+.skill-row.implemented .skill-name strong{color:#8cdda4}.skill-row.implemented .skill-note{border-color:#7dd497}
+.skill-result-count{font-size:12px;margin:-4px 0 18px}.skill-filters{flex-wrap:wrap}
