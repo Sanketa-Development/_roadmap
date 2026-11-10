@@ -29,3 +29,16 @@
   .stat:first-child strong{font-size:29px}
   .phase-percentage{font-size:13px}
 }
+
+/* Skill implementation catalog. Checkbox state comes from private source records. */
+.skill-counts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+.skill-row{display:grid;grid-template-columns:20px minmax(0,1fr);gap:15px;padding:22px 0;border-top:1px solid var(--line)}
+.skill-row:first-child{border-top:0}.skill-checkbox{width:18px;height:18px;margin:3px 0 0;accent-color:var(--gold);opacity:1;cursor:default}
+.skill-copy{min-width:0}.skill-id{color:var(--gold);font-size:12px;letter-spacing:.03em}.skill-name{font-size:16px;margin-top:3px;overflow-wrap:anywhere}
+.skill-field{font-size:11px;font-weight:400;color:var(--muted);letter-spacing:0}.skill-description{margin-top:9px;color:var(--soft);font-size:12px;line-height:1.65}
+.skill-meta{display:flex;flex-wrap:wrap;gap:5px 18px;margin-top:11px;font-size:11px;color:var(--muted)}
+.skill-note{font-size:11px;line-height:1.65;color:var(--muted);margin-top:10px;padding-left:10px;border-left:2px solid var(--line)}
+.skill-row.implemented .skill-note{border-color:var(--gold)}.skill-group .task-group-content{padding-top:0}
+@media(max-width:480px){.skill-row{gap:11px;padding:18px 0}.skill-name{font-size:14px}.skill-meta{gap:5px 12px}.skill-counts{gap:7px}.skill-group .group-count{white-space:nowrap}}
+
+@media(max-width:480px){.sidebar nav{flex-wrap:wrap;justify-content:flex-start}.sidebar nav a{padding-left:8px;padding-right:8px}.skill-description,.skill-meta{overflow-wrap:anywhere}}

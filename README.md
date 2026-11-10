@@ -2,7 +2,7 @@
 
 Website: https://sanketa-development.github.io/_roadmap/
 
-Sanketa is the only project shown. The site has Overview, Tasks, Worlds & scope,
+Sanketa is the only project shown. The site has Overview, Tasks, Skills, Worlds & scope,
 and Updates, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
@@ -43,3 +43,13 @@ Run `node tools/check-roadmap.cjs` and `node tools/check-rendered-content.cjs` w
 the password supplied at their hidden prompts. Push `main` to deploy through the
 existing GitHub Actions Pages workflow. Only `index.html` and `assets/` deploy.
 No npm packages, server, external scripts, or Jekyll build are required.
+
+## Skills
+
+Skills lists the current player catalog by Asura-Rakshasa, Naga-Kimnara,
+Yaksha-Gandharva and Deva-Garuda. Each read-only checkbox sits beside its ID,
+English name, description, tribe restrictions, rank/level, costs, timing and
+prerequisites. Checks record confirmed implemented mechanics; partial and
+unconfirmed entries remain open, with scope notes. They are not full rank/FX
+parity or an overall completion percentage. Catalog content and status notes
+remain encrypted; author them only in private `_docs/roadmap`.

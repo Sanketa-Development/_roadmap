@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261109-3';
+import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261110-skills';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -118,6 +118,38 @@ function tasks() {
   const expand = el('div', 'expand-actions'); expand.append(button('Expand all', () => document.querySelectorAll('.task-group').forEach(item => item.open = true), 'text-link'), button('Collapse all', () => document.querySelectorAll('.task-group').forEach(item => item.open = false), 'text-link')); meta.append(count, expand); page.append(meta);
   const list = el('div'); list.id = 'task-list'; page.append(list); renderTasks();
 }
+function skillRange(values, divisor = 1, suffix = '') {
+  const [low, high] = values.map(value => Number((value / divisor).toFixed(3)));
+  return `${low}${low === high ? '' : '–' + high}${suffix}`;
+}
+function skills() {
+  const page = $('#view-skills'), catalog = payload.skills, intro = el('div', 'page-intro');
+  intro.append(el('span', 'eyebrow', 'TRIBES & ABILITIES'), el('h2', '', 'Skills'), el('p', 'muted', catalog ? `${catalog.total} player skills, grouped by tribe pair. Checked boxes record confirmed implementation; partial and unconfirmed skills stay open. Full rank and FX acceptance remains separate.` : 'The skill catalog has not been published yet.'));
+  page.append(intro);if (!catalog) return;
+  const entries = catalog.groups.flatMap(group => group.skills), counts = el('div', 'skill-counts');
+  counts.append(badge(`${catalog.implemented} implemented`, true), badge(`${entries.filter(skill => skill.status === 'partial').length} partial`), badge(`${entries.filter(skill => skill.status === 'unconfirmed').length} unconfirmed`));page.append(counts);
+  for (const [index, group] of catalog.groups.entries()) {
+    const section = el('details', 'task-group skill-group');section.open = true;
+    const summary = el('summary'), title = el('div', 'task-group-title');title.append(el('span', 'chapter-number', String(index + 1).padStart(2, '0')), el('h3', '', group.title));
+    summary.append(title, el('span', 'group-count', `${group.skills.filter(skill => skill.implemented).length} / ${group.skills.length} implemented`));section.append(summary);
+    const list = el('div', 'task-group-content');
+    for (const skill of group.skills) {
+      const row = el('article', `skill-row ${skill.status}`), checkbox = el('input', 'skill-checkbox');checkbox.type = 'checkbox';checkbox.checked = skill.implemented;checkbox.disabled = true;checkbox.setAttribute('aria-label', `${skill.id}: ${skill.name} — ${skill.status}`);
+      const copy = el('div', 'skill-copy'), identifier = el('p', 'skill-id');identifier.append(el('span', 'skill-field', 'ID : '), el('strong', '', skill.id));
+      const name = el('p', 'skill-name');name.append(el('span', 'skill-field', 'Name : '), el('strong', '', skill.name));copy.append(identifier, name);
+      if (skill.description) copy.append(el('p', 'skill-description', skill.description));
+      const meta = el('div', 'skill-meta'), info = (label, value) => meta.append(el('span', '', `${label}: ${value}`));
+      info('Type', skill.kind);info('Tribes', skill.tribes.join(' / '));info('Required level by rank', skillRange(skill.requiredLevel));info('Max rank', skill.maxRank);
+      if (skill.tpCost[1] > 0) info('TP cost', skillRange(skill.tpCost));if (skill.hpCost[1] > 0) info('HP cost', skillRange(skill.hpCost));
+      if (skill.cooldownMs[1] > 0) info('Cooldown', skillRange(skill.cooldownMs, 1000, ' s'));if (skill.castMs[1] > 0) info('Cast time', skillRange(skill.castMs, 1000, ' s'));
+      if (skill.classMask) info('Native class requirement', skill.classMask);
+      if (skill.prerequisites.length) info('Requires', skill.prerequisites.map(item => `${item.id} (${item.name}), rank ${item.rank}`).join('; '));
+      copy.append(meta);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.status === 'implemented' ? 'Implemented' : skill.status === 'partial' ? 'Partially implemented' : 'Not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
+      row.append(checkbox, copy);list.append(row);
+    }
+    section.append(list);page.append(section);
+  }
+}
 function worlds() {
   const page = $('#view-worlds'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE WORLD OF SANKETA'), el('h2', '', 'Familiar places.\nNew foundations.'), el('p', 'muted', 'Native zone identities are preserved. Recorded entry and travel baselines are distinct from complete gameplay acceptance.')); page.append(intro);
   const grid = el('div', 'world-grid');
@@ -133,15 +165,16 @@ function updates() {
 }
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); worlds(); updates();
+  overview(); tasks(); skills(); worlds(); updates();
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', worlds: 'Worlds & scope', updates: 'Development updates' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', worlds: 'Worlds & scope', updates: 'Development updates' };
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
+  $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : `Source snapshot · ${payload.reviewed}`;
   $('#page-title').textContent = titles[current]; document.title = `${titles[current]} — Sanketa`;
   if (current === 'tasks') renderTasks(); window.scrollTo({ top: 0, behavior: 'instant' });
 }

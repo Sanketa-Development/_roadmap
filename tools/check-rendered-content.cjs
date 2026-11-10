@@ -40,6 +40,24 @@ class Node {
   const app = start();
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  if (process.argv.includes('--skills')) {
+    assert.equal(app.get('view-skills').textContent, '', 'Skill content stays unavailable until unlock');
+    app.get('password').value = password;await app.get('access-form').fire('submit');
+    assert(!app.get('workspace').hidden, 'Encrypted skill catalog unlocks');app.route('#skills');
+    assert.equal(model.route('#skills'), 'skills');assert(!app.get('view-skills').hidden && app.get('view-overview').hidden);
+    const skills = data.skills.groups.flatMap(group => group.skills), rows = app.get('view-skills').querySelectorAll('.skill-row');
+    assert.equal(rows.length, data.skills.total);assert.equal(app.get('view-skills').querySelectorAll('.skill-group').length, data.skills.groups.length);
+    for (const [index, skill] of skills.entries()) {
+      const row = rows[index], checkbox = row.querySelectorAll('input')[0];
+      assert(checkbox && checkbox.type === 'checkbox' && checkbox.disabled && checkbox.checked === skill.implemented, 'Checkbox reflects the recorded implementation');
+      assert(row.textContent.includes('ID : ' + skill.id) && row.textContent.includes('Name : ' + skill.name), 'English name and ID remain paired');
+      assert(row.textContent.includes(skill.implementationNote), 'Partial/unconfirmed scope remains visible');
+    }
+    assert.equal(rows.filter(row => row.querySelectorAll('input')[0].checked).length, data.skills.implemented);
+    for (const group of data.skills.groups) assert(app.get('view-skills').textContent.includes(group.title));
+    await app.get('lock').fire('click');assert(!app.get('view-skills').textContent && app.get('workspace').hidden, 'Lock clears decrypted skills');
+    console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
+  }
   app.get('password').value = password + '!'; app.get('remember').checked = true; await app.get('access-form').fire('submit');
   assert(app.get('workspace').hidden && app.get('access-error').textContent && !saved.size, 'Wrong password stays locked and is not remembered');
   app.get('password').value = password; await app.get('access-form').fire('submit');

@@ -1,4 +1,4 @@
-export const routes = ['overview', 'tasks', 'worlds', 'updates'];
+export const routes = ['overview', 'tasks', 'skills', 'worlds', 'updates'];
 export function checklistPercent({ done, total }) {
   return total ? Math.round(done / total * 100) : 0;
 }
@@ -18,5 +18,10 @@ export function validate(payload) {
   if (payload.version !== 1 || project?.id !== 'sanketa' || project.name !== 'Sanketa' || !Array.isArray(project.groups) || !payload.documents) throw new Error('Invalid Sanketa roadmap');
   const tasks = project.groups.flatMap(group => group.tasks);
   if (project.total !== tasks.length || project.done !== tasks.filter(task => task.done).length || project.accepted !== project.groups.filter(group => group.gate?.done).length) throw new Error('Roadmap counts do not match the source');
+  if (payload.skills) {
+    const skills = payload.skills.groups?.flatMap(group => group.skills);
+    if (!skills || payload.skills.total !== skills.length || payload.skills.implemented !== skills.filter(skill => skill.implemented).length || new Set(skills.map(skill => skill.id)).size !== skills.length) throw new Error('Skill counts do not match the catalog');
+    for (const skill of skills) if (!Number.isSafeInteger(skill.id) || !skill.name || !['implemented', 'partial', 'unconfirmed'].includes(skill.status) || skill.implemented !== (skill.status === 'implemented')) throw new Error('Invalid skill implementation record');
+  }
   return payload;
 }
