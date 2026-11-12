@@ -54,5 +54,9 @@ unconfirmed entries remain open, with scope notes. They are not full rank/FX
 parity or an overall completion percentage. Catalog content and status notes
 remain encrypted; author them only in private `_docs/roadmap`.
 
+Original skill icons sit to the left of each entry, preferring K2, then K3,
+then Global when unavailable in earlier versions. Images are embedded in the
+encrypted skill catalog and appear only after unlocking.
+
 Completed skill names and checkboxes are green. The Skills status controls show
 All, Done, or Not done; Not done includes partial and unconfirmed records.

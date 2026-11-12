@@ -51,6 +51,9 @@ class Node {
       const row = rows[index], checkbox = row.querySelectorAll('input')[0];
       assert(checkbox && checkbox.type === 'checkbox' && checkbox.disabled && checkbox.checked === skill.implemented, 'Checkbox reflects the recorded implementation');
       assert(row.textContent.includes('ID : ' + skill.id) && row.textContent.includes('Name : ' + skill.name), 'English name and ID remain paired');
+      const icon = row.querySelectorAll('.skill-icon')[0];
+      assert(icon && row.children.indexOf(icon) < row.children.findIndex(node => node.className === 'skill-copy'), 'Icon sits to the left of the skill text');
+      if (skill.icon) assert(icon.tagName === 'img' && icon.src === skill.icon.src && icon.alt.includes(skill.name), 'Original icon is bound to the matching skill');
       assert(row.textContent.includes(skill.implementationNote), 'Partial/unconfirmed scope remains visible');
     }
     assert.equal(rows.filter(row => row.querySelectorAll('input')[0].checked).length, data.skills.implemented);
@@ -64,7 +67,7 @@ class Node {
     assert.equal(shown().length, data.skills.total - data.skills.implemented);assert(shown().every(row => !row.querySelectorAll('input')[0].checked));
     await filters.querySelectorAll('button').find(node => node.textContent === 'All').fire('click');assert.equal(shown().length, data.skills.total);
     await app.get('lock').fire('click');assert(!app.get('view-skills').textContent && app.get('workspace').hidden, 'Lock clears decrypted skills');
-    console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
+    console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, icons:skills.filter(skill => skill.icon).length, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
   }
   app.get('password').value = password + '!'; app.get('remember').checked = true; await app.get('access-form').fire('submit');
   assert(app.get('workspace').hidden && app.get('access-error').textContent && !saved.size, 'Wrong password stays locked and is not remembered');

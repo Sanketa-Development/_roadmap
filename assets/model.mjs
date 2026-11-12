@@ -22,6 +22,7 @@ export function validate(payload) {
     const skills = payload.skills.groups?.flatMap(group => group.skills);
     if (!skills || payload.skills.total !== skills.length || payload.skills.implemented !== skills.filter(skill => skill.implemented).length || new Set(skills.map(skill => skill.id)).size !== skills.length) throw new Error('Skill counts do not match the catalog');
     for (const skill of skills) if (!Number.isSafeInteger(skill.id) || !skill.name || !['implemented', 'partial', 'unconfirmed'].includes(skill.status) || skill.implemented !== (skill.status === 'implemented')) throw new Error('Invalid skill implementation record');
+    for (const skill of skills) if (skill.icon && (!/^data:image\/png;base64,[A-Za-z0-9+/]+=*$/.test(skill.icon.src) || !['K2', 'K3', 'Global'].includes(skill.icon.source))) throw new Error('Invalid skill icon');
   }
   return payload;
 }

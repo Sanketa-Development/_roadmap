@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261110-skills';
+import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261112-skillicons';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -150,6 +150,9 @@ function renderSkills() {
     const list = el('div', 'task-group-content');
     for (const skill of group.skills) {
       const row = el('article', `skill-row ${skill.status}`), checkbox = el('input', 'skill-checkbox');checkbox.type = 'checkbox';checkbox.checked = skill.implemented;checkbox.disabled = true;checkbox.setAttribute('aria-label', `${skill.id}: ${skill.name} — ${skill.status}`);
+      const icon = el(skill.icon ? 'img' : 'span', 'skill-icon');
+      if (skill.icon) {icon.src = skill.icon.src;icon.alt = `${skill.name} skill icon`;icon.width = 44;icon.height = 44;icon.loading = 'lazy';icon.decoding = 'async';}
+      else {icon.textContent = '?';icon.setAttribute('aria-label', `${skill.name}: icon unavailable`);}
       const copy = el('div', 'skill-copy'), identifier = el('p', 'skill-id');identifier.append(el('span', 'skill-field', 'ID : '), el('strong', '', skill.id));
       const name = el('p', 'skill-name');name.append(el('span', 'skill-field', 'Name : '), el('strong', '', skill.name));copy.append(identifier, name);
       if (skill.description) copy.append(el('p', 'skill-description', skill.description));
@@ -160,7 +163,7 @@ function renderSkills() {
       if (skill.classMask) info('Native class requirement', skill.classMask);
       if (skill.prerequisites.length) info('Requires', skill.prerequisites.map(item => `${item.id} (${item.name}), rank ${item.rank}`).join('; '));
       copy.append(meta);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.status === 'implemented' ? 'Implemented' : skill.status === 'partial' ? 'Partially implemented' : 'Not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
-      row.append(checkbox, copy);list.append(row);
+      row.append(checkbox, icon, copy);list.append(row);
     }
     section.append(list);$('#skills-list').append(section);
   }
