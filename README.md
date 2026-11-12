@@ -63,9 +63,11 @@ All, Done, or Not done; Not done includes partial and unconfirmed records.
 
 ## Items
 
-Items appears directly below Skills. Expand families such as Weapons, Defence,
-Accessories, Consumables, Premium and Pets, then their nested types. Weapons
-split by weapon type and handedness; Defence splits by equipment slot. Each
-entry shows its ID, Philippine name and available requirements/stack/base-price
-information. Search by item name or exact ID. Unknown categories stay under Other.
-Rows are created when opened, and the catalog is encrypted with the roadmap.
+Items appears directly below Skills. Main tabs include Weapons, Defense,
+Accessories, Consumables, Premium and Pets. Each tab shows its complete list in
+ascending item-ID order. Toggle one or more subtypes/equipment slots, handedness
+and tribes above the list, or search by name/exact ID. Choices within each filter
+match any selected value; filters combine to narrow the results. Unrestricted
+items match every tribe. Reset filters restores the complete active tab.
+Each entry shows its ID, Philippine name and available requirements/stack/base-price
+information. Unknown categories stay under Other. The catalog remains encrypted.

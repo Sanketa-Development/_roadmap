@@ -22,6 +22,23 @@ export function filteredItemGroups(groups, query = '') {
     return {...group, children, items, total: items.length + children.reduce((sum, child) => sum + child.total, 0)};
   }).filter(group => group.total > 0);
 }
+export function itemCategoryRows(group) {
+  const rows = [];
+  const visit = (node, path) => {
+    for (const item of node.items) rows.push({...item, subtype: path[0]?.id || '', subtypeName: path[0]?.title || '', grip: path[1]?.title || ''});
+    for (const child of node.children) visit(child, [...path, child]);
+  };
+  visit(group, []);
+  return rows.sort((a, b) => a.id - b.id);
+}
+export function filteredItemRows(rows, {query = '', types = [], grips = [], tribes = []} = {}) {
+  const needle = query.trim().toLocaleLowerCase(), numeric = /^\d+$/.test(needle);
+  return rows.filter(item =>
+    (!needle || (numeric ? String(item.id) === needle : item.name.toLocaleLowerCase().includes(needle))) &&
+    (!types.length || types.includes(item.subtype)) &&
+    (!grips.length || grips.includes(item.grip)) &&
+    (!tribes.length || !item.tribes.length || item.tribes.some(tribe => tribes.includes(tribe))));
+}
 export function validate(payload) {
   const project = payload.project;
   if (payload.version !== 1 || project?.id !== 'sanketa' || project.name !== 'Sanketa' || !Array.isArray(project.groups) || !payload.documents) throw new Error('Invalid Sanketa roadmap');
