@@ -49,9 +49,11 @@ No npm packages, server, external scripts, or Jekyll build are required.
 Skills lists the current player catalog by Asura-Rakshasa, Naga-Kimnara,
 Yaksha-Gandharva and Deva-Garuda. Each read-only checkbox sits beside its ID,
 English name, description, tribe restrictions, rank/level, costs, timing and
-prerequisites. Checks record confirmed implemented mechanics; partial and
-unconfirmed entries remain open, with scope notes. They are not full rank/FX
-parity or an overall completion percentage. Catalog content and status notes
+prerequisites. Each skill has separate Weapon Type Based Animations Implemented
+and FX Implemented checks: pending entries are red, completed entries green.
+The main check requires implemented mechanics and both required visual components.
+Passives with no native cast action show Not required and do not block completion.
+Unconfirmed coverage stays open. Catalog content and status notes
 remain encrypted; author them only in private `_docs/roadmap`.
 
 Original skill icons sit to the left of each entry, preferring K2, then K3,

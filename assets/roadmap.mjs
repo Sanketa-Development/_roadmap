@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261112-itemtabs';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261112-skillparts';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -127,10 +127,10 @@ function skillRange(values, divisor = 1, suffix = '') {
 }
 function skills() {
   const page = $('#view-skills'), catalog = payload.skills, intro = el('div', 'page-intro');
-  intro.append(el('span', 'eyebrow', 'TRIBES & ABILITIES'), el('h2', '', 'Skills'), el('p', 'muted', catalog ? `${catalog.total} player skills, grouped by tribe pair. Checked boxes record confirmed implementation; partial and unconfirmed skills stay open. Full rank and FX acceptance remains separate.` : 'The skill catalog has not been published yet.'));
+  intro.append(el('span', 'eyebrow', 'TRIBES & ABILITIES'), el('h2', '', 'Skills'), el('p', 'muted', catalog ? `${catalog.total} player skills, grouped by tribe pair. ${catalog.meaning}` : 'The skill catalog has not been published yet.'));
   page.append(intro);if (!catalog) return;
   const entries = catalog.groups.flatMap(group => group.skills), counts = el('div', 'skill-counts');
-  counts.append(badge(`${catalog.implemented} implemented`, true), badge(`${entries.filter(skill => skill.status === 'partial').length} partial`), badge(`${entries.filter(skill => skill.status === 'unconfirmed').length} unconfirmed`));page.append(counts);
+  counts.append(badge(`${catalog.implemented} complete`, true), badge(`${catalog.total - catalog.implemented} incomplete`), badge(`${entries.filter(skill => skill.mechanicsImplemented).length} mechanics implemented`));page.append(counts);
   const tools = el('div', 'task-tools'), filters = el('div', 'filters skill-filters');filters.setAttribute('aria-label', 'Skill status');
   for (const [value, label] of [['all', 'All'], ['done', 'Done'], ['open', 'Not done']]) {
     const control = button(label, () => {skillStatus = value;filters.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === control)));renderSkills();});
@@ -149,7 +149,7 @@ function renderSkills() {
     visible += matches.length;const group = {...original, skills: matches};
     const section = el('details', 'task-group skill-group');section.open = true;
     const summary = el('summary'), title = el('div', 'task-group-title');title.append(el('span', 'chapter-number', String(index + 1).padStart(2, '0')), el('h3', '', group.title));
-    summary.append(title, el('span', 'group-count', `${group.skills.length} shown · ${original.skills.filter(skill => skill.implemented).length} / ${original.skills.length} implemented`));section.append(summary);
+    summary.append(title, el('span', 'group-count', `${group.skills.length} shown · ${original.skills.filter(skill => skill.implemented).length} / ${original.skills.length} complete`));section.append(summary);
     const list = el('div', 'task-group-content');
     for (const skill of group.skills) {
       const row = el('article', `skill-row ${skill.status}`), checkbox = el('input', 'skill-checkbox');checkbox.type = 'checkbox';checkbox.checked = skill.implemented;checkbox.disabled = true;checkbox.setAttribute('aria-label', `${skill.id}: ${skill.name} — ${skill.status}`);
@@ -165,7 +165,18 @@ function renderSkills() {
       if (skill.cooldownMs[1] > 0) info('Cooldown', skillRange(skill.cooldownMs, 1000, ' s'));if (skill.castMs[1] > 0) info('Cast time', skillRange(skill.castMs, 1000, ' s'));
       if (skill.classMask) info('Native class requirement', skill.classMask);
       if (skill.prerequisites.length) info('Requires', skill.prerequisites.map(item => `${item.id} (${item.name}), rank ${item.rank}`).join('; '));
-      copy.append(meta);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.status === 'implemented' ? 'Implemented' : skill.status === 'partial' ? 'Partially implemented' : 'Not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
+      copy.append(meta);
+      const parts = el('div', 'skill-presentation');
+      for (const [key, caption] of [['animations', 'Weapon Type Based Animations Implemented'], ['fx', 'FX Implemented']]) {
+        const progress = skill.presentation[key], done = ['implemented', 'not_required'].includes(progress.status);
+        const label = el('label', `skill-part ${done ? 'complete' : 'pending'}`), check = el('input', 'skill-checkbox skill-subcheckbox'), text = el('span', '', caption);
+        label.setAttribute('data-part', key);label.title = progress.note;
+        check.type = 'checkbox';check.disabled = true;check.checked = done;check.setAttribute('aria-label', `${skill.name}: ${caption} — ${progress.status}`);
+        if (progress.status === 'not_required') text.append(el('small', '', 'Not required for this passive'));
+        else if (!done) text.append(el('small', '', progress.status === 'partial' ? 'Partially implemented' : 'Pending confirmation'));
+        label.append(check, text);parts.append(label);
+      }
+      copy.append(parts);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.mechanicsImplemented ? 'Mechanics implemented' : skill.mechanicsStatus === 'partial' ? 'Mechanics partially implemented' : 'Mechanics not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
       row.append(checkbox, icon, copy);list.append(row);
     }
     section.append(list);$('#skills-list').append(section);

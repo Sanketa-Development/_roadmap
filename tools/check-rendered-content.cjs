@@ -101,9 +101,23 @@ class Node {
       const icon = row.querySelectorAll('.skill-icon')[0];
       assert(icon && row.children.indexOf(icon) < row.children.findIndex(node => node.className === 'skill-copy'), 'Icon sits to the left of the skill text');
       if (skill.icon) assert(icon.tagName === 'img' && icon.src === skill.icon.src && icon.alt.includes(skill.name), 'Original icon is bound to the matching skill');
+      const parts = row.querySelectorAll('.skill-part');assert.equal(parts.length, 2);
+      for (const [partIndex, key] of ['animations', 'fx'].entries()) {
+        const part = parts[partIndex], input = part.querySelectorAll('input')[0];
+        const complete = ['implemented', 'not_required'].includes(skill.presentation[key].status);
+        assert(input && input.disabled && input.checked === complete, 'Visual subcheck matches its recorded status');
+        assert(part.className.split(' ').includes(complete ? 'complete' : 'pending'), 'Subcheck uses green-complete or red-pending styling');
+        assert.equal(part.dataset.part, key);
+      }
+      assert(parts[0].textContent.includes('Weapon Type Based Animations Implemented') && parts[1].textContent.includes('FX Implemented'));
+      assert.equal(checkbox.checked, skill.mechanicsImplemented && parts.every(part => part.querySelectorAll('input')[0].checked), 'Main check requires mechanics and both required visual checks');
       assert(row.textContent.includes(skill.implementationNote), 'Partial/unconfirmed scope remains visible');
     }
     assert.equal(rows.filter(row => row.querySelectorAll('input')[0].checked).length, data.skills.implemented);
+    for (const id of [3121, 3306]) {
+      const index = skills.findIndex(skill => skill.id === id), parts = rows[index].querySelectorAll('.skill-part');
+      assert(!rows[index].querySelectorAll('input')[0].checked && !parts[0].querySelectorAll('input')[0].checked && parts[1].querySelectorAll('input')[0].checked, 'FX coverage alone cannot check the main skill');
+    }
     for (const group of data.skills.groups) assert(app.get('view-skills').textContent.includes(group.title));
     const filters = app.get('view-skills').querySelectorAll('.skill-filters')[0];
     const shown = () => app.get('view-skills').querySelectorAll('.skill-row');
@@ -114,7 +128,7 @@ class Node {
     assert.equal(shown().length, data.skills.total - data.skills.implemented);assert(shown().every(row => !row.querySelectorAll('input')[0].checked));
     await filters.querySelectorAll('button').find(node => node.textContent === 'All').fire('click');assert.equal(shown().length, data.skills.total);
     await app.get('lock').fire('click');assert(!app.get('view-skills').textContent && app.get('workspace').hidden, 'Lock clears decrypted skills');
-    console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, icons:skills.filter(skill => skill.icon).length, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
+    console.log(JSON.stringify({result:'passed', route:'skills', groups:data.skills.groups.length, skills:skills.length, checked:data.skills.implemented, icons:skills.filter(skill => skill.icon).length, presentationChecks:skills.length*2, parentRequiresAllParts:true, redAndGreenStatusClasses:true, readonlyCheckboxes:true, englishNamesAndMetadata:true, clearedOnLock:true}));return;
   }
   app.get('password').value = password + '!'; app.get('remember').checked = true; await app.get('access-form').fire('submit');
   assert(app.get('workspace').hidden && app.get('access-error').textContent && !saved.size, 'Wrong password stays locked and is not remembered');

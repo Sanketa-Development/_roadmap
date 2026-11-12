@@ -49,6 +49,12 @@ export function validate(payload) {
     if (!skills || payload.skills.total !== skills.length || payload.skills.implemented !== skills.filter(skill => skill.implemented).length || new Set(skills.map(skill => skill.id)).size !== skills.length) throw new Error('Skill counts do not match the catalog');
     for (const skill of skills) if (!Number.isSafeInteger(skill.id) || !skill.name || !['implemented', 'partial', 'unconfirmed'].includes(skill.status) || skill.implemented !== (skill.status === 'implemented')) throw new Error('Invalid skill implementation record');
     for (const skill of skills) if (skill.icon && (!/^data:image\/png;base64,[A-Za-z0-9+/]+=*$/.test(skill.icon.src) || !['K2', 'K3', 'Global'].includes(skill.icon.source))) throw new Error('Invalid skill icon');
+    for (const skill of skills) {
+      const parts = skill.presentation;
+      if (!parts || !['animations', 'fx'].every(key => parts[key] && ['implemented', 'partial', 'unconfirmed', 'not_required'].includes(parts[key].status))) throw new Error('Invalid skill presentation status');
+      const complete = skill.mechanicsImplemented && ['animations', 'fx'].every(key => ['implemented', 'not_required'].includes(parts[key].status));
+      if (skill.implemented !== Boolean(complete)) throw new Error('Skill main checkbox must include mechanics, animations and FX');
+    }
   }
   if (payload.items) {
     const ids = [];
