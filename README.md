@@ -2,7 +2,7 @@
 
 Website: https://sanketa-development.github.io/_roadmap/
 
-Sanketa is the only project shown. The site has Overview, Tasks, Skills, Worlds & scope,
+Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Worlds & scope,
 and Updates, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
@@ -60,3 +60,12 @@ encrypted skill catalog and appear only after unlocking.
 
 Completed skill names and checkboxes are green. The Skills status controls show
 All, Done, or Not done; Not done includes partial and unconfirmed records.
+
+## Items
+
+Items appears directly below Skills. Expand families such as Weapons, Defence,
+Accessories, Consumables, Premium and Pets, then their nested types. Weapons
+split by weapon type and handedness; Defence splits by equipment slot. Each
+entry shows its ID, Philippine name and available requirements/stack/base-price
+information. Search by item name or exact ID. Unknown categories stay under Other.
+Rows are created when opened, and the catalog is encrypted with the roadmap.

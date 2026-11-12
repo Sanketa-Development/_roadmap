@@ -40,6 +40,33 @@ class Node {
   const app = start();
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  if (process.argv.includes('--items')) {
+    assert.equal(app.get('view-items').textContent, '', 'Item content stays unavailable until unlock');
+    app.get('password').value = password;await app.get('access-form').fire('submit');app.route('#items');
+    assert.equal(model.route('#items'), 'items');assert(!app.get('view-items').hidden && app.get('view-skills').hidden);
+    const page = app.get('view-items'), catalog = data.items;
+    assert(catalog.total > 0 && page.textContent.includes('Items'));
+    assert.equal(page.querySelectorAll('.item-group').length, catalog.groups.length);
+    assert.equal(page.querySelectorAll('.item-row').length, 0, 'Closed categories defer their item rows');
+    const weapons = page.querySelectorAll('.item-group').find(node => node.dataset.category === 'weapons');assert(weapons);
+    weapons.open = true;await weapons.fire('toggle');
+    const swords = weapons.querySelectorAll('.item-subgroup').find(node => node.dataset.category === 'weapons-swords');assert(swords);
+    swords.open = true;await swords.fire('toggle');
+    const grip = swords.querySelectorAll('.item-subgroup').find(node => node.dataset.category === 'weapons-swords-one-handed');assert(grip);
+    grip.open = true;await grip.fire('toggle');
+    assert(grip.querySelectorAll('.item-row').some(row => row.textContent.includes('ID : 4001') && row.textContent.includes('Old Sword')));
+    const search = app.get('item-search');search.value = '4001';await search.fire('input');
+    assert.equal(page.querySelectorAll('.item-row').length, 1);assert(page.textContent.includes('Old Sword'));
+    search.value = 'old sword';await search.fire('input');assert(page.querySelectorAll('.item-row').length > 0);
+    search.value = 'no-match-zqjx-976123';await search.fire('input');
+    assert.equal(page.querySelectorAll('.item-row').length, 0);assert(app.get('item-count').textContent.startsWith('0 of '));
+    search.value = '';await search.fire('input');
+    assert.equal(page.querySelectorAll('.item-group').length, catalog.groups.length);assert.equal(page.querySelectorAll('.item-row').length, 0);
+    const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+    assert(html.indexOf('data-route="items"') > html.indexOf('data-route="skills"'), 'Items navigation follows Skills');
+    await app.get('lock').fire('click');assert.equal(page.textContent, '', 'Lock clears the item catalog');
+    console.log(JSON.stringify({result:'passed', route:'items', items:catalog.total, categories:catalog.groups.length, nestedWeaponTypes:true, lazyRows:true, nameAndIdSearch:true, clearedOnLock:true}));return;
+  }
   if (process.argv.includes('--skills')) {
     assert.equal(app.get('view-skills').textContent, '', 'Skill content stays unavailable until unlock');
     app.get('password').value = password;await app.get('access-form').fire('submit');

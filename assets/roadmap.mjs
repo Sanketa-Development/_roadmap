@@ -1,10 +1,10 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, validate, checklistPercent } from './model.mjs?v=20261112-skillicons';
+import { route, filteredGroups, filteredItemGroups, validate, checklistPercent } from './model.mjs?v=20261112-items';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
-let payload, envelope, search = '', status = 'all', skillStatus = 'all';
+let payload, envelope, search = '', status = 'all', skillStatus = 'all', itemQuery = '';
 
 function recall() {
   try { const saved = localStorage.getItem(storageKey); remember.checked = saved !== null; password.value = saved || ''; }
@@ -170,6 +170,47 @@ function renderSkills() {
   $('#skill-count').textContent = `${visible} of ${catalog.total} skills shown`;
   if (!visible) list.append(el('p', 'empty-state', 'No skills match this status.'));
 }
+function itemGroup(group, depth = 0) {
+  const section = el('details', depth ? 'item-group item-subgroup' : 'task-group item-group');section.setAttribute('data-category', group.id);
+  const summary = el('summary'), title = el(depth ? 'h4' : 'h3', 'item-group-title', group.title);
+  summary.append(title, el('span', 'group-count', `${group.total} items`));
+  const content = el('div', depth ? 'item-subgroup-content' : 'task-group-content');section.append(summary, content);
+  let populated = false;
+  const populate = () => {
+    if (populated || !section.open) return;
+    populated = true;
+    for (const child of group.children) content.append(itemGroup(child, depth + 1));
+    for (const item of group.items) {
+      const row = el('article', 'item-row');row.setAttribute('data-item', item.id);
+      row.append(el('p', 'skill-id', `ID : ${item.id}`), el('p', 'item-name', `Name : ${item.name}`));
+      const meta = el('div', 'skill-meta');
+      if (item.requiredLevel > 0) meta.append(el('span', '', `Required level: ${item.requiredLevel}`));
+      if (item.maxStack > 1) meta.append(el('span', '', `Max stack: ${item.maxStack}`));
+      if (item.price > 0) meta.append(el('span', '', `Base price: ${item.price.toLocaleString()} Rupiah`));
+      if (item.tribes.length) meta.append(el('span', '', `Tribes: ${item.tribes.join(' / ')}`));
+      row.append(meta);content.append(row);
+    }
+  };
+  section.addEventListener('toggle', populate);
+  if (itemQuery.trim()) {section.open = true;populate();}
+  return section;
+}
+function renderItems() {
+  const list = $('#items-list');list.replaceChildren();
+  const groups = filteredItemGroups(payload.items.groups, itemQuery), visible = groups.reduce((sum, group) => sum + group.total, 0);
+  for (const group of groups) list.append(itemGroup(group));
+  $('#item-count').textContent = `${visible} of ${payload.items.total} items shown`;
+  if (!visible) list.append(el('p', 'empty-state', 'No items match this name or ID.'));
+}
+function items() {
+  const page = $('#view-items'), catalog = payload.items, intro = el('div', 'page-intro');
+  intro.append(el('span', 'eyebrow', 'EQUIPMENT & SUPPLIES'), el('h2', '', 'Items'), el('p', 'muted', catalog ? `${catalog.total.toLocaleString()} items, grouped by item family and type. Expand a category to browse its contents.` : 'The item catalog has not been published yet.'));page.append(intro);
+  if (!catalog) return;
+  const tools = el('div', 'task-tools item-tools'), search = el('input', 'search');search.id = 'item-search';search.type = 'search';search.placeholder = 'Search items by name or ID';search.value = itemQuery;search.setAttribute('aria-label', 'Search items by name or ID');
+  search.addEventListener('input', () => {itemQuery = search.value;renderItems();});tools.append(search);page.append(tools);
+  const count = el('p', 'muted skill-result-count');count.id = 'item-count';count.setAttribute('role', 'status');count.setAttribute('aria-live', 'polite');
+  const list = el('div');list.id = 'items-list';page.append(count, list);renderItems();
+}
 function worlds() {
   const page = $('#view-worlds'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE WORLD OF SANKETA'), el('h2', '', 'Familiar places.\nNew foundations.'), el('p', 'muted', 'Native zone identities are preserved. Recorded entry and travel baselines are distinct from complete gameplay acceptance.')); page.append(intro);
   const grid = el('div', 'world-grid');
@@ -185,16 +226,16 @@ function updates() {
 }
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); skills(); worlds(); updates();
+  overview(); tasks(); skills(); items(); worlds(); updates();
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', worlds: 'Worlds & scope', updates: 'Development updates' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', worlds: 'Worlds & scope', updates: 'Development updates' };
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
-  $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : `Source snapshot · ${payload.reviewed}`;
+  $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : `Source snapshot · ${payload.reviewed}`;
   $('#page-title').textContent = titles[current]; document.title = `${titles[current]} — Sanketa`;
   if (current === 'tasks') renderTasks(); window.scrollTo({ top: 0, behavior: 'instant' });
 }

@@ -50,3 +50,14 @@
 .skill-checkbox:checked::after{content:"";width:9px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-1px) rotate(-45deg)}
 .skill-row.implemented .skill-name strong{color:#8cdda4}.skill-row.implemented .skill-note{border-color:#7dd497}
 .skill-result-count{font-size:12px;margin:-4px 0 18px}.skill-filters{flex-wrap:wrap}
+
+/* Item families expand into native subtypes; rows are created only on demand. */
+.item-tools .search{width:100%;min-width:0}.item-group-title{font-family:var(--font);font-size:14px;font-weight:550;letter-spacing:0}
+.item-group>summary{cursor:pointer}.item-group>summary::after{content:"+";margin-left:auto;color:var(--gold)}.item-group[open]>summary::after{content:"−"}
+.item-group>summary .group-count{margin-left:auto;padding-left:15px;white-space:nowrap}
+.item-subgroup{border:1px solid var(--line);border-radius:5px;margin-top:12px;background:#1b1014}
+.item-subgroup>summary{display:flex;align-items:center;gap:12px;padding:14px 16px;list-style:none}
+.item-subgroup-content{padding:0 16px 12px}.item-row{padding:17px 0;border-top:1px solid var(--line)}.item-row:first-child{border-top:0}
+.item-name{margin-top:4px;font-size:15px;color:var(--ink);overflow-wrap:anywhere}.item-row .skill-meta{margin-top:8px}
+@media(max-width:780px){.sidebar nav{flex-wrap:wrap}}
+@media(max-width:480px){.item-subgroup>summary{padding:12px;gap:8px}.item-group-title{font-size:12px}.item-subgroup-content{padding:0 12px 10px}.item-name{font-size:13px}.item-row .skill-meta{overflow-wrap:anywhere}}
