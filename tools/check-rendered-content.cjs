@@ -40,6 +40,32 @@ class Node {
   const app = start();
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  if (process.argv.includes('--quests')) {
+    assert.equal(app.get('view-quests').textContent, '', 'Quest content stays locked');
+    app.get('password').value = password;await app.get('access-form').fire('submit');app.route('#quests');
+    assert.equal(model.route('#quests'), 'quests');assert(!app.get('view-quests').hidden && app.get('view-items').hidden);
+    assert.equal(app.get('page-title').textContent, 'Quests');
+    const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+    assert(html.indexOf('href="#quests"') > html.indexOf('href="#items"') && html.indexOf('href="#quests"') < html.indexOf('href="#worlds"'), 'Quests follows Items in navigation');
+    const page = app.get('view-quests'), groups = page.querySelectorAll('.quest-group'), entries = data.quests.groups.flatMap(group => group.quests);
+    assert.equal(groups.length, data.quests.groups.length);assert.equal(data.quests.groups[0].title, 'Tutorial Quests');assert.equal(data.quests.groups[1].title, "Beginner's Quests");
+    for (let index = 0; index < groups.length; index++) {
+      const group = data.quests.groups[index], rows = groups[index].querySelectorAll('.quest-row');
+      assert.equal(groups[index].dataset.category, group.id);assert.equal(rows.length, group.total);
+      assert.deepEqual(rows.map(row => row.dataset.quest), group.quests.map(quest => quest.key), 'Each quest stays in its authored category and order');
+      rows.forEach((row, n) => {
+        const quest = group.quests[n], checkbox = row.querySelectorAll('.quest-checkbox')[0];
+        assert(checkbox.disabled, 'Implementation status is read-only');assert.equal(checkbox.checked, quest.implemented);
+        assert.equal(row.querySelectorAll('.quest-name')[0].textContent, quest.name);
+        assert(row.className.split(' ').includes(quest.status));
+      });
+    }
+    assert.equal(page.querySelectorAll('.quest-checkbox').length, data.quests.total);
+    assert.equal(page.querySelectorAll('.quest-checkbox').filter(node => node.checked).length, data.quests.implemented);
+    assert(entries.filter(quest => quest.kind === 'scroll').every(quest => !quest.implemented), 'Imported scroll data does not claim runtime implementation');
+    await app.get('lock').fire('click');assert.equal(page.textContent, '', 'Lock removes quest data');
+    console.log(JSON.stringify({ result: 'passed', scope: 'quests only', categories: groups.length, quests: entries.length, implemented: data.quests.implemented, readOnlyChecks: true, lockedContentCleared: true }));return;
+  }
   if (process.argv.includes('--items')) {
     assert.equal(app.get('view-items').textContent, '', 'Item content stays unavailable until unlock');
     app.get('password').value = password;await app.get('access-form').fire('submit');app.route('#items');

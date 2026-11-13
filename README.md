@@ -2,7 +2,7 @@
 
 Website: https://sanketa-development.github.io/_roadmap/
 
-Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Worlds & scope,
+Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Quests, Worlds & scope,
 and Updates, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
@@ -73,3 +73,20 @@ match any selected value; filters combine to narrow the results. Unrestricted
 items match every tribe. Reset filters restores the complete active tab.
 Each entry shows its ID, Philippine name and available requirements/stack/base-price
 information. Unknown categories stay under Other. The catalog remains encrypted.
+
+## Quests
+
+Quests appears directly below Items, with Tutorial Quests first and Beginner's
+Quests second. Expand categories for class changes, regional story chapters,
+independent quests, NPC tasks and scroll quests. Each entry shows its ID, name,
+available native details and a read-only implementation checkbox. Checked entries
+and names are green. Unchecked entries are not implemented or unconfirmed;
+implementation status is separate from player progress and journey testing.
+
+Private `_docs/roadmap/build-quests.py` reads the native journal/messages, NPC task
+rows, scroll stages and current native quest identities. Scroll stage rows are
+grouped by their quest number. `_docs/roadmap/quests-status.json` holds status
+notes and per-quest overrides, keyed as `story:<ID>`, `task:<ID>` or `scroll:<ID>`.
+Refresh with `python -X utf8 _docs/roadmap/build-quests.py` from the workspace root,
+then seal the payload. Keep all catalog data and status authoring private.
+The existing rendered-content check supports `--quests` for this section only.

@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261112-skillparts';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-quests';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -184,6 +184,31 @@ function renderSkills() {
   $('#skill-count').textContent = `${visible} of ${catalog.total} skills shown`;
   if (!visible) list.append(el('p', 'empty-state', 'No skills match this status.'));
 }
+function quests() {
+  const page = $('#view-quests'), catalog = payload.quests, intro = el('div', 'page-intro');
+  intro.append(el('span', 'eyebrow', 'STORIES & ADVENTURES'), el('h2', '', 'Quests'), el('p', 'muted', catalog ? `${catalog.total} quests, grouped by category. ${catalog.meaning}` : 'The quest catalog has not been published yet.'));
+  page.append(intro);if (!catalog) return;
+  const counts = el('div', 'skill-counts');counts.append(badge(`${catalog.implemented} implemented`, true), badge(`${catalog.total - catalog.implemented} not implemented or unconfirmed`));page.append(counts);
+  for (const [index, group] of catalog.groups.entries()) {
+    const section = el('details', 'task-group quest-group');section.open = index < 2;section.setAttribute('data-category', group.id);
+    const summary = el('summary'), title = el('div', 'task-group-title');title.append(el('span', 'chapter-number', String(index + 1).padStart(2, '0')), el('h3', '', group.title));
+    summary.append(title, el('span', 'group-count', `${group.implemented} / ${group.total} implemented`));section.append(summary);
+    const list = el('div', 'task-group-content');
+    for (const quest of group.quests) {
+      const row = el('article', `quest-row ${quest.status}`);row.setAttribute('data-quest', quest.key);
+      const checkbox = el('input', 'skill-checkbox quest-checkbox');checkbox.type = 'checkbox';checkbox.checked = quest.implemented;checkbox.disabled = true;
+      const state = quest.implemented ? 'Implemented in Sanketa' : quest.status === 'not_implemented' ? 'Not implemented' : 'Not yet confirmed';
+      checkbox.setAttribute('aria-label', `${quest.id}: ${quest.name} — ${state}`);
+      const copy = el('div', 'quest-copy'), identifier = el('p', 'skill-id');identifier.append(el('span', 'skill-field', 'ID : '), el('strong', '', quest.id));
+      const name = el('p', 'quest-name');name.append(el('strong', '', quest.name));copy.append(identifier, name);
+      if (quest.description) copy.append(el('p', 'skill-description', quest.description));
+      if (quest.info.length) {const meta = el('div', 'skill-meta');quest.info.forEach(value => meta.append(el('span', '', value)));copy.append(meta);}
+      const note = el('p', 'skill-note');note.append(el('strong', 'quest-status', state), el('span', '', ` — ${quest.implementationNote}`));copy.append(note);
+      row.append(checkbox, copy);list.append(row);
+    }
+    section.append(list);page.append(section);
+  }
+}
 function itemCategoryTitle(group) {return group.id === 'defence' ? 'Defense' : group.title;}
 function selectItemCategory(id) {
   if (itemCategory !== id) {itemCategory = id;itemSelection.types.clear();itemSelection.grips.clear();}
@@ -268,16 +293,16 @@ function updates() {
 }
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); skills(); items(); worlds(); updates();
+  overview(); tasks(); skills(); items(); quests(); worlds(); updates();
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', worlds: 'Worlds & scope', updates: 'Development updates' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates' };
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
-  $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : `Source snapshot · ${payload.reviewed}`;
+  $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : current === 'quests' && payload.quests ? `Quest catalog · ${payload.quests.reviewed}` : `Source snapshot · ${payload.reviewed}`;
   $('#page-title').textContent = titles[current]; document.title = `${titles[current]} — Sanketa`;
   if (current === 'tasks') renderTasks(); window.scrollTo({ top: 0, behavior: 'instant' });
 }

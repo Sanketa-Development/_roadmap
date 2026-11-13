@@ -1,4 +1,4 @@
-export const routes = ['overview', 'tasks', 'skills', 'items', 'worlds', 'updates'];
+export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates'];
 export function checklistPercent({ done, total }) {
   return total ? Math.round(done / total * 100) : 0;
 }
@@ -69,6 +69,18 @@ export function validate(payload) {
       return total;
     };
     if (!Array.isArray(payload.items.groups) || payload.items.groups.reduce((sum, group) => sum + count(group), 0) !== payload.items.total || new Set(ids).size !== ids.length) throw new Error('Item catalog is incomplete or duplicated');
+  }
+  if (payload.quests) {
+    const catalog = payload.quests, keys = new Set();
+    if (!Array.isArray(catalog.groups)) throw new Error('Invalid quest categories');
+    for (const group of catalog.groups) {
+      if (!group.id || !group.title || !Array.isArray(group.quests) || group.total !== group.quests.length || group.implemented !== group.quests.filter(quest => quest.implemented).length) throw new Error('Quest category counts do not match');
+      for (const quest of group.quests) {
+        if (!quest.key || keys.has(quest.key) || !Number.isSafeInteger(quest.id) || !quest.name || !Array.isArray(quest.info) || !['implemented', 'not_implemented', 'unconfirmed'].includes(quest.status) || quest.implemented !== (quest.status === 'implemented')) throw new Error('Invalid quest implementation record');
+        keys.add(quest.key);
+      }
+    }
+    if (catalog.total !== keys.size || catalog.implemented !== catalog.groups.reduce((sum, group) => sum + group.implemented, 0)) throw new Error('Quest catalog counts do not match');
   }
   return payload;
 }

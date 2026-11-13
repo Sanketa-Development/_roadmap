@@ -70,3 +70,10 @@
 .item-name{margin-top:4px;font-size:15px;color:var(--ink);overflow-wrap:anywhere}.item-row .skill-meta{margin-top:8px}
 @media(max-width:780px){.sidebar nav{flex-wrap:wrap}}
 @media(max-width:480px){.item-tab{padding:11px 12px;font-size:11px}.item-filter-toggle{padding:7px 9px;font-size:10px}.item-list{padding:0 14px}.item-reset{padding:9px 12px;font-size:11px}.item-name{font-size:13px}.item-row .skill-meta{overflow-wrap:anywhere}}
+
+.quest-row{display:grid;grid-template-columns:20px minmax(0,1fr);gap:15px;padding:20px 0;border-top:1px solid var(--line)}
+.quest-row:first-child{border-top:0}.quest-name{margin-top:5px;font-size:16px;color:var(--ink);overflow-wrap:anywhere}
+.quest-row.implemented .quest-name strong,.quest-row.implemented .quest-status{color:#8cdda4}.quest-row.implemented .skill-note{border-color:#7dd497}
+.quest-row.not_implemented .quest-status,.quest-row.unconfirmed .quest-status{color:#ee969b}.quest-copy{min-width:0}.quest-copy .skill-meta,.quest-copy .skill-description{overflow-wrap:anywhere}
+@media(max-width:480px){.quest-row{grid-template-columns:18px minmax(0,1fr);gap:9px;padding:17px 0}.quest-name{font-size:14px}.quest-group .group-count{font-size:10px}.quest-group summary{gap:10px}}
+@media(max-width:780px){.sidebar nav{flex-wrap:wrap;justify-content:flex-start}}
