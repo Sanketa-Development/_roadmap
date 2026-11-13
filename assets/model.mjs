@@ -77,6 +77,7 @@ export function validate(payload) {
       if (!group.id || !group.title || !Array.isArray(group.quests) || group.total !== group.quests.length || group.implemented !== group.quests.filter(quest => quest.implemented).length) throw new Error('Quest category counts do not match');
       for (const quest of group.quests) {
         if (!quest.key || keys.has(quest.key) || !Number.isSafeInteger(quest.id) || !quest.name || !Array.isArray(quest.info) || !['implemented', 'not_implemented', 'unconfirmed'].includes(quest.status) || quest.implemented !== (quest.status === 'implemented')) throw new Error('Invalid quest implementation record');
+        if (!Array.isArray(quest.steps) || !quest.steps.length || quest.steps.some(step => !Number.isSafeInteger(step.number) || step.number < 0 || typeof step.text !== 'string' || !step.text.trim())) throw new Error('Missing native quest step description');
         keys.add(quest.key);
       }
     }

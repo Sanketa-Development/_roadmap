@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-questtabs';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-queststeps';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -208,16 +208,26 @@ function renderQuests() {
   document.querySelectorAll('.quest-tab').forEach(tab => {const selected = tab.dataset.category === questCategory;tab.setAttribute('aria-selected', String(selected));tab.setAttribute('tabindex', selected ? '0' : '-1');});
   const heading = el('div', 'quest-category-heading');heading.append(el('h3', '', group.title), el('p', 'muted skill-result-count', `${group.implemented} of ${group.total} implemented`));panel.append(heading);
   for (const quest of group.quests) {
-      const row = el('article', `quest-row ${quest.status}`);row.setAttribute('data-quest', quest.key);
+      const row = el('details', `quest-row ${quest.status}`);row.setAttribute('data-quest', quest.key);
+      const summary = el('summary', 'quest-summary');
       const checkbox = el('input', 'skill-checkbox quest-checkbox');checkbox.type = 'checkbox';checkbox.checked = quest.implemented;checkbox.disabled = true;
       const state = quest.implemented ? 'Implemented in Sanketa' : quest.status === 'not_implemented' ? 'Not implemented' : 'Not yet confirmed';
       checkbox.setAttribute('aria-label', `${quest.id}: ${quest.name} — ${state}`);
       const copy = el('div', 'quest-copy'), identifier = el('p', 'skill-id');identifier.append(el('span', 'skill-field', 'ID : '), el('strong', '', quest.id));
       const name = el('p', 'quest-name');name.append(el('strong', '', quest.name));copy.append(identifier, name);
-      if (quest.description) copy.append(el('p', 'skill-description', quest.description));
-      if (quest.info.length) {const meta = el('div', 'skill-meta');quest.info.forEach(value => meta.append(el('span', '', value)));copy.append(meta);}
-      const note = el('p', 'skill-note');note.append(el('strong', 'quest-status', state), el('span', '', ` — ${quest.implementationNote}`));copy.append(note);
-      row.append(checkbox, copy);panel.append(row);
+      copy.append(el('p', 'muted quest-preview', `${quest.steps.length} ${quest.steps.length === 1 ? 'step' : 'steps'} · ${state}`));
+      const arrow = el('span', 'quest-expand', '⌄');arrow.setAttribute('aria-hidden', 'true');summary.append(checkbox, copy, arrow);row.append(summary);
+      const content = el('div', 'quest-details');
+      if (quest.info.length) {const meta = el('div', 'skill-meta');quest.info.forEach(value => meta.append(el('span', '', value)));content.append(meta);}
+      const note = el('p', 'skill-note');note.append(el('strong', 'quest-status', state), el('span', '', ` — ${quest.implementationNote}`));content.append(note);
+      content.append(el('h4', 'quest-steps-title', 'Quest steps'));
+      const steps = el('ol', 'quest-steps');
+      quest.steps.forEach((step, index) => {
+        const item = el('li', 'quest-step');item.setAttribute('data-stage', step.number);
+        item.append(el('strong', 'quest-step-label', `Step ${index + 1}`), el('p', 'quest-step-text', step.text.replaceAll('>>', '\n').replace(/%[diu]/g, '[count]')));steps.append(item);
+      });content.append(steps);
+      if (quest.steps.some(step => /%[diu]/.test(step.text))) content.append(el('p', 'muted quest-counter-note', '[count] is filled from your progress in the game.'));
+      row.append(content);panel.append(row);
   }
 }
 function itemCategoryTitle(group) {return group.id === 'defence' ? 'Defense' : group.title;}

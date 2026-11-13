@@ -50,10 +50,11 @@ class Node {
     const page = app.get('view-quests'), tabs = page.querySelectorAll('.quest-tab'), entries = data.quests.groups.flatMap(group => group.quests);
     assert.equal(tabs.length, data.quests.groups.length);assert.equal(data.quests.groups[0].title, 'Tutorial Quests');assert.equal(data.quests.groups[1].title, "Beginner's Quests");
     assert(entries.every(quest => quest.kind !== 'task') && !data.quests.groups.some(group => group.id === 'npc-tasks'), 'Generic NPC tasks are excluded');
+    assert(!data.quests.groups.some(group => group.id === 'independent') && entries.every(quest => quest.key !== 'story:81' && quest.key !== 'story:82'), 'Independent quests are excluded');
     for (const [category, first, last] of [['scenario-1', 11, 20], ['scenario-2', 21, 30], ['scenario-3', 51, 55]]) {
       assert.deepEqual(data.quests.groups.find(group => group.id === category).quests.map(quest => quest.id), Array.from({length: last-first+1}, (_, i) => first+i), 'Scenario membership follows E_QUEST_LEVEL');
     }
-    let checked = 0, shown = 0;
+    let checked = 0, shown = 0, describedSteps = 0;
     for (let index = 0; index < tabs.length; index++) {
       const group = data.quests.groups[index];await tabs[index].fire('click');
       const panel = app.get('quests-panel'), rows = panel.querySelectorAll('.quest-row');
@@ -65,11 +66,19 @@ class Node {
         assert(checkbox.disabled, 'Implementation status is read-only');assert.equal(checkbox.checked, quest.implemented);
         assert.equal(row.querySelectorAll('.quest-name')[0].textContent, quest.name);
         assert(row.className.split(' ').includes(quest.status));
+        assert.equal(row.tagName, 'details');assert.equal(row.children[0].tagName, 'summary');assert.equal(row.open, false, 'Quest starts collapsed with native click/keyboard expansion');
+        const steps = row.querySelectorAll('.quest-step');assert.equal(steps.length, quest.steps.length, 'Every authored step is rendered');
+        steps.forEach((step, number) => {
+          assert.equal(step.dataset.stage, String(quest.steps[number].number));
+          assert.equal(step.querySelectorAll('.quest-step-label')[0].textContent, `Step ${number + 1}`);
+          const text = step.querySelectorAll('.quest-step-text')[0].textContent;
+          assert(text.trim() && !/%[diu]/.test(text), 'Step instructions are nonempty and dynamic counters are readable');
+        });describedSteps += steps.length;
       });shown += rows.length;checked += panel.querySelectorAll('.quest-checkbox').filter(node => node.checked).length;
     }
     assert.equal(shown, data.quests.total);assert.equal(checked, data.quests.implemented);
     await app.get('lock').fire('click');assert.equal(page.textContent, '', 'Lock removes quest data');
-    console.log(JSON.stringify({ result: 'passed', scope: 'quest tabs only', categories: tabs.length, quests: entries.length, implemented: data.quests.implemented, npcTasksExcluded: true, sourceScenarioMembership: true, readOnlyChecks: true, lockedContentCleared: true }));return;
+    console.log(JSON.stringify({ result: 'passed', scope: 'quest expansion and category tabs', categories: tabs.length, quests: entries.length, steps: describedSteps, implemented: data.quests.implemented, npcTasksExcluded: true, independentQuestsExcluded: true, sourceScenarioMembership: true, readOnlyChecks: true, lockedContentCleared: true }));return;
   }
   if (process.argv.includes('--items')) {
     assert.equal(app.get('view-items').textContent, '', 'Item content stays unavailable until unlock');

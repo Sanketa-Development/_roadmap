@@ -79,14 +79,18 @@ information. Unknown categories stay under Other. The catalog remains encrypted.
 Quests appears directly below Items, with Tutorial Quests first and Beginner's
 Quests second. Categories are tabs derived from `zone/Quest.cpp::E_QUEST_LEVEL`:
 Scenario I (11–20), Scenario II (21–30), Scenario III (51–55), first/second class
-changes, Jina, Exile, Bukdu and independent quests. The initial tutorial flag is
+changes, Jina, Exile and Bukdu. The initial tutorial flag is
 0; eTutorialA–E (1–5) use the journal's BEGINNERS QUEST label. Later Global journal
 entries with no matching category in this original revision remain separately
 labeled Additional Global Quests. Scroll quests have their own tab. Generic NPC
-task/exchange rows are excluded. Each entry shows its ID, name,
+task/exchange rows and independent reset services are excluded. Each entry shows its ID, name,
 available native details and a read-only implementation checkbox. Checked entries
 and names are green. Unchecked entries are not implemented or unconfirmed;
 implementation status is separate from player progress and journey testing.
+Click a quest to expand its numbered steps. Story descriptions come from the
+native journal history; scroll descriptions come from each stage's authored
+UI script. Reward messages remain in sequence. Native `>>` separators become
+line breaks, and dynamic counters display `[count]` instead of an invented value.
 
 Private `_docs/roadmap/build-quests.py` reads the native journal/messages,
 scroll stages and current native quest identities. Scroll stage rows are
