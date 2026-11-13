@@ -53,6 +53,31 @@ jobs:
           exit 1
       - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/github-script@v8
+        env:
+          PAGES_ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
         with:
-          artifact_name: ${{ env.PAGES_ARTIFACT }}
+          script: |
+            // Use the upload result directly: the artifact service used by
+            // deploy-pages can disagree with REST or include prior attempts.
+            const idToken = await core.getIDToken();
+            core.setSecret(idToken);
+            const {data: deployment} = await github.request('POST /repos/{owner}/{repo}/pages/deployments', {
+              ...context.repo,
+              artifact_id: Number(process.env.PAGES_ARTIFACT_ID),
+              pages_build_version: context.sha,
+              oidc_token: idToken
+            });
+            const deploymentId = deployment.id || deployment.status_url.split('/').pop();
+            core.setOutput('page_url', deployment.page_url);
+            const failed = new Set(['deployment_failed', 'deployment_perms_error',
+              'deployment_content_failed', 'deployment_cancelled', 'deployment_lost']);
+            for (let attempt = 0; attempt < 60; ++attempt) {
+              await new Promise(resolve => setTimeout(resolve, 5000));
+              const {data: state} = await github.request('GET /repos/{owner}/{repo}/pages/deployments/{deployment_id}', {
+                ...context.repo, deployment_id: deploymentId
+              });
+              if (state.status === 'succeed') return;
+              if (failed.has(state.status)) throw new Error(`Pages deployment: ${state.status}`);
+            }
+            throw new Error('Pages deployment timed out after five minutes.');
