@@ -77,3 +77,4 @@
 .quest-row.not_implemented .quest-status,.quest-row.unconfirmed .quest-status{color:#ee969b}.quest-copy{min-width:0}.quest-copy .skill-meta,.quest-copy .skill-description{overflow-wrap:anywhere}
 @media(max-width:480px){.quest-row{grid-template-columns:18px minmax(0,1fr);gap:9px;padding:17px 0}.quest-name{font-size:14px}.quest-group .group-count{font-size:10px}.quest-group summary{gap:10px}}
 @media(max-width:780px){.sidebar nav{flex-wrap:wrap;justify-content:flex-start}}
+.quest-tabs{flex-wrap:wrap;overflow:visible}.quest-panel{border:1px solid var(--line);border-radius:8px;padding:0 22px}.quest-category-heading{padding:20px 0 8px}.quest-category-heading h3{font-size:17px}.quest-category-heading .skill-result-count{margin-top:8px}@media(max-width:480px){.quest-panel{padding:0 14px}}

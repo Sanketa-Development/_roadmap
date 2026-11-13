@@ -1,11 +1,11 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-quests';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-questtabs';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
 let payload, envelope, search = '', status = 'all', skillStatus = 'all', itemQuery = '';
-let itemCategory = 'weapons';
+let itemCategory = 'weapons', questCategory = 'tutorial';
 const itemSelection = {types: new Set(), grips: new Set(), tribes: new Set()};
 const itemTribes = ['Naga', 'Kimnara', 'Asura', 'Rakshasa', 'Yaksha', 'Gandharva', 'Deva', 'Garuda'];
 
@@ -189,12 +189,25 @@ function quests() {
   intro.append(el('span', 'eyebrow', 'STORIES & ADVENTURES'), el('h2', '', 'Quests'), el('p', 'muted', catalog ? `${catalog.total} quests, grouped by category. ${catalog.meaning}` : 'The quest catalog has not been published yet.'));
   page.append(intro);if (!catalog) return;
   const counts = el('div', 'skill-counts');counts.append(badge(`${catalog.implemented} implemented`, true), badge(`${catalog.total - catalog.implemented} not implemented or unconfirmed`));page.append(counts);
-  for (const [index, group] of catalog.groups.entries()) {
-    const section = el('details', 'task-group quest-group');section.open = index < 2;section.setAttribute('data-category', group.id);
-    const summary = el('summary'), title = el('div', 'task-group-title');title.append(el('span', 'chapter-number', String(index + 1).padStart(2, '0')), el('h3', '', group.title));
-    summary.append(title, el('span', 'group-count', `${group.implemented} / ${group.total} implemented`));section.append(summary);
-    const list = el('div', 'task-group-content');
-    for (const quest of group.quests) {
+  const tabs = el('div', 'item-tabs quest-tabs');tabs.setAttribute('role', 'tablist');tabs.setAttribute('aria-label', 'Quest categories');
+  catalog.groups.forEach((group, index) => {
+    const tab = button('', () => selectQuestCategory(group.id), 'item-tab quest-tab');tab.id = `quest-tab-${group.id}`;
+    tab.setAttribute('role', 'tab');tab.setAttribute('data-category', group.id);tab.setAttribute('aria-controls', 'quests-panel');
+    tab.append(el('span', '', group.title), el('span', 'item-tab-count', group.total));
+    tab.addEventListener('keydown', event => {
+      const next = event.key === 'ArrowRight' ? (index + 1) % catalog.groups.length : event.key === 'ArrowLeft' ? (index + catalog.groups.length - 1) % catalog.groups.length : event.key === 'Home' ? 0 : event.key === 'End' ? catalog.groups.length - 1 : -1;
+      if (next < 0) return;event.preventDefault();selectQuestCategory(catalog.groups[next].id);$(`#quest-tab-${catalog.groups[next].id}`).focus();
+    });tabs.append(tab);
+  });
+  const panel = el('div', 'quest-panel');panel.id = 'quests-panel';panel.setAttribute('role', 'tabpanel');panel.setAttribute('tabindex', '0');page.append(tabs, panel);renderQuests();
+}
+function selectQuestCategory(id) {questCategory = id;renderQuests();}
+function renderQuests() {
+  const catalog = payload.quests, group = catalog.groups.find(group => group.id === questCategory) || catalog.groups[0], panel = $('#quests-panel');
+  if (!group) return;questCategory = group.id;panel.replaceChildren();panel.setAttribute('aria-labelledby', `quest-tab-${group.id}`);
+  document.querySelectorAll('.quest-tab').forEach(tab => {const selected = tab.dataset.category === questCategory;tab.setAttribute('aria-selected', String(selected));tab.setAttribute('tabindex', selected ? '0' : '-1');});
+  const heading = el('div', 'quest-category-heading');heading.append(el('h3', '', group.title), el('p', 'muted skill-result-count', `${group.implemented} of ${group.total} implemented`));panel.append(heading);
+  for (const quest of group.quests) {
       const row = el('article', `quest-row ${quest.status}`);row.setAttribute('data-quest', quest.key);
       const checkbox = el('input', 'skill-checkbox quest-checkbox');checkbox.type = 'checkbox';checkbox.checked = quest.implemented;checkbox.disabled = true;
       const state = quest.implemented ? 'Implemented in Sanketa' : quest.status === 'not_implemented' ? 'Not implemented' : 'Not yet confirmed';
@@ -204,9 +217,7 @@ function quests() {
       if (quest.description) copy.append(el('p', 'skill-description', quest.description));
       if (quest.info.length) {const meta = el('div', 'skill-meta');quest.info.forEach(value => meta.append(el('span', '', value)));copy.append(meta);}
       const note = el('p', 'skill-note');note.append(el('strong', 'quest-status', state), el('span', '', ` — ${quest.implementationNote}`));copy.append(note);
-      row.append(checkbox, copy);list.append(row);
-    }
-    section.append(list);page.append(section);
+      row.append(checkbox, copy);panel.append(row);
   }
 }
 function itemCategoryTitle(group) {return group.id === 'defence' ? 'Defense' : group.title;}

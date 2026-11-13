@@ -77,16 +77,21 @@ information. Unknown categories stay under Other. The catalog remains encrypted.
 ## Quests
 
 Quests appears directly below Items, with Tutorial Quests first and Beginner's
-Quests second. Expand categories for class changes, regional story chapters,
-independent quests, NPC tasks and scroll quests. Each entry shows its ID, name,
+Quests second. Categories are tabs derived from `zone/Quest.cpp::E_QUEST_LEVEL`:
+Scenario I (11–20), Scenario II (21–30), Scenario III (51–55), first/second class
+changes, Jina, Exile, Bukdu and independent quests. The initial tutorial flag is
+0; eTutorialA–E (1–5) use the journal's BEGINNERS QUEST label. Later Global journal
+entries with no matching category in this original revision remain separately
+labeled Additional Global Quests. Scroll quests have their own tab. Generic NPC
+task/exchange rows are excluded. Each entry shows its ID, name,
 available native details and a read-only implementation checkbox. Checked entries
 and names are green. Unchecked entries are not implemented or unconfirmed;
 implementation status is separate from player progress and journey testing.
 
-Private `_docs/roadmap/build-quests.py` reads the native journal/messages, NPC task
-rows, scroll stages and current native quest identities. Scroll stage rows are
+Private `_docs/roadmap/build-quests.py` reads the native journal/messages,
+scroll stages and current native quest identities. Scroll stage rows are
 grouped by their quest number. `_docs/roadmap/quests-status.json` holds status
-notes and per-quest overrides, keyed as `story:<ID>`, `task:<ID>` or `scroll:<ID>`.
+notes and per-quest overrides, keyed as `story:<ID>` or `scroll:<ID>`.
 Refresh with `python -X utf8 _docs/roadmap/build-quests.py` from the workspace root,
 then seal the payload. Keep all catalog data and status authoring private.
 The existing rendered-content check supports `--quests` for this section only.

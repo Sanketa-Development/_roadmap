@@ -47,24 +47,29 @@ class Node {
     assert.equal(app.get('page-title').textContent, 'Quests');
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
     assert(html.indexOf('href="#quests"') > html.indexOf('href="#items"') && html.indexOf('href="#quests"') < html.indexOf('href="#worlds"'), 'Quests follows Items in navigation');
-    const page = app.get('view-quests'), groups = page.querySelectorAll('.quest-group'), entries = data.quests.groups.flatMap(group => group.quests);
-    assert.equal(groups.length, data.quests.groups.length);assert.equal(data.quests.groups[0].title, 'Tutorial Quests');assert.equal(data.quests.groups[1].title, "Beginner's Quests");
-    for (let index = 0; index < groups.length; index++) {
-      const group = data.quests.groups[index], rows = groups[index].querySelectorAll('.quest-row');
-      assert.equal(groups[index].dataset.category, group.id);assert.equal(rows.length, group.total);
+    const page = app.get('view-quests'), tabs = page.querySelectorAll('.quest-tab'), entries = data.quests.groups.flatMap(group => group.quests);
+    assert.equal(tabs.length, data.quests.groups.length);assert.equal(data.quests.groups[0].title, 'Tutorial Quests');assert.equal(data.quests.groups[1].title, "Beginner's Quests");
+    assert(entries.every(quest => quest.kind !== 'task') && !data.quests.groups.some(group => group.id === 'npc-tasks'), 'Generic NPC tasks are excluded');
+    for (const [category, first, last] of [['scenario-1', 11, 20], ['scenario-2', 21, 30], ['scenario-3', 51, 55]]) {
+      assert.deepEqual(data.quests.groups.find(group => group.id === category).quests.map(quest => quest.id), Array.from({length: last-first+1}, (_, i) => first+i), 'Scenario membership follows E_QUEST_LEVEL');
+    }
+    let checked = 0, shown = 0;
+    for (let index = 0; index < tabs.length; index++) {
+      const group = data.quests.groups[index];await tabs[index].fire('click');
+      const panel = app.get('quests-panel'), rows = panel.querySelectorAll('.quest-row');
+      assert.equal(tabs[index].dataset.category, group.id);assert.equal(tabs[index].attrs['aria-selected'], 'true');assert.equal(panel.attrs['aria-labelledby'], tabs[index].id);
+      assert.equal(tabs.filter(tab => tab.attrs['aria-selected'] === 'true').length, 1, 'Only the selected category is active');assert.equal(rows.length, group.total);
       assert.deepEqual(rows.map(row => row.dataset.quest), group.quests.map(quest => quest.key), 'Each quest stays in its authored category and order');
       rows.forEach((row, n) => {
         const quest = group.quests[n], checkbox = row.querySelectorAll('.quest-checkbox')[0];
         assert(checkbox.disabled, 'Implementation status is read-only');assert.equal(checkbox.checked, quest.implemented);
         assert.equal(row.querySelectorAll('.quest-name')[0].textContent, quest.name);
         assert(row.className.split(' ').includes(quest.status));
-      });
+      });shown += rows.length;checked += panel.querySelectorAll('.quest-checkbox').filter(node => node.checked).length;
     }
-    assert.equal(page.querySelectorAll('.quest-checkbox').length, data.quests.total);
-    assert.equal(page.querySelectorAll('.quest-checkbox').filter(node => node.checked).length, data.quests.implemented);
-    assert(entries.filter(quest => quest.kind === 'scroll').every(quest => !quest.implemented), 'Imported scroll data does not claim runtime implementation');
+    assert.equal(shown, data.quests.total);assert.equal(checked, data.quests.implemented);
     await app.get('lock').fire('click');assert.equal(page.textContent, '', 'Lock removes quest data');
-    console.log(JSON.stringify({ result: 'passed', scope: 'quests only', categories: groups.length, quests: entries.length, implemented: data.quests.implemented, readOnlyChecks: true, lockedContentCleared: true }));return;
+    console.log(JSON.stringify({ result: 'passed', scope: 'quest tabs only', categories: tabs.length, quests: entries.length, implemented: data.quests.implemented, npcTasksExcluded: true, sourceScenarioMembership: true, readOnlyChecks: true, lockedContentCleared: true }));return;
   }
   if (process.argv.includes('--items')) {
     assert.equal(app.get('view-items').textContent, '', 'Item content stays unavailable until unlock');
