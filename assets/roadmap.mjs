@@ -85,7 +85,7 @@ function overview() {
     card.append(top, el('h3', '', group.title), progress(group));
     const bottom = el('div', 'card-bottom'); bottom.append(el('span', '', `${group.done} of ${group.total} tasks checked`), el('strong', 'phase-percentage', `${checklistPercent(group)}%`)); card.append(bottom); cards.append(card);
   } page.append(cards);
-  const sources = el('section', 'sources'); sources.append(el('div', '', 'How progress is counted'), el('p', 'muted', 'Percentages count checked top-level tasks divided by total top-level tasks, rounded to the nearest whole percent. Nested subtasks and acceptance gates are separate. This is checklist progress, not overall game completion.'));
+  const sources = el('section', 'sources'); sources.append(el('div', '', 'How progress is counted'), el('p', 'muted', payload.method));
   const links = el('div', 'source-links'); links.append(sourceButton('Implementation plan', 'plan'), sourceButton('Progress notes', 'progress'), sourceButton('Remaining work', 'parity')); sources.append(links); page.append(sources);
 }
 function taskNode(task, nested = false) {
@@ -303,9 +303,9 @@ function worlds() {
   const page = $('#view-worlds'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'THE WORLD OF SANKETA'), el('h2', '', 'Familiar places.\nNew foundations.'), el('p', 'muted', 'Native zone identities are preserved. Recorded entry and travel baselines are distinct from complete gameplay acceptance.')); page.append(intro);
   const grid = el('div', 'world-grid');
   for (const zone of payload.zones) {
-    const card = el('article', 'world-card'); card.append(el('span', 'chapter-number', zone.zone.replace('Zone', 'ZONE ')), el('h3', '', zone.name), el('p', 'muted', `Native map ${zone.map}`), badge(zone.baselineAccepted ? 'Entry / travel recorded' : 'Entry / travel open', zone.baselineAccepted), el('p', 'world-limit', 'Full content acceptance · Open')); grid.append(card);
+    const card = el('article', 'world-card'); card.append(el('span', 'chapter-number', zone.zone.replace('Zone', 'ZONE ')), el('h3', '', zone.name), el('p', 'muted', `Native map ${zone.map}`), badge(zone.onlineEnabled ? 'Online enabled' : 'Online disabled', zone.onlineEnabled), badge(zone.offlineEnabled ? 'Offline enabled' : 'Offline disabled', zone.offlineEnabled), badge(zone.baselineAccepted ? 'Entry / travel recorded' : 'Entry / travel open', zone.baselineAccepted), el('p', 'world-limit', zone.note || 'Full content acceptance · Open')); grid.append(card);
   } page.append(grid);
-  const note = el('div', 'scope-note'); note.append(el('h3', '', 'Beyond the first ten zones'), el('p', 'muted', 'The native scope covers zones 01–34. Configuration and import results do not establish complete services, encounters, or competitive content.'), sourceButton('Review the remaining work', 'parity')); page.append(note);
+  const note = el('div', 'scope-note'); note.append(el('h3', '', 'Registered zones and remaining data'), el('p', 'muted', 'The native ID contract supports 1–255. This snapshot lists registered profiles and offline aliases; enabled configuration does not establish complete gameplay. Zone 25 remains disabled pending matching map data; source Zone 33 has an unresolved identity.'), sourceButton('Review the remaining work', 'parity')); page.append(note);
 }
 function updates() {
   const page = $('#view-updates'), intro = el('div', 'page-intro'); intro.append(el('span', 'eyebrow', 'FROM THE DEVELOPMENT JOURNAL'), el('h2', '', 'Progress, as it happens.'), el('p', 'muted', 'Dated checkpoints retain the scope and limits of their recorded evidence.')); page.append(intro);

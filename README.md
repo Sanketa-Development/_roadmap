@@ -10,6 +10,11 @@ Overall and phase percentages show checked top-level tasks divided by total
 top-level tasks, rounded to whole percentages. Counts remain visible; acceptance
 gates and nested tasks stay separate. This is checklist progress, not a weighted
 overall game-completion score.
+The 15 November 2026 refresh replaces retired migration/OGRE/repeated-test work
+with 50 maintained feature/release tasks. Its percentage is not comparable with
+the historical 183/264 (69%) checklist. Historical source plans stay labeled as
+such. Worlds lists registered online/offline profiles, including disabled and
+alias records, without treating enabled profiles as fully accepted maps.
 
 The roadmap and its source documents are AES-256-GCM encrypted before publication.
 PBKDF2-SHA-256 derives the key from the visitor's password with a random salt and
