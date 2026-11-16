@@ -11,7 +11,7 @@ top-level tasks, rounded to whole percentages. Counts remain visible; acceptance
 gates and nested tasks stay separate. This is checklist progress, not a weighted
 overall game-completion score.
 The 15 November 2026 refresh replaces retired migration/OGRE/repeated-test work
-with 50 maintained feature/release tasks. Its percentage is not comparable with
+with 50 maintained feature/release tasks; the 17 November quest-editor delivery adds one task (51 total). Its percentage is not comparable with
 the historical 183/264 (69%) checklist. Historical source plans stay labeled as
 such. Worlds lists registered online/offline profiles, including disabled and
 alias records, without treating enabled profiles as fully accepted maps.
