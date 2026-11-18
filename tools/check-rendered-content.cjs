@@ -51,10 +51,11 @@ class Node {
     assert(!app.get('view-patch-notes').hidden && app.get('view-updates').hidden);
     assert.equal(app.get('page-title').textContent, 'Patch Notes');
     const expected = model.patchNoteRecords(data.project), rows = app.get('patch-notes-list').querySelectorAll('.patch-note');
-    assert.equal(rows.length, data.project.changes.length);
+    assert.equal(rows.length, data.project.patchNotes.length);
     for (const [index, row] of rows.entries()) {
       const note = expected[index]; assert.equal(row.tagName, 'details'); assert(!row.open);
       assert.equal(row.dataset.note, note.id); assert(row.children[0].textContent.includes(note.id) && row.children[0].textContent.includes(note.title));
+      assert.equal(row.querySelectorAll('.patch-release')[0].textContent, `Release ${note.release}`);
       const entries = row.querySelectorAll('.patch-change'); assert.equal(entries.length, note.entries.length);
       for (const [i, entry] of entries.entries()) {
         assert.equal(entry.querySelectorAll('.patch-type')[0].textContent, note.entries[i].type);
@@ -64,14 +65,14 @@ class Node {
     await app.get('patch-notes-expand').fire('click'); assert(rows.every(row => row.open));
     await app.get('patch-notes-collapse').fire('click'); assert(rows.every(row => !row.open));
     await app.get('lock').fire('click'); assert.equal(app.get('view-patch-notes').textContent, '');
-    const legacyChanges = data.project.changes.map(({id, entries, ...change}) => change);
-    const legacyData = {...data, project: {...data.project, changes: legacyChanges}};
+    const {patchNotes: publishedNotes, ...journalOnly} = data.project;
+    const legacyData = {...data, project: journalOnly};
     const legacy = start(legacyData); legacy.get('password').value = password; await legacy.get('access-form').fire('submit'); legacy.route('#patch-notes');
-    assert.equal(legacy.get('patch-notes-list').querySelectorAll('.patch-note').length, legacyChanges.length, 'Existing encrypted snapshots remain usable');
-    assert.equal(legacy.get('patch-notes-list').querySelectorAll('.patch-description')[0].textContent, ': ' + legacyChanges[0].text);
+    assert.equal(legacy.get('patch-notes-list').querySelectorAll('.patch-note').length, 0, 'Development updates must never become player patch notes');
+    assert(legacy.get('patch-notes-list').textContent.includes('No published game patch notes'));
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
     assert(/data-route="updates"[\s\S]*?<\/a>\s*<a href="#patch-notes"/.test(html), 'Patch Notes follows Updates');
-    console.log(JSON.stringify({result:'passed',scope:'patch notes',notes:rows.length,entries:expected.reduce((n,note)=>n+note.entries.length,0),typedEntries:true,expandCollapse:true,lockedContentCleared:true,legacySnapshot:true,layout:'not visually checked'})); return;
+    console.log(JSON.stringify({result:'passed',scope:'patch notes',notes:rows.length,entries:expected.reduce((n,note)=>n+note.entries.length,0),publishedGameNotesOnly:true,releaseLabels:true,typedEntries:true,expandCollapse:true,lockedContentCleared:true,journalFallbackDisabled:true,layout:'not visually checked'})); return;
   }
   if (process.argv.includes('--quests')) {
     assert.equal(app.get('view-quests').textContent, '', 'Quest content stays locked');

@@ -1,13 +1,9 @@
 export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes'];
 export const patchNoteTypes = ['Patch', 'Implementation', 'Adjustment', 'Fix', 'Note'];
 export function patchNoteRecords(project) {
-  // Retain older encrypted snapshots: their dated update text is one Patch entry.
-  // Explicit IDs remain stable when newer notes are prepended to the journal.
-  return (project.changes || []).map((change, index, changes) => ({
-    id: change.id || `PN${String(changes.length - index - 1).padStart(2, '0')}`,
-    date: change.date, title: change.title,
-    entries: change.entries || [{type: 'Patch', description: change.text}]
-  }));
+  // Player notes are curated from published game releases. Never expose the
+  // development journal as a fallback, including for older encrypted snapshots.
+  return [...(project.patchNotes || [])].sort((a, b) => b.release - a.release);
 }
 export function checklistPercent({ done, total }) {
   return total ? Math.round(done / total * 100) : 0;
@@ -56,8 +52,9 @@ export function validate(payload) {
   if (project.total !== tasks.length || project.done !== tasks.filter(task => task.done).length || project.accepted !== project.groups.filter(group => group.gate?.done).length) throw new Error('Roadmap counts do not match the source');
   const notes = patchNoteRecords(project);
   if (new Set(notes.map(note => note.id)).size !== notes.length) throw new Error('Duplicate patch note ID');
+  if (new Set(notes.map(note => note.release)).size !== notes.length) throw new Error('Duplicate patch note release');
   for (const note of notes) {
-    if (!/^PN\d{2,}$/.test(note.id) || !note.title || !/^\d{4}-\d{2}-\d{2}$/.test(note.date) || !Array.isArray(note.entries) || !note.entries.length || note.entries.some(entry => !patchNoteTypes.includes(entry.type) || typeof entry.description !== 'string' || !entry.description.trim())) throw new Error('Invalid patch note');
+    if (!/^PN\d{2,}$/.test(note.id) || !Number.isSafeInteger(note.release) || note.release <= 0 || !/^[a-f0-9]{40}$/.test(note.updateCommit || '') || !note.title || !/^\d{4}-\d{2}-\d{2}$/.test(note.date) || !Array.isArray(note.entries) || !note.entries.length || note.entries.some(entry => !patchNoteTypes.includes(entry.type) || typeof entry.description !== 'string' || !entry.description.trim())) throw new Error('Invalid published game patch note');
   }
   if (payload.skills) {
     const skills = payload.skills.groups?.flatMap(group => group.skills);

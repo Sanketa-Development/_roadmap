@@ -59,12 +59,15 @@ title and date in the same expandable layout as Tasks. Its change list uses
 colour-coded Patch, Implementation, Adjustment, Fix and Note labels. Expand all
 and Collapse all affect only this page. Locking clears the decrypted notes.
 
-Author the existing `project.changes` records in private `source.json`: retain
-`date`, `title` and the Updates `text`, and add an explicit `id` plus `entries`
-of `{ "type": "Fix", "description": "..." }`. Prepend new records and retain old
-IDs. Existing encrypted snapshots without these fields remain readable as one
-Patch entry per dated update. Seal the private source normally to publish edited
-change lists; do not put their text in this public repository.
+Author `project.patchNotes` in private `source.json` separately from the
+`project.changes` development journal. Include only implemented game changes
+already delivered in the encrypted `_update` feed. Each note requires its stable
+`id`, `date`, player-facing `title`, numeric `release`, full `updateCommit`, and
+`entries` of `{ "type": "Fix", "description": "..." }`. Retain historical IDs.
+Describe what players experience; exclude source paths, internal formats,
+backend/build/test details, developer tools, plans and unresolved reports.
+Do not claim optimisation without evidence. No journal fallback is displayed.
+Seal the private source normally; do not put its text in this public repository.
 
 The focused renderer check can use private authoring data without a password:
 `node tools/check-rendered-content.cjs --patch-notes --source ../_docs/roadmap/source.json`.

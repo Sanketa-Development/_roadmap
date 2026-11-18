@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261118-patchnotes';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261118-gamepatches';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -314,19 +314,19 @@ function updates() {
 }
 function patchNotes() {
   const page = $('#view-patch-notes'), notes = patchNoteRecords(payload.project), intro = el('div', 'page-intro');
-  intro.append(el('span', 'eyebrow', 'THE CHANGE LOG'), el('h2', '', 'Patch Notes'), el('p', 'muted', 'Recorded changes, newest first. Open a note to see its implementations, adjustments and fixes. Dates retain the context of each delivery.'));
+  intro.append(el('span', 'eyebrow', 'GAME UPDATES'), el('h2', '', 'Patch Notes'), el('p', 'muted', 'Changes available in released game updates, newest first. Open a patch to see what was added, adjusted or fixed.'));
   page.append(intro);
   const list = el('div', 'patch-notes-list'); list.id = 'patch-notes-list';
   const meta = el('div', 'task-meta'), controls = el('div', 'expand-actions');
   const expand = button('Expand all', () => list.querySelectorAll('.patch-note').forEach(note => note.open = true), 'text-link'); expand.id = 'patch-notes-expand';
   const collapse = button('Collapse all', () => list.querySelectorAll('.patch-note').forEach(note => note.open = false), 'text-link'); collapse.id = 'patch-notes-collapse';
   controls.append(expand, collapse); meta.append(el('span', 'muted', `${notes.length} patch notes`), controls); page.append(meta, list);
-  if (!notes.length) { list.append(el('p', 'empty-state', 'No patch notes have been recorded yet.')); return; }
+  if (!notes.length) { list.append(el('p', 'empty-state', 'No published game patch notes are available yet.')); return; }
   for (const note of notes) {
     const section = el('details', 'task-group patch-note'); section.dataset.note = note.id;
     const summary = el('summary'), heading = el('div', 'task-group-title'); heading.append(el('span', 'chapter-number', note.id), el('h3', '', note.title));
     const count = el('span', 'group-count'), date = el('time', '', note.date); date.dateTime = note.date;
-    count.append(date, el('span', '', `${note.entries.length} ${note.entries.length === 1 ? 'change' : 'changes'}`)); summary.append(heading, count); section.append(summary);
+    count.append(date, el('span', 'patch-release', `Release ${note.release}`), el('span', '', `${note.entries.length} ${note.entries.length === 1 ? 'change' : 'changes'}`)); summary.append(heading, count); section.append(summary);
     const content = el('div', 'task-group-content'), changes = el('ul', 'patch-changes');
     for (const entry of note.entries) {
       const row = el('li', 'patch-change');
