@@ -3,7 +3,7 @@
 Website: https://sanketa-development.github.io/_roadmap/
 
 Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Quests, Worlds & scope,
-and Updates, with a responsive red, bronze and gold design using the supplied
+Updates, and Patch Notes, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
 Overall and phase percentages show checked top-level tasks divided by total
@@ -11,7 +11,10 @@ top-level tasks, rounded to whole percentages. Counts remain visible; acceptance
 gates and nested tasks stay separate. This is checklist progress, not a weighted
 overall game-completion score.
 The 15 November 2026 refresh replaces retired migration/OGRE/repeated-test work
-with 50 maintained feature/release tasks; the 17 November quest-editor delivery adds one task (51 total). Its percentage is not comparable with
+with 50 maintained feature/release tasks. Quest Editor added one task; the
+18 November refresh adds Map Editor, NPC Editor and the reported warehouse hang
+for54 total,46 checked. These are checklist records; acceptance gates stay open.
+Its percentage is not comparable with
 the historical 183/264 (69%) checklist. Historical source plans stay labeled as
 such. Worlds lists registered online/offline profiles, including disabled and
 alias records, without treating enabled profiles as fully accepted maps.
@@ -48,6 +51,24 @@ Run `node tools/check-roadmap.cjs` and `node tools/check-rendered-content.cjs` w
 the password supplied at their hidden prompts. Push `main` to deploy through the
 existing GitHub Actions Pages workflow. Only `index.html` and `assets/` deploy.
 No npm packages, server, external scripts, or Jekyll build are required.
+
+## Patch Notes
+
+Patch Notes sits directly below Updates. Each note uses a stable `PN00`-style ID,
+title and date in the same expandable layout as Tasks. Its change list uses
+colour-coded Patch, Implementation, Adjustment, Fix and Note labels. Expand all
+and Collapse all affect only this page. Locking clears the decrypted notes.
+
+Author the existing `project.changes` records in private `source.json`: retain
+`date`, `title` and the Updates `text`, and add an explicit `id` plus `entries`
+of `{ "type": "Fix", "description": "..." }`. Prepend new records and retain old
+IDs. Existing encrypted snapshots without these fields remain readable as one
+Patch entry per dated update. Seal the private source normally to publish edited
+change lists; do not put their text in this public repository.
+
+The focused renderer check can use private authoring data without a password:
+`node tools/check-rendered-content.cjs --patch-notes --source ../_docs/roadmap/source.json`.
+This checks UI behaviour; it does not seal or publish the data.
 
 ## Skills
 

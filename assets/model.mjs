@@ -1,4 +1,14 @@
-export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates'];
+export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes'];
+export const patchNoteTypes = ['Patch', 'Implementation', 'Adjustment', 'Fix', 'Note'];
+export function patchNoteRecords(project) {
+  // Retain older encrypted snapshots: their dated update text is one Patch entry.
+  // Explicit IDs remain stable when newer notes are prepended to the journal.
+  return (project.changes || []).map((change, index, changes) => ({
+    id: change.id || `PN${String(changes.length - index - 1).padStart(2, '0')}`,
+    date: change.date, title: change.title,
+    entries: change.entries || [{type: 'Patch', description: change.text}]
+  }));
+}
 export function checklistPercent({ done, total }) {
   return total ? Math.round(done / total * 100) : 0;
 }
@@ -44,6 +54,11 @@ export function validate(payload) {
   if (payload.version !== 1 || project?.id !== 'sanketa' || project.name !== 'Sanketa' || !Array.isArray(project.groups) || !payload.documents) throw new Error('Invalid Sanketa roadmap');
   const tasks = project.groups.flatMap(group => group.tasks);
   if (project.total !== tasks.length || project.done !== tasks.filter(task => task.done).length || project.accepted !== project.groups.filter(group => group.gate?.done).length) throw new Error('Roadmap counts do not match the source');
+  const notes = patchNoteRecords(project);
+  if (new Set(notes.map(note => note.id)).size !== notes.length) throw new Error('Duplicate patch note ID');
+  for (const note of notes) {
+    if (!/^PN\d{2,}$/.test(note.id) || !note.title || !/^\d{4}-\d{2}-\d{2}$/.test(note.date) || !Array.isArray(note.entries) || !note.entries.length || note.entries.some(entry => !patchNoteTypes.includes(entry.type) || typeof entry.description !== 'string' || !entry.description.trim())) throw new Error('Invalid patch note');
+  }
   if (payload.skills) {
     const skills = payload.skills.groups?.flatMap(group => group.skills);
     if (!skills || payload.skills.total !== skills.length || payload.skills.implemented !== skills.filter(skill => skill.implemented).length || new Set(skills.map(skill => skill.id)).size !== skills.length) throw new Error('Skill counts do not match the catalog');

@@ -20,12 +20,16 @@ class Node {
   const { readPassword } = await import(pathToFileURL(path.join(__dirname, 'seal-roadmap.mjs')));
   const { unseal } = await import(pathToFileURL(path.join(root, 'assets/crypto.mjs')));
   const model = await import(pathToFileURL(path.join(root, 'assets/model.mjs')));
-  const password = await readPassword(), envelope = JSON.parse(fs.readFileSync(path.join(root, 'assets/roadmap.enc.json')));
+  const sourceIndex = process.argv.indexOf('--source'), source = sourceIndex < 0 ? null : process.argv[sourceIndex + 1];
+  if (sourceIndex >= 0 && (!source || !process.argv.includes('--patch-notes'))) throw new Error('--source requires a private source path and --patch-notes');
+  if (source && !path.relative(root, path.resolve(source)).startsWith('..' + path.sep)) throw new Error('Use private authoring data outside the public repository');
+  const password = source ? require('node:crypto').randomBytes(24).toString('hex') : await readPassword();
+  const envelope = source ? {} : JSON.parse(fs.readFileSync(path.join(root, 'assets/roadmap.enc.json')));
   assert(password, 'Supply the password through the hidden prompt or stdin');
-  const data = await unseal(envelope, password), saved = new Map();
+  const data = model.validate(source ? JSON.parse(fs.readFileSync(source, 'utf8')) : await unseal(envelope, password)), saved = new Map();
   const localStorage = { getItem: key => saved.get(key) ?? null, setItem: (key, value) => saved.set(key, value), removeItem: key => saved.delete(key) };
   const code = fs.readFileSync(path.join(root, 'assets/roadmap.mjs'), 'utf8').replace(/^import .*;\r?$/gm, '');
-  function start() {
+  function start(fixture) {
     const body = new Node('body'), handlers = {}, location = { hash: '' };
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
     for (const match of html.matchAll(/<([a-z][a-z0-9]*)\b([^>]*\bid="([^"]+)"[^>]*)>/g)) {
@@ -33,13 +37,42 @@ class Node {
     }
     const document = { body, title: '', createElement: tag => new Node(tag), querySelectorAll: selector => body.querySelectorAll(selector), querySelector: selector => body.querySelectorAll(selector)[0] };
     const window = { addEventListener: (event, fn) => handlers[event] = fn, scrollTo() {} };
-    const context = { document, window, location, URLSearchParams, localStorage, crypto: require('node:crypto').webcrypto, fetch: async () => ({ ok: true, json: async () => envelope }), unseal, ...model, TypeError };
+    const context = { document, window, location, URLSearchParams, localStorage, crypto: require('node:crypto').webcrypto, fetch: async () => ({ ok: true, json: async () => envelope }), unseal: fixture || source ? async () => fixture || data : unseal, ...model, TypeError };
     vm.createContext(context); vm.runInContext(code, context);
     return { document, location, window, get: id => document.querySelector('#' + id), route: hash => { location.hash = hash; handlers.hashchange(); } };
   }
   const app = start();
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  if (process.argv.includes('--patch-notes')) {
+    assert.equal(app.get('view-patch-notes').textContent, '', 'Notes stay unavailable until unlock');
+    app.get('password').value = password; await app.get('access-form').fire('submit'); app.route('#patch-notes');
+    assert.equal(model.route('#patch-notes'), 'patch-notes');
+    assert(!app.get('view-patch-notes').hidden && app.get('view-updates').hidden);
+    assert.equal(app.get('page-title').textContent, 'Patch Notes');
+    const expected = model.patchNoteRecords(data.project), rows = app.get('patch-notes-list').querySelectorAll('.patch-note');
+    assert.equal(rows.length, data.project.changes.length);
+    for (const [index, row] of rows.entries()) {
+      const note = expected[index]; assert.equal(row.tagName, 'details'); assert(!row.open);
+      assert.equal(row.dataset.note, note.id); assert(row.children[0].textContent.includes(note.id) && row.children[0].textContent.includes(note.title));
+      const entries = row.querySelectorAll('.patch-change'); assert.equal(entries.length, note.entries.length);
+      for (const [i, entry] of entries.entries()) {
+        assert.equal(entry.querySelectorAll('.patch-type')[0].textContent, note.entries[i].type);
+        assert.equal(entry.querySelectorAll('.patch-description')[0].textContent, ': ' + note.entries[i].description);
+      }
+    }
+    await app.get('patch-notes-expand').fire('click'); assert(rows.every(row => row.open));
+    await app.get('patch-notes-collapse').fire('click'); assert(rows.every(row => !row.open));
+    await app.get('lock').fire('click'); assert.equal(app.get('view-patch-notes').textContent, '');
+    const legacyChanges = data.project.changes.map(({id, entries, ...change}) => change);
+    const legacyData = {...data, project: {...data.project, changes: legacyChanges}};
+    const legacy = start(legacyData); legacy.get('password').value = password; await legacy.get('access-form').fire('submit'); legacy.route('#patch-notes');
+    assert.equal(legacy.get('patch-notes-list').querySelectorAll('.patch-note').length, legacyChanges.length, 'Existing encrypted snapshots remain usable');
+    assert.equal(legacy.get('patch-notes-list').querySelectorAll('.patch-description')[0].textContent, ': ' + legacyChanges[0].text);
+    const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+    assert(/data-route="updates"[\s\S]*?<\/a>\s*<a href="#patch-notes"/.test(html), 'Patch Notes follows Updates');
+    console.log(JSON.stringify({result:'passed',scope:'patch notes',notes:rows.length,entries:expected.reduce((n,note)=>n+note.entries.length,0),typedEntries:true,expandCollapse:true,lockedContentCleared:true,legacySnapshot:true,layout:'not visually checked'})); return;
+  }
   if (process.argv.includes('--quests')) {
     assert.equal(app.get('view-quests').textContent, '', 'Quest content stays locked');
     app.get('password').value = password;await app.get('access-form').fire('submit');app.route('#quests');

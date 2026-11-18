@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent } from './model.mjs?v=20261113-queststeps';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261118-patchnotes';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
@@ -312,15 +312,38 @@ function updates() {
   const timeline = el('div', 'timeline');
   for (const change of payload.project.changes) { const entry = el('article', 'update'), date = el('time', '', change.date); date.dateTime = change.date; const copy = el('div'); copy.append(el('h3', '', change.title), el('p', 'muted', change.text)); entry.append(date, copy); timeline.append(entry); } page.append(timeline);
 }
+function patchNotes() {
+  const page = $('#view-patch-notes'), notes = patchNoteRecords(payload.project), intro = el('div', 'page-intro');
+  intro.append(el('span', 'eyebrow', 'THE CHANGE LOG'), el('h2', '', 'Patch Notes'), el('p', 'muted', 'Recorded changes, newest first. Open a note to see its implementations, adjustments and fixes. Dates retain the context of each delivery.'));
+  page.append(intro);
+  const list = el('div', 'patch-notes-list'); list.id = 'patch-notes-list';
+  const meta = el('div', 'task-meta'), controls = el('div', 'expand-actions');
+  const expand = button('Expand all', () => list.querySelectorAll('.patch-note').forEach(note => note.open = true), 'text-link'); expand.id = 'patch-notes-expand';
+  const collapse = button('Collapse all', () => list.querySelectorAll('.patch-note').forEach(note => note.open = false), 'text-link'); collapse.id = 'patch-notes-collapse';
+  controls.append(expand, collapse); meta.append(el('span', 'muted', `${notes.length} patch notes`), controls); page.append(meta, list);
+  if (!notes.length) { list.append(el('p', 'empty-state', 'No patch notes have been recorded yet.')); return; }
+  for (const note of notes) {
+    const section = el('details', 'task-group patch-note'); section.dataset.note = note.id;
+    const summary = el('summary'), heading = el('div', 'task-group-title'); heading.append(el('span', 'chapter-number', note.id), el('h3', '', note.title));
+    const count = el('span', 'group-count'), date = el('time', '', note.date); date.dateTime = note.date;
+    count.append(date, el('span', '', `${note.entries.length} ${note.entries.length === 1 ? 'change' : 'changes'}`)); summary.append(heading, count); section.append(summary);
+    const content = el('div', 'task-group-content'), changes = el('ul', 'patch-changes');
+    for (const entry of note.entries) {
+      const row = el('li', 'patch-change');
+      row.append(el('span', `patch-type patch-type-${entry.type.toLowerCase()}`, entry.type), el('span', 'patch-description', `: ${entry.description}`)); changes.append(row);
+    }
+    content.append(changes); section.append(content); list.append(section);
+  }
+}
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); skills(); items(); quests(); worlds(); updates();
+  overview(); tasks(); skills(); items(); quests(); worlds(); updates(); patchNotes();
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes' };
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
   $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : current === 'quests' && payload.quests ? `Quest catalog · ${payload.quests.reviewed}` : `Source snapshot · ${payload.reviewed}`;
