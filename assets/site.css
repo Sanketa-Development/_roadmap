@@ -78,6 +78,19 @@
 @media(max-width:480px){.quest-row{grid-template-columns:18px minmax(0,1fr);gap:9px;padding:17px 0}.quest-name{font-size:14px}.quest-group .group-count{font-size:10px}.quest-group summary{gap:10px}}
 @media(max-width:780px){.sidebar nav{flex-wrap:wrap;justify-content:flex-start}}
 .quest-tabs{flex-wrap:wrap;overflow:visible}.quest-panel{border:1px solid var(--line);border-radius:8px;padding:0 22px}.quest-category-heading{padding:20px 0 8px}.quest-category-heading h3{font-size:17px}.quest-category-heading .skill-result-count{margin-top:8px}@media(max-width:480px){.quest-panel{padding:0 14px}}
+.preview-review{display:flex;flex-wrap:wrap;gap:10px 15px;align-items:center;margin:0 0 22px;max-width:760px}
+.preview-review label{width:100%}.preview-review textarea,.preview-notes textarea{display:block;width:100%;resize:vertical;padding:8px 10px;font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:5px;background:#190f11}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:16px}
+.preview-grid[hidden],.preview-media [hidden]{display:none}
+.preview-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:#221418}
+.preview-card header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 14px}
+.preview-card h3{font-size:16px;margin:0}.preview-card header span{white-space:nowrap;font-size:12px}
+.preview-media{position:relative;aspect-ratio:4/3;background:#100a0b}.preview-media img,.preview-media video{position:absolute;inset:0;display:block;width:100%;height:100%}
+.preview-media button{position:absolute;left:12px;bottom:12px}.preview-card>p:empty{display:none}.preview-card>p{margin:10px 14px 0}
+.preview-details{padding:10px 14px 0}.preview-details p{margin:0}.preview-details .muted{font-size:13px}
+.preview-observations{margin-top:6px}.preview-observations summary{cursor:pointer;font-size:13px}
+.preview-issues{display:flex;flex-wrap:wrap;gap:5px 12px;padding:10px 14px}.preview-issues input{accent-color:var(--gold)}
+.preview-notes{display:block;padding:0 14px 14px}.preview-notes textarea{margin-top:4px}
 .quest-row{display:block;padding:0}.quest-summary{display:grid;grid-template-columns:20px minmax(0,1fr)20px;gap:15px;align-items:start;padding:20px 0;cursor:pointer;list-style:none}.quest-summary::-webkit-details-marker{display:none}.quest-summary:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:4px}.quest-preview{font-size:11px;margin-top:9px}.quest-expand{font-size:22px;color:var(--gold);transition:transform .15s}.quest-row[open]>.quest-summary .quest-expand{transform:rotate(180deg)}.quest-details{padding:0 0 22px 35px}.quest-steps-title{font-size:13px;margin:22px 0 12px;color:var(--ink)}.quest-steps{list-style:none;padding:0;margin:0;border-left:1px solid var(--line)}.quest-step{padding:0 0 18px 18px}.quest-step:last-child{padding-bottom:0}.quest-step-label{font-size:11px;color:var(--gold)}.quest-step-text{white-space:pre-line;overflow-wrap:anywhere;font-size:13px;line-height:1.75;margin-top:5px;color:var(--soft)}.quest-counter-note{font-size:11px;margin-top:15px}@media(max-width:480px){.quest-summary{grid-template-columns:18px minmax(0,1fr)16px;gap:9px;padding:17px 0}.quest-details{padding-left:27px}.quest-step{padding-left:12px}.quest-step-text{font-size:12px}}
 
 /* Patch Notes shares the task accordion and keeps change types readable on mobile. */

@@ -3,7 +3,7 @@
 Website: https://sanketa-development.github.io/_roadmap/
 
 Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Quests, Worlds & scope,
-Updates, and Patch Notes, with a responsive red, bronze and gold design using the supplied
+Updates, Patch Notes, and Preview, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
 Overall and phase percentages show checked top-level tasks divided by total
@@ -72,6 +72,20 @@ Seal the private source normally; do not put its text in this public repository.
 The focused renderer check can use private authoring data without a password:
 `node tools/check-rendered-content.cjs --patch-notes --source ../_docs/roadmap/source.json`.
 This checks UI behaviour; it does not seal or publish the data.
+
+## Preview
+
+Preview sits below Patch Notes. Active skill recordings are grouped by tribe
+pair with the second-job classes and equipment shown on each card. Reviewers can
+flag animation, direction, height, audio, or other issues and add per-skill
+notes. Download report includes notes and flags across all tabs in Markdown.
+
+Refresh the preview from a completed local skill review folder using
+`node tools/seal-preview.mjs <review-folder>`. Enter the existing roadmap password
+at the hidden prompt. The script seals the video clips, posters, and metadata
+under `assets/preview`. The browser decrypts the selected video on Play. Commit
+the encrypted assets alongside the Preview page and keep the original media in
+the ignored workspace build directory.
 
 ## Skills
 

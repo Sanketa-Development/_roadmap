@@ -1,11 +1,13 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261118-gamepatches';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261121-preview';
+import { loadSkillPreview, renderSkillPreview } from './preview.mjs';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
 let payload, envelope, search = '', status = 'all', skillStatus = 'all', itemQuery = '';
 let itemCategory = 'weapons', questCategory = 'tutorial';
+let previewData, stopPreview;
 const itemSelection = {types: new Set(), grips: new Set(), tribes: new Set()};
 const itemTribes = ['Naga', 'Kimnara', 'Asura', 'Rakshasa', 'Yaksha', 'Gandharva', 'Deva', 'Garuda'];
 
@@ -28,6 +30,7 @@ form.addEventListener('submit', async event => {
       envelope = await response.json();
     }
     const opened = validate(await unseal(envelope, password.value));
+    previewData = await loadSkillPreview(password.value).catch(() => null);
     if (remember.checked) { try { localStorage.setItem(storageKey, password.value); } catch { remember.checked = false; } }
     else forget();
     payload = opened;
@@ -41,6 +44,7 @@ form.addEventListener('submit', async event => {
 });
 $('#lock').addEventListener('click', () => {
   payload = null; envelope = null;
+  stopPreview?.(); stopPreview = undefined; previewData = undefined;
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
   $('#source-dialog').close(); $('#source-text').textContent = '';
   $('#workspace').hidden = true; $('#access').hidden = false; document.body.classList.remove('unlocked');
@@ -338,12 +342,14 @@ function patchNotes() {
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
   overview(); tasks(); skills(); items(); quests(); worlds(); updates(); patchNotes();
+  stopPreview = renderSkillPreview($('#view-preview'), previewData, el, button);
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
+  if (current !== 'preview') stopPreview?.();
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
   $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : current === 'quests' && payload.quests ? `Quest catalog · ${payload.quests.reviewed}` : `Source snapshot · ${payload.reviewed}`;

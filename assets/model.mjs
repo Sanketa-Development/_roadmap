@@ -1,4 +1,4 @@
-export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes'];
+export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes', 'preview'];
 export const patchNoteTypes = ['Patch', 'Implementation', 'Adjustment', 'Fix', 'Note'];
 export function patchNoteRecords(project) {
   // Player notes are curated from published game releases. Never expose the

@@ -1,0 +1,150 @@
+import { unseal } from './crypto.mjs';
+
+const issueTypes = ['Animation', 'Direction', 'Height', 'Sound', 'Other'];
+const mediaDirectory = new URL('./preview/', import.meta.url);
+const encoder = new TextEncoder();
+
+export async function loadSkillPreview(password) {
+  const response = await fetch(new URL('index.enc.json', mediaDirectory), {cache: 'no-store'});
+  if (!response.ok) throw new Error('Preview index unavailable');
+  const index = await unseal(await response.json(), password);
+  if (index.version !== 1 || !Array.isArray(index.clips) || !index.clips.length ||
+      index.clips.some(clip => !/^3\d{3}$/.test(clip.id))) throw new Error('Invalid preview index');
+  const bytes = Uint8Array.from(atob(index.mediaKey), character => character.charCodeAt(0));
+  const key = await crypto.subtle.importKey('raw', bytes, 'AES-GCM', false, ['decrypt']);
+  return {clips: index.clips, key, revision: index.revision};
+}
+
+export function renderSkillPreview(page, data, el, button) {
+  const intro = el('div', 'page-intro');
+  intro.append(el('h2', '', 'Skill recordings'), el('p', 'muted', 'Review equipped cast animations, effects, and audio. Flag an issue or add a timestamped note, then download your report.'));
+  page.append(intro);
+  if (!data) {
+    page.append(el('p', 'empty-state', 'Skill recordings are currently unavailable.'));
+    return;
+  }
+
+  const groups = new Map();
+  for (const clip of data.clips) {
+    if (!groups.has(clip.tribes)) groups.set(clip.tribes, []);
+    groups.get(clip.tribes).push(clip);
+  }
+  const tabs = el('div', 'item-tabs');
+  tabs.setAttribute('role', 'tablist');
+  tabs.setAttribute('aria-label', 'Tribe pairs');
+  const form = el('div', 'preview-review');
+  const generalLabel = el('label', '', 'General notes'); generalLabel.htmlFor = 'preview-general';
+  const general = el('textarea'); general.id = 'preview-general'; general.rows = 2;
+  const reportStatus = el('span', 'muted'); reportStatus.setAttribute('aria-live', 'polite');
+  const entries = [];
+  const report = button('Download report', () => {
+    const reviewed = entries.filter(({checks, notes}) => checks.some(input => input.checked) || notes.value.trim());
+    const lines = ['# Sanketa skill preview review', '', `${reviewed.length} skills flagged or annotated.`];
+    if (general.value.trim()) lines.push('', '## General notes', '', general.value.trim());
+    for (const {clip, checks, notes} of reviewed) {
+      lines.push('', `## ${clip.name} (${clip.id})`, '', `- ${clip.tribes} · ${clip.jobs} · ${clip.weapon}`);
+      const issues = checks.filter(input => input.checked).map(input => input.value);
+      if (issues.length) lines.push(`- Issues: ${issues.join(', ')}`);
+      if (notes.value.trim()) lines.push(`- Notes: ${notes.value.trim().replace(/\n/g, '\n  ')}`);
+    }
+    const url = URL.createObjectURL(new Blob([lines.join('\n') + '\n'], {type: 'text/markdown;charset=utf-8'}));
+    const anchor = el('a'); anchor.href = url; anchor.download = 'Sanketa-Skill-Preview-Report.md';
+    anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    reportStatus.textContent = `${reviewed.length} skills in the downloaded report.`;
+  }, 'primary-link');
+  form.append(generalLabel, general, report, reportStatus);
+  page.append(form, tabs);
+
+  let playing;
+  function stop() {
+    if (!playing) return;
+    const {request, player, play, url} = playing;
+    playing = undefined;
+    request.abort();
+    player.pause(); player.removeAttribute('src'); player.load(); player.hidden = true;
+    if (url) URL.revokeObjectURL(url);
+    play.textContent = 'Play'; play.hidden = false; play.disabled = false;
+  }
+  async function playClip(clip, player, play, status) {
+    stop();
+    const request = new AbortController();
+    const playback = {request, player, play}; playing = playback;
+    play.textContent = 'Loading…'; play.disabled = true; status.textContent = '';
+    try {
+      const path = new URL(`${clip.id}.mp4.enc`, mediaDirectory);
+      path.searchParams.set('v', data.revision);
+      const response = await fetch(path, {signal: request.signal});
+      if (!response.ok) throw new Error('Recording unavailable');
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
+        additionalData: encoder.encode(clip.id)}, data.key, bytes.subarray(12));
+      if (playing !== playback) return;
+      playback.url = URL.createObjectURL(new Blob([decoded], {type: 'video/mp4'}));
+      player.src = playback.url; player.hidden = false; play.hidden = true;
+      await player.play().catch(() => {});
+    } catch {
+      if (playing !== playback) return;
+      stop(); status.textContent = 'The recording could not load. Try playing it again.';
+    }
+  }
+
+  const panels = [];
+  function selectTab(index) {
+    stop();
+    for (const [i, {tab, panel}] of panels.entries()) {
+      const selected = i === index;
+      panel.hidden = !selected;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    }
+  }
+  for (const [tribes, clips] of groups) {
+    const index = panels.length, tabId = `preview-tab-${index}`, panelId = `preview-panel-${index}`;
+    const tab = button(tribes.replace('-', ' / '), () => selectTab(index), 'item-tab');
+    tab.id = tabId; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-controls', panelId);
+    tab.addEventListener('keydown', event => {
+      const moves = {ArrowLeft: -1, ArrowRight: 1, Home: -index, End: groups.size - index - 1};
+      if (!Object.hasOwn(moves, event.key)) return;
+      event.preventDefault();
+      const next = (index + moves[event.key] + groups.size) % groups.size;
+      selectTab(next); panels[next].tab.focus();
+    });
+    const panel = el('div', 'preview-grid');
+    panel.id = panelId; panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', tabId);
+    panels.push({tab, panel}); tabs.append(tab); page.append(panel);
+    for (const clip of clips) {
+      const card = el('article', 'preview-card'); card.dataset.skill = clip.id;
+      const title = el('header');
+      title.append(el('h3', '', clip.name), el('span', 'muted', `${clip.id} · Rank ${clip.rank}`));
+      const stage = el('div', 'preview-media');
+      const poster = `data:image/jpeg;base64,${clip.poster}`;
+      const picture = el('img'); picture.src = poster; picture.alt = ''; picture.loading = 'lazy';
+      const player = el('video'); player.controls = true; player.playsInline = true; player.preload = 'none';
+      player.poster = poster; player.hidden = true; player.setAttribute('aria-label', `${clip.name} recording`);
+      const status = el('p', 'muted'); status.setAttribute('role', 'status');
+      const play = button('Play', () => playClip(clip, player, play, status), 'primary-link');
+      play.setAttribute('aria-label', `Play ${clip.name}`);
+      stage.append(picture, play, player);
+      const meta = el('div', 'preview-details');
+      meta.append(el('p', '', `${clip.jobs} · ${clip.weapon}`),
+        el('p', 'muted', `${clip.seconds}s · ${clip.audio ? 'Audio captured' : 'No audible sample captured'}`),
+        el('p', 'muted', clip.motion ? `Animation · ${clip.motion}` : 'No native cast motion captured'));
+      if (clip.observations) {
+        const details = el('details', 'preview-observations');
+        details.append(el('summary', '', 'Capture notes'), el('p', 'muted', clip.observations)); meta.append(details);
+      }
+      const checklist = el('div', 'preview-issues');
+      checklist.setAttribute('role', 'group'); checklist.setAttribute('aria-label', `Issues for ${clip.name}`);
+      const checks = issueTypes.map(issue => {
+        const label = el('label'), input = el('input'); input.type = 'checkbox'; input.value = issue;
+        label.append(input, ` ${issue}`); checklist.append(label); return input;
+      });
+      const notesLabel = el('label', 'preview-notes', 'Notes');
+      const notes = el('textarea'); notes.rows = 2; notes.placeholder = 'Describe the issue and include a timestamp';
+      notesLabel.append(notes); entries.push({clip, checks, notes});
+      card.append(title, stage, status, meta, checklist, notesLabel); panel.append(card);
+    }
+  }
+  selectTab(0);
+  return stop;
+}
