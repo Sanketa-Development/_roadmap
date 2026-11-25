@@ -97,3 +97,9 @@
 .patch-note .task-group-title{min-width:0}.patch-note h3{overflow-wrap:anywhere;line-height:1.6}.patch-note .chapter-number{flex-shrink:0}.patch-note summary:focus-visible{outline:2px solid var(--gold);outline-offset:-4px;border-radius:7px}
 .patch-changes{list-style:none;margin:0;padding:0}.patch-change{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}.patch-description{font-size:12px;line-height:1.9;color:var(--soft);white-space:pre-line;overflow-wrap:anywhere}.patch-type{justify-self:start;font-size:10px;font-weight:600;line-height:1.7;padding:3px 8px;border:1px solid currentColor;border-radius:4px;color:#cbb99b;background:#cbb99b0d}.patch-type-implementation{color:#a0d6ac;background:#a0d6ac0d}.patch-type-adjustment{color:#e4bf7b;background:#e4bf7b0d}.patch-type-fix{color:#9cc9ef;background:#9cc9ef0d}.patch-type-note{color:#c2aecf;background:#c2aecf0d}
 @media(max-width:760px){.patch-note summary{flex-wrap:wrap;gap:10px}.patch-note .group-count{margin-left:auto}.patch-note .task-group-title{align-items:baseline;gap:12px}.patch-change{grid-template-columns:96px minmax(0,1fr);gap:8px}}@media(max-width:480px){.patch-change{grid-template-columns:minmax(0,1fr);gap:6px}}
+
+#view-beta .page-intro p+p{margin-top:12px}
+.beta-group .task:not(.nested)>.task-copy>p{font-weight:600;font-size:14px}
+.beta-group .beta-references{color:var(--muted);overflow-wrap:anywhere}
+#view-beta .scope-note li{margin:8px 0;font-size:12px;color:var(--soft)}
+@media(min-width:781px){.sidebar{overflow-y:auto}}

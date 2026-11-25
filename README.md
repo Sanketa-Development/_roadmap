@@ -2,7 +2,7 @@
 
 Website: https://sanketa-development.github.io/_roadmap/
 
-Sanketa is the only project shown. The site has Overview, Tasks, Skills, Items, Quests, Worlds & scope,
+Sanketa is the only project shown. The site has Overview, Tasks, BETA, Skills, Items, Quests, Worlds & scope,
 Updates, Patch Notes, and Preview, with a responsive red, bronze and gold design using the supplied
 `bg0.jpg` and `site-background.jpg` Tantra artwork.
 
@@ -51,6 +51,16 @@ Run `node tools/check-roadmap.cjs` and `node tools/check-rendered-content.cjs` w
 the password supplied at their hidden prompts. Push `main` to deploy through the
 existing GitHub Actions Pages workflow. Only `index.html` and `assets/` deploy.
 No npm packages, server, external scripts, or Jekyll build are required.
+
+## BETA
+
+BETA lists the public launch gates and follow-up jobs with detailed steps,
+acceptance criteria, and evidence references. Its read-only status counts come
+from `project.beta` in the private roadmap source. They are separate from
+the feature checklist counts. The checklist is available after unlocking.
+
+Check rendering with private authoring data using
+`node tools/check-rendered-content.cjs --beta --source ../_docs/roadmap/source.json`.
 
 ## Patch Notes
 

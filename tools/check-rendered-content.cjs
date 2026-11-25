@@ -21,7 +21,7 @@ class Node {
   const { unseal } = await import(pathToFileURL(path.join(root, 'assets/crypto.mjs')));
   const model = await import(pathToFileURL(path.join(root, 'assets/model.mjs')));
   const sourceIndex = process.argv.indexOf('--source'), source = sourceIndex < 0 ? null : process.argv[sourceIndex + 1];
-  if (sourceIndex >= 0 && (!source || !process.argv.includes('--patch-notes'))) throw new Error('--source requires a private source path and --patch-notes');
+  if (sourceIndex >= 0 && (!source || !['--patch-notes', '--beta'].some(flag => process.argv.includes(flag)))) throw new Error('--source requires a private source path and --patch-notes or --beta');
   if (source && !path.relative(root, path.resolve(source)).startsWith('..' + path.sep)) throw new Error('Use private authoring data outside the public repository');
   const password = source ? require('node:crypto').randomBytes(24).toString('hex') : await readPassword();
   const envelope = source ? {} : JSON.parse(fs.readFileSync(path.join(root, 'assets/roadmap.enc.json')));
@@ -44,6 +44,37 @@ class Node {
   const app = start();
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
+  if (process.argv.includes('--beta')) {
+    const page = app.get('view-beta'), beta = data.project.beta;
+    assert(beta, 'Expected authored beta checklist');
+    assert.equal(page.textContent, '', 'Beta details stay unavailable until unlock');
+    app.get('password').value = password; await app.get('access-form').fire('submit'); app.route('#beta');
+    assert(!page.hidden && app.get('view-tasks').hidden);
+    assert.equal(app.get('page-title').textContent, 'BETA');
+    const sections = page.querySelectorAll('.beta-group');
+    assert.equal(sections.length, beta.groups.length);
+    for (const [index, {jobs}] of beta.groups.entries()) {
+      const section = sections[index];
+      const rows = section.querySelectorAll('.task').filter(row => row.dataset.job);
+      assert.deepEqual(rows.map(row => row.dataset.job), jobs.map(job => job.id));
+      for (const [i, job] of jobs.entries()) {
+        const row = rows[i];
+        assert(row.textContent.includes(job.title));
+        assert.equal(row.className.split(' ').includes('checked'), job.done);
+        assert.deepEqual(row.querySelectorAll('.nested').map(step => step.textContent.replace(/^✓/, '')), job.steps.map(step => step.text));
+        assert.equal(row.querySelectorAll('.beta-acceptance')[0].textContent, job.acceptance);
+      }
+    }
+    await app.get('beta-expand').fire('click'); assert(sections.every(section => section.open));
+    await app.get('beta-collapse').fire('click'); assert(sections.every(section => !section.open));
+    await app.get('lock').fire('click'); assert.equal(page.textContent, '', 'Lock removes beta data');
+    const {beta: currentBeta, ...legacyProject} = data.project;
+    const legacy = start({...data, project: legacyProject});
+    legacy.get('password').value = password; await legacy.get('access-form').fire('submit'); legacy.route('#beta');
+    assert(legacy.get('view-beta').textContent.includes('No beta checklist is available'));
+    const jobs = currentBeta.groups.flatMap(group => group.jobs);
+    console.log(JSON.stringify({result:'passed',scope:'beta checklist',groups:sections.length,jobs:jobs.length,steps:jobs.reduce((sum, job) => sum + job.steps.length,0),lockedContentCleared:true,olderSnapshotSupported:true})); return;
+  }
   if (process.argv.includes('--patch-notes')) {
     assert.equal(app.get('view-patch-notes').textContent, '', 'Notes stay unavailable until unlock');
     app.get('password').value = password; await app.get('access-form').fire('submit'); app.route('#patch-notes');

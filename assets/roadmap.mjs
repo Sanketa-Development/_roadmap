@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261121-preview';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261125-beta';
 import { loadSkillPreview, renderSkillPreview } from './preview.mjs';
 
 const $ = selector => document.querySelector(selector);
@@ -92,11 +92,12 @@ function overview() {
   const sources = el('section', 'sources'); sources.append(el('div', '', 'How progress is counted'), el('p', 'muted', payload.method));
   const links = el('div', 'source-links'); links.append(sourceButton('Implementation plan', 'plan'), sourceButton('Progress notes', 'progress'), sourceButton('Remaining work', 'parity')); sources.append(links); page.append(sources);
 }
-function taskNode(task, nested = false) {
+function taskNode(task, nested = false, details = null) {
   const row = el('div', `task${task.done ? ' checked' : ''}${nested ? ' nested' : ''}`), mark = el('span', 'task-mark', task.done ? '✓' : ''); mark.setAttribute('aria-label', task.done ? 'Checked' : 'Open');
   const copy = el('div', 'task-copy'); if (task.id) copy.append(el('span', 'task-id', task.id)); copy.append(el('p', '', task.text));
   row.append(mark, copy);
   if (!nested && task.children.length) { const children = el('div', 'task-children'); task.children.forEach(child => children.append(taskNode(child, true))); copy.append(children); }
+  if (details) copy.append(details);
   return row;
 }
 function renderTasks() {
@@ -124,6 +125,48 @@ function tasks() {
   const meta = el('div', 'task-meta'), count = el('span', 'muted'); count.id = 'task-count';
   const expand = el('div', 'expand-actions'); expand.append(button('Expand all', () => document.querySelectorAll('.task-group').forEach(item => item.open = true), 'text-link'), button('Collapse all', () => document.querySelectorAll('.task-group').forEach(item => item.open = false), 'text-link')); meta.append(count, expand); page.append(meta);
   const list = el('div'); list.id = 'task-list'; page.append(list); renderTasks();
+}
+function betaChecklist() {
+  const page = $('#view-beta'), beta = payload.project.beta;
+  const intro = el('div', 'page-intro');
+  intro.append(el('h2', '', 'Public beta checklist'));
+  page.append(intro);
+  if (!beta) {
+    page.append(el('p', 'empty-state', 'No beta checklist is available in this roadmap snapshot.'));
+    return;
+  }
+  intro.append(el('p', 'muted', beta.lead), el('p', 'muted', beta.baseline));
+  const jobs = beta.groups.flatMap(group => group.jobs);
+  const blockers = jobs.filter(job => job.priority === 'P0' && !job.done).length;
+  const list = el('div'); list.id = 'beta-list';
+  const meta = el('div', 'task-meta'), actions = el('div', 'expand-actions');
+  const expand = button('Expand all', () => list.querySelectorAll('.beta-group').forEach(section => section.open = true), 'text-link');
+  const collapse = button('Collapse all', () => list.querySelectorAll('.beta-group').forEach(section => section.open = false), 'text-link');
+  expand.id = 'beta-expand'; collapse.id = 'beta-collapse';
+  actions.append(expand, collapse);
+  meta.append(el('span', 'muted', `${jobs.filter(job => job.done).length} of ${jobs.length} jobs accepted · ${blockers} open launch gates`), actions);
+  page.append(meta, list);
+  for (const [index, group] of beta.groups.entries()) {
+    const section = el('details', 'task-group beta-group'), summary = el('summary'), title = el('div', 'task-group-title');
+    title.append(el('h3', '', group.title));
+    summary.append(title, el('span', 'group-count', `${group.jobs.length} jobs`));
+    section.open = index === 0;
+    const body = el('div', 'task-group-content');
+    for (const job of group.jobs) {
+      const requirements = el('div', 'gate-note');
+      requirements.append(badge(job.done ? 'Accepted' : 'Acceptance required', job.done), el('p', 'beta-acceptance', job.acceptance));
+      requirements.append(el('p', 'beta-references', job.references.join(' · ')));
+      const row = taskNode({ id: `${job.id} · ${job.priority}`, text: job.title, done: job.done, children: job.steps }, false, requirements);
+      row.dataset.job = job.id;
+      body.append(row);
+    }
+    section.append(summary, body); list.append(section);
+  }
+  for (const [title, entries, tag] of [['Recommended execution order', beta.order, 'ol'], ['After beta', beta.deferred, 'ul']]) {
+    const section = el('section', 'scope-note'), items = el(tag);
+    for (const entry of entries) items.append(el('li', '', entry));
+    section.append(el('h3', '', title), items); page.append(section);
+  }
 }
 function skillRange(values, divisor = 1, suffix = '') {
   const [low, high] = values.map(value => Number((value / divisor).toFixed(3)));
@@ -341,14 +384,14 @@ function patchNotes() {
 }
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); skills(); items(); quests(); worlds(); updates(); patchNotes();
+  overview(); tasks(); betaChecklist(); skills(); items(); quests(); worlds(); updates(); patchNotes();
   stopPreview = renderSkillPreview($('#view-preview'), previewData, el, button);
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', beta: 'BETA', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
   if (current !== 'preview') stopPreview?.();
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });

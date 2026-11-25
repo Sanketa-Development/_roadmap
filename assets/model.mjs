@@ -1,4 +1,4 @@
-export const routes = ['overview', 'tasks', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes', 'preview'];
+export const routes = ['overview', 'tasks', 'beta', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes', 'preview'];
 export const patchNoteTypes = ['Patch', 'Implementation', 'Adjustment', 'Fix', 'Note'];
 export function patchNoteRecords(project) {
   // Player notes are curated from published game releases. Never expose the
@@ -50,6 +50,22 @@ export function validate(payload) {
   if (payload.version !== 1 || project?.id !== 'sanketa' || project.name !== 'Sanketa' || !Array.isArray(project.groups) || !payload.documents) throw new Error('Invalid Sanketa roadmap');
   const tasks = project.groups.flatMap(group => group.tasks);
   if (project.total !== tasks.length || project.done !== tasks.filter(task => task.done).length || project.accepted !== project.groups.filter(group => group.gate?.done).length) throw new Error('Roadmap counts do not match the source');
+  if (project.beta !== undefined) {
+    const beta = project.beta;
+    const present = value => typeof value === 'string' && value.trim().length > 0;
+    const textList = values => Array.isArray(values) && values.length > 0 && values.every(present);
+    if (!present(beta?.lead) || !present(beta.baseline) || !textList(beta.order) || !textList(beta.deferred) || !Array.isArray(beta.groups) || !beta.groups.length) throw new Error('Invalid beta checklist');
+    const ids = new Set();
+    for (const group of beta.groups) {
+      if (!present(group.title) || !Array.isArray(group.jobs) || !group.jobs.length) throw new Error('Invalid beta checklist group');
+      for (const job of group.jobs) {
+        if (!/^B\d{2,}$/.test(job.id) || ids.has(job.id) || !['P0', 'P1'].includes(job.priority) || typeof job.done !== 'boolean' ||
+          !present(job.title) || !present(job.acceptance) || !textList(job.references) || !Array.isArray(job.steps) || !job.steps.length ||
+          job.steps.some(step => !present(step.text) || typeof step.done !== 'boolean') || (job.done && job.steps.some(step => !step.done))) throw new Error('Invalid beta release job');
+        ids.add(job.id);
+      }
+    }
+  }
   const notes = patchNoteRecords(project);
   if (new Set(notes.map(note => note.id)).size !== notes.length) throw new Error('Duplicate patch note ID');
   if (new Set(notes.map(note => note.release)).size !== notes.length) throw new Error('Duplicate patch note release');
