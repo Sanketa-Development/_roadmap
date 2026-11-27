@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261125-beta';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server';
 import { loadSkillPreview, renderSkillPreview } from './preview.mjs';
 
 const $ = selector => document.querySelector(selector);
@@ -125,6 +125,37 @@ function tasks() {
   const meta = el('div', 'task-meta'), count = el('span', 'muted'); count.id = 'task-count';
   const expand = el('div', 'expand-actions'); expand.append(button('Expand all', () => document.querySelectorAll('.task-group').forEach(item => item.open = true), 'text-link'), button('Collapse all', () => document.querySelectorAll('.task-group').forEach(item => item.open = false), 'text-link')); meta.append(count, expand); page.append(meta);
   const list = el('div'); list.id = 'task-list'; page.append(list); renderTasks();
+}
+function serverChecklist() {
+  const page = $('#view-server'), server = payload.project.server;
+  const intro = el('div', 'page-intro');
+  intro.append(el('h2', '', 'Tantra Rust server'));
+  page.append(intro);
+  if (!server) {
+    page.append(el('p', 'empty-state', 'The Server checklist will appear in an updated roadmap snapshot.'));
+    return;
+  }
+  const tasks = server.phases.flatMap(phase => phase.tasks);
+  intro.append(el('p', 'muted', server.lead));
+  const meta = el('div', 'task-meta');
+  meta.append(el('span', 'muted', `${tasks.filter(task => task.done).length} of ${tasks.length} server tasks checked`));
+  page.append(meta);
+  const currentPhase = server.phases.find(phase => phase.tasks.some(task => !task.done));
+  for (const [index, phase] of server.phases.entries()) {
+    const section = el('details', 'task-group server-phase'), summary = el('summary');
+    const heading = el('div', 'task-group-title'), body = el('div', 'task-group-content');
+    const done = phase.tasks.filter(task => task.done).length;
+    heading.append(el('span', 'chapter-number', `Phase ${index}`), el('h3', '', phase.title));
+    summary.append(heading, el('span', 'group-count', `${done}/${phase.tasks.length} checked`));
+    section.open = index === 0 || phase === currentPhase;
+    for (const task of phase.tasks) {
+      const verification = el('div', 'gate-note');
+      verification.append(badge(task.done ? 'Verified' : 'Verification pending', task.done), el('p', 'server-verification', task.verification));
+      body.append(taskNode({ ...task, children: [] }, false, verification));
+    }
+    section.append(summary, body);
+    page.append(section);
+  }
 }
 function betaChecklist() {
   const page = $('#view-beta'), beta = payload.project.beta;
@@ -384,14 +415,14 @@ function patchNotes() {
 }
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
-  overview(); tasks(); betaChecklist(); skills(); items(); quests(); worlds(); updates(); patchNotes();
+  overview(); tasks(); serverChecklist(); betaChecklist(); skills(); items(); quests(); worlds(); updates(); patchNotes();
   stopPreview = renderSkillPreview($('#view-preview'), previewData, el, button);
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
-  const titles = { overview: 'Roadmap overview', tasks: 'The task board', beta: 'BETA', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
+  const titles = { overview: 'Roadmap overview', tasks: 'The task board', server: 'Server', beta: 'BETA', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
   if (current !== 'preview') stopPreview?.();
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });

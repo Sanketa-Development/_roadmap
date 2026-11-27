@@ -1,4 +1,4 @@
-export const routes = ['overview', 'tasks', 'beta', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes', 'preview'];
+export const routes = ['overview', 'tasks', 'server', 'beta', 'skills', 'items', 'quests', 'worlds', 'updates', 'patch-notes', 'preview'];
 export const patchNoteTypes = ['Patch', 'Implementation', 'Adjustment', 'Fix', 'Note'];
 export function patchNoteRecords(project) {
   // Player notes are curated from published game releases. Never expose the
@@ -50,6 +50,20 @@ export function validate(payload) {
   if (payload.version !== 1 || project?.id !== 'sanketa' || project.name !== 'Sanketa' || !Array.isArray(project.groups) || !payload.documents) throw new Error('Invalid Sanketa roadmap');
   const tasks = project.groups.flatMap(group => group.tasks);
   if (project.total !== tasks.length || project.done !== tasks.filter(task => task.done).length || project.accepted !== project.groups.filter(group => group.gate?.done).length) throw new Error('Roadmap counts do not match the source');
+  if (project.server !== undefined) {
+    const server = project.server;
+    const present = value => typeof value === 'string' && value.trim().length > 0;
+    if (!present(server?.lead) || !Array.isArray(server.phases) || !server.phases.length) throw new Error('Invalid server roadmap');
+    const phaseIds = new Set(), taskIds = new Set();
+    for (const phase of server.phases) {
+      if (!/^SRV-\d{2}$/.test(phase.id) || phaseIds.has(phase.id) || !present(phase.title) || !Array.isArray(phase.tasks) || !phase.tasks.length) throw new Error('Invalid server phase');
+      phaseIds.add(phase.id);
+      for (const task of phase.tasks) {
+        if (!/^SRV-\d{3}$/.test(task.id) || taskIds.has(task.id) || !present(task.text) || !present(task.verification) || typeof task.done !== 'boolean') throw new Error('Invalid server task');
+        taskIds.add(task.id);
+      }
+    }
+  }
   if (project.beta !== undefined) {
     const beta = project.beta;
     const present = value => typeof value === 'string' && value.trim().length > 0;
