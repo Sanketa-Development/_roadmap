@@ -107,3 +107,20 @@
 .skill-recording-link{margin-top:10px;font-size:12px}
 .skill-recording>.muted{padding:10px 20px;font-size:12px}
 .skill-recording>.muted:empty{display:none}
+.preview-categories{margin-bottom:26px}
+.preview-categories .item-tab[aria-current]{color:var(--ink);background:#422a2f;border-color:#65454a}
+.preview-section[hidden],.wearable-tribe [hidden]{display:none}
+.preview-empty-heading{font-family:Georgia,serif;font-size:32px;margin:16px 0}
+.preview-section .page-intro:has(>.text-link){display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px}
+.wearable-set{display:grid;grid-template-columns:clamp(140px,18%,206px) minmax(0,1fr);background:var(--panel);border:1px solid var(--line);border-radius:8px;margin:14px 0 24px}
+.wearable-info{border-right:1px solid var(--line);padding:18px 14px}
+.wearable-info h3{font-family:Georgia,serif;font-size:26px;font-weight:400;margin:0 0 6px}
+.wearable-info p,.wearable-info li{font-size:11px}
+.wearable-info ul{list-style:none;padding:0;margin:17px 0 0;display:grid;gap:10px}
+.wearable-info li span{display:block;margin-top:3px}
+.wearable-lineup{display:grid;grid-template-columns:repeat(8,minmax(86px,1fr));align-content:center;gap:6px;overflow-x:auto;padding:12px}
+.wearable-tribe{margin:0;min-width:0;text-align:center;font-size:11px}
+.wearable-tribe video{width:100%;aspect-ratio:9/13;object-fit:contain;display:block;background:#2b1c1f;border-radius:4px}
+.wearable-tribe figcaption{margin:8px 0 4px;overflow-wrap:anywhere}
+.wearable-tribe .muted{font-size:10px}
+@media(max-width:700px){.wearable-set{grid-template-columns:1fr}.wearable-info{border-right:0;border-bottom:1px solid var(--line)}.wearable-info ul{grid-template-columns:repeat(2,1fr)}}

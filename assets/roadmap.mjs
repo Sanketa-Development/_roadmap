@@ -1,13 +1,13 @@
 import { unseal } from './crypto.mjs';
 import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server-tracks';
-import { createSkillRecordingDialog, loadSkillPreview, renderSkillPreview } from './preview.mjs?v=20261128-skill-recordings';
+import { createSkillRecordingDialog, loadSkillPreview, renderPreviewSections } from './preview.mjs?v=20261128-preview-categories';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
 let payload, envelope, search = '', status = 'all', skillStatus = 'all', itemQuery = '';
 let itemCategory = 'weapons', questCategory = 'tutorial';
-let previewData, stopPreview, skillRecording;
+let previewData, previewSections, skillRecording;
 const itemSelection = {types: new Set(), grips: new Set(), tribes: new Set()};
 const itemTribes = ['Naga', 'Kimnara', 'Asura', 'Rakshasa', 'Yaksha', 'Gandharva', 'Deva', 'Garuda'];
 
@@ -44,7 +44,7 @@ form.addEventListener('submit', async event => {
 });
 $('#lock').addEventListener('click', () => {
   payload = null; envelope = null;
-  stopPreview?.(); stopPreview = undefined; previewData = undefined;
+  previewSections?.stop(); previewSections = undefined; previewData = undefined;
   skillRecording?.close(); skillRecording = undefined;
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
   $('#source-dialog').close(); $('#source-text').textContent = '';
@@ -453,14 +453,15 @@ function patchNotes() {
 function build() {
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
   overview(); tasks(); serverChecklist(); betaChecklist(); skills(); items(); quests(); worlds(); updates(); patchNotes();
-  stopPreview = renderSkillPreview($('#view-preview'), previewData, el, button);
+  previewSections = renderPreviewSections($('#view-preview'), previewData, el, button);
   $('#review-date').textContent = `Source snapshot · ${payload.reviewed}`;
 }
 function showPage() {
   if (!payload) return;
   const current = route(location.hash);
   const titles = { overview: 'Roadmap overview', tasks: 'The task board', server: 'Server', beta: 'BETA', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
-  if (current !== 'preview') stopPreview?.();
+  if (current === 'preview') previewSections?.select(location.hash);
+  else previewSections?.stop();
   if (current !== 'skills') skillRecording?.close();
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });

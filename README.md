@@ -97,6 +97,12 @@ under `assets/preview`. The browser decrypts the selected video on Play. Commit
 the encrypted assets alongside the Preview page and keep the original media in
 the ignored workspace build directory.
 
+Preview opens to Skills and also has Wearables, Weapons, Fashions, and Mounts.
+Wearables places the set details beside the eight tribes in native idle loops.
+To add a captured set, run `node tools/seal-wearables.mjs <capture-folder>` with
+`WEARABLES.json` and its `media/` directory. The same password and encrypted
+index serve both Skills and Wearables.
+
 ## Skills
 
 Skills lists the current player catalog by Asura-Rakshasa, Naga-Kimnara,

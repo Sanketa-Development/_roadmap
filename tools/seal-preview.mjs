@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { seal } from '../assets/crypto.mjs';
+import { seal, unseal } from '../assets/crypto.mjs';
 import { readPassword } from './seal-roadmap.mjs';
 
 if (!process.argv[2]) throw new Error('Pass the skill review folder containing capture-results.tsv, videos/, and posters/');
@@ -23,10 +23,15 @@ if (!ids.size) throw new Error('No recordings in the capture results');
 
 const password = await readPassword();
 if (!password) throw new Error('The roadmap password is required');
-const keyBytes = randomBytes(32);
+const output = new URL('../assets/preview/', import.meta.url);
+const indexPath = new URL('index.enc.json', output);
+const previousEnvelope = await readFile(indexPath, 'utf8').catch(error => {
+  if (error.code !== 'ENOENT') throw error;
+});
+const previous = previousEnvelope ? await unseal(JSON.parse(previousEnvelope), password) : {};
+const keyBytes = previous.mediaKey ? Buffer.from(previous.mediaKey, 'base64') : randomBytes(32);
 const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['encrypt']);
 const encoder = new TextEncoder();
-const output = new URL('../assets/preview/', import.meta.url);
 await mkdir(output, {recursive: true});
 const clips = [];
 for (const row of rows) {
@@ -42,6 +47,6 @@ for (const row of rows) {
     motion: row.animated_phases.trim().split(/\s+/).join(', '), observations: row.observations,
     poster: poster.toString('base64')});
 }
-const index = {version: 1, revision: randomBytes(8).toString('hex'), mediaKey: keyBytes.toString('base64'), clips};
-await writeFile(new URL('index.enc.json', output), JSON.stringify(await seal(index, password)) + '\n');
+const index = {...previous, version: 1, revision: randomBytes(8).toString('hex'), mediaKey: keyBytes.toString('base64'), clips};
+await writeFile(indexPath, JSON.stringify(await seal(index, password)) + '\n');
 console.log(`Sealed ${clips.length} skill recordings for Preview.`);

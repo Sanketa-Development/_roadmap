@@ -12,7 +12,18 @@ export async function loadSkillPreview(password) {
       index.clips.some(clip => !/^3\d{3}$/.test(clip.id))) throw new Error('Invalid preview index');
   const bytes = Uint8Array.from(atob(index.mediaKey), character => character.charCodeAt(0));
   const key = await crypto.subtle.importKey('raw', bytes, 'AES-GCM', false, ['decrypt']);
-  return {clips: index.clips, key, revision: index.revision};
+  return {clips: index.clips, wearables: Array.isArray(index.wearables) ? index.wearables : [], key, revision: index.revision};
+}
+
+async function loadRecording(data, id, signal) {
+  const path = new URL(`${id}.mp4.enc`, mediaDirectory);
+  path.searchParams.set('v', data.revision);
+  const response = await fetch(path, {signal});
+  if (!response.ok) throw new Error('Recording unavailable');
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
+    additionalData: encoder.encode(id)}, data.key, bytes.subarray(12));
+  return new Blob([decoded], {type: 'video/mp4'});
 }
 
 function createPlayback(data) {
@@ -32,15 +43,9 @@ function createPlayback(data) {
     const playback = {request, player, play}; playing = playback;
     play.textContent = 'Loading…'; play.disabled = true; status.textContent = '';
     try {
-      const path = new URL(`${clip.id}.mp4.enc`, mediaDirectory);
-      path.searchParams.set('v', data.revision);
-      const response = await fetch(path, {signal: request.signal});
-      if (!response.ok) throw new Error('Recording unavailable');
-      const bytes = new Uint8Array(await response.arrayBuffer());
-      const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
-        additionalData: encoder.encode(clip.id)}, data.key, bytes.subarray(12));
+      const media = await loadRecording(data, clip.id, request.signal);
       if (playing !== playback) return;
-      playback.url = URL.createObjectURL(new Blob([decoded], {type: 'video/mp4'}));
+      playback.url = URL.createObjectURL(media);
       player.src = playback.url; player.hidden = false; play.hidden = true;
       await player.play().catch(() => {});
     } catch {
@@ -49,6 +54,118 @@ function createPlayback(data) {
     }
   }
   return {start, stop};
+}
+
+function renderWearables(panel, data, el, button) {
+  const sets = data?.wearables ?? [];
+  const heading = el('div', 'page-intro');
+  heading.append(el('h2', '', 'Wearables'));
+  panel.append(heading);
+  if (!sets.length) {
+    panel.append(el('p', 'empty-state', 'No wearable previews are available yet.'));
+    return {};
+  }
+
+  const players = [];
+  let active, motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const start = () => {
+    if (!motion || active) return;
+    active = new AbortController();
+    const session = active;
+    for (const {id, player, status} of players) {
+      status.hidden = true;
+      loadRecording(data, id, session.signal).then(media => {
+        if (active !== session) return;
+        player.src = URL.createObjectURL(media);
+        if (motion) return player.play();
+      }).catch(() => { if (active === session && motion) status.hidden = false; });
+    }
+  };
+  const stop = () => {
+    if (!active) return;
+    active.abort(); active = undefined;
+    for (const {player, status} of players) {
+      player.pause();
+      if (player.src.startsWith('blob:')) URL.revokeObjectURL(player.src);
+      player.removeAttribute('src'); player.load(); status.hidden = true;
+    }
+  };
+  const toggle = button(motion ? 'Pause motion' : 'Play motion', () => {
+    motion = !motion;
+    toggle.textContent = motion ? 'Pause motion' : 'Play motion';
+    if (motion) {
+      if (!active) start();
+      else for (const {player} of players) if (player.hasAttribute('src')) player.play().catch(() => {});
+    } else for (const {player} of players) player.pause();
+  }, 'text-link');
+  heading.append(toggle);
+
+  for (const set of sets) {
+    const row = el('section', 'wearable-set');
+    const info = el('div', 'wearable-info');
+    info.append(el('h3', '', set.name), el('p', 'muted', `${set.items.length} pieces · ${set.tribes.length} tribes`));
+    const items = el('ul');
+    for (const item of set.items) {
+      const entry = el('li');
+      entry.append(el('strong', '', item.name), el('span', 'muted', `ID ${item.id} · Lv. ${item.level}`));
+      items.append(entry);
+    }
+    info.append(items);
+    row.append(info);
+
+    const lineup = el('div', 'wearable-lineup');
+    lineup.setAttribute('role', 'region'); lineup.setAttribute('aria-label', `${set.name} tribe previews`);
+    lineup.tabIndex = 0;
+    for (const tribe of set.tribes) {
+      const card = el('figure', 'wearable-tribe');
+      const player = el('video');
+      player.loop = true; player.muted = true; player.playsInline = true; player.preload = 'none';
+      player.poster = `data:image/jpeg;base64,${tribe.poster}`;
+      player.setAttribute('aria-label', `${tribe.name} wearing ${set.name} in idle animation`);
+      const status = el('span', 'muted', 'Playback unavailable'); status.hidden = true;
+      players.push({id: tribe.id, player, status});
+      card.append(player, el('figcaption', '', tribe.name), status);
+      lineup.append(card);
+    }
+    row.append(lineup);
+    panel.append(row);
+  }
+  return {start, stop};
+}
+
+export function renderPreviewSections(page, data, el, button) {
+  const categories = [['skills', 'Skills'], ['wearables', 'Wearables'], ['weapons', 'Weapons'],
+    ['fashions', 'Fashions'], ['mounts', 'Mounts']];
+  const navigation = el('nav', 'item-tabs preview-categories');
+  navigation.setAttribute('aria-label', 'Preview categories');
+  page.append(navigation);
+  const sections = new Map();
+  for (const [id, label] of categories) {
+    const link = el('a', 'item-tab', label);
+    link.href = `#preview?category=${id}`;
+    const panel = el('section', 'preview-section'); panel.hidden = true;
+    navigation.append(link); page.append(panel);
+    sections.set(id, {link, panel});
+    if (id !== 'skills' && id !== 'wearables')
+      panel.append(el('h2', 'preview-empty-heading', label), el('p', 'empty-state', 'No recordings are available in this category yet.'));
+  }
+  const stopSkills = renderSkillPreview(sections.get('skills').panel, data, el, button);
+  const wearables = renderWearables(sections.get('wearables').panel, data, el, button);
+  return {
+    select(hash) {
+      const requested = new URLSearchParams(hash.split('?')[1]).get('category');
+      const category = sections.has(requested) ? requested : 'skills';
+      for (const [id, {link, panel}] of sections) {
+        panel.hidden = id !== category;
+        if (id === category) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      }
+      if (category !== 'skills') stopSkills?.();
+      if (category === 'wearables') wearables.start?.();
+      else wearables.stop?.();
+    },
+    stop() { stopSkills?.(); wearables.stop?.(); }
+  };
 }
 
 export function createSkillRecordingDialog(page, data, el, button) {

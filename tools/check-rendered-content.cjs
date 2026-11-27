@@ -37,7 +37,7 @@ class Node {
     }
     const document = { body, title: '', createElement: tag => new Node(tag), querySelectorAll: selector => body.querySelectorAll(selector), querySelector: selector => body.querySelectorAll(selector)[0] };
     const window = { addEventListener: (event, fn) => handlers[event] = fn, scrollTo() {} };
-    const context = { document, window, location, URLSearchParams, localStorage, crypto: require('node:crypto').webcrypto, fetch: async () => ({ ok: true, json: async () => envelope }), unseal: fixture || source ? async () => fixture || data : unseal, loadSkillPreview: async () => null, renderSkillPreview: () => undefined, ...model, TypeError };
+    const context = { document, window, location, URLSearchParams, localStorage, crypto: require('node:crypto').webcrypto, fetch: async () => ({ ok: true, json: async () => envelope }), unseal: fixture || source ? async () => fixture || data : unseal, loadSkillPreview: async () => null, renderPreviewSections: () => undefined, ...model, TypeError };
     vm.createContext(context); vm.runInContext(code, context);
     return { document, location, window, get: id => document.querySelector('#' + id), route: hash => { location.hash = hash; handlers.hashchange(); } };
   }
