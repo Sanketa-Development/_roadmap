@@ -99,6 +99,8 @@ the ignored workspace build directory.
 
 Preview opens to Skills and also has Wearables, Weapons, Fashions, and Mounts.
 Wearables places the set details beside the eight tribes in native idle loops.
+Search accepts a set name, item name, or item ID. The lineup labels tribe
+restrictions and incompatible models. Only the visible sets load their videos.
 To add a captured set, run `node tools/seal-wearables.mjs <capture-folder>` with
 `WEARABLES.json` and its `media/` directory. The same password and encrypted
 index serve both Skills and Wearables.

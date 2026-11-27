@@ -66,44 +66,71 @@ function renderWearables(panel, data, el, button) {
     return {};
   }
 
-  const players = [];
-  let active, motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const start = () => {
-    if (!motion || active) return;
-    active = new AbortController();
-    const session = active;
-    for (const {id, player, status} of players) {
+  const entries = new Map();
+  let enabled = false, motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const load = entry => {
+    if (entry.request || !entry.players.length) return;
+    const request = new AbortController();
+    entry.request = request;
+    for (const {id, player, status} of entry.players) {
       status.hidden = true;
-      loadRecording(data, id, session.signal).then(media => {
-        if (active !== session) return;
+      loadRecording(data, id, request.signal).then(media => {
+        if (entry.request !== request) return;
         player.src = URL.createObjectURL(media);
-        if (motion) return player.play();
-      }).catch(() => { if (active === session && motion) status.hidden = false; });
+        return player.play();
+      }).catch(() => { if (entry.request === request) status.hidden = false; });
     }
   };
-  const stop = () => {
-    if (!active) return;
-    active.abort(); active = undefined;
-    for (const {player, status} of players) {
+  const unload = entry => {
+    if (!entry.request) return;
+    entry.request.abort(); entry.request = undefined;
+    for (const {player, status} of entry.players) {
       player.pause();
       if (player.src.startsWith('blob:')) URL.revokeObjectURL(player.src);
       player.removeAttribute('src'); player.load(); status.hidden = true;
     }
   };
+  const observer = new IntersectionObserver(changes => {
+    for (const change of changes) {
+      const entry = entries.get(change.target);
+      if (enabled && motion && change.isIntersecting && !change.target.hidden) load(entry);
+      else unload(entry);
+    }
+  }, {threshold: .15});
+  const observe = () => { if (enabled && motion) for (const row of entries.keys()) if (!row.hidden) observer.observe(row); };
+  const release = () => { observer.disconnect(); for (const entry of entries.values()) unload(entry); };
   const toggle = button(motion ? 'Pause motion' : 'Play motion', () => {
     motion = !motion;
     toggle.textContent = motion ? 'Pause motion' : 'Play motion';
-    if (motion) {
-      if (!active) start();
-      else for (const {player} of players) if (player.hasAttribute('src')) player.play().catch(() => {});
-    } else for (const {player} of players) player.pause();
+    if (motion) observe();
+    else release();
   }, 'text-link');
   heading.append(toggle);
 
+  if (sets.length > 1) {
+    const search = el('input', 'search wearable-search');
+    search.type = 'search'; search.placeholder = 'Find a set or item'; search.setAttribute('aria-label', 'Find a wearable set or item');
+    const count = el('p', 'muted skill-result-count', `${sets.length} sets`); count.setAttribute('role', 'status');
+    search.addEventListener('input', () => {
+      const query = search.value.trim().toLowerCase();
+      let shown = 0;
+      for (const [row, entry] of entries) {
+        row.hidden = !entry.searchText.includes(query);
+        if (row.hidden) { observer.unobserve(row); unload(entry); }
+        else ++shown;
+      }
+      observe(); count.textContent = `${shown} of ${sets.length} sets`;
+    });
+    panel.append(search, count);
+  }
+
   for (const set of sets) {
     const row = el('section', 'wearable-set');
+    const players = [];
+    entries.set(row, {players, searchText: [set.name, ...set.items.flatMap(item => [item.name, item.id])].join(' ').toLowerCase()});
     const info = el('div', 'wearable-info');
-    info.append(el('h3', '', set.name), el('p', 'muted', `${set.items.length} pieces · ${set.tribes.length} tribes`));
+    const eligible = set.tribes.filter(tribe => tribe.restriction !== 'Tribe restricted').length;
+    info.append(el('h3', '', set.name), el('p', 'muted', `${set.items.length} pieces · ${eligible} ${eligible === 1 ? 'tribe' : 'tribes'}`));
     const items = el('ul');
     for (const item of set.items) {
       const entry = el('li');
@@ -118,6 +145,10 @@ function renderWearables(panel, data, el, button) {
     lineup.tabIndex = 0;
     for (const tribe of set.tribes) {
       const card = el('figure', 'wearable-tribe');
+      if (!tribe.id) {
+        card.append(el('div', 'wearable-placeholder muted', tribe.restriction), el('figcaption', '', tribe.name));
+        lineup.append(card); continue;
+      }
       const player = el('video');
       player.loop = true; player.muted = true; player.playsInline = true; player.preload = 'none';
       player.poster = `data:image/jpeg;base64,${tribe.poster}`;
@@ -130,7 +161,10 @@ function renderWearables(panel, data, el, button) {
     row.append(lineup);
     panel.append(row);
   }
-  return {start, stop};
+  return {
+    start() { if (!enabled) { enabled = true; observe(); } },
+    stop() { enabled = false; release(); }
+  };
 }
 
 export function renderPreviewSections(page, data, el, button) {

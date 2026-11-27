@@ -21,28 +21,41 @@ for (let attempt = 0; attempt < 3 && !password; ++attempt) {
 if (!password) throw new Error('The roadmap was not unlocked. No files changed.');
 const index = await unseal(envelope, password);
 const key = await crypto.subtle.importKey('raw', Buffer.from(index.mediaKey, 'base64'), 'AES-GCM', false, ['encrypt', 'decrypt']);
-if (!capture.passed || !capture.name || !capture.items?.length || capture.tribes?.length !== 8)
-  throw new Error('Expected eight verified recordings for a complete set.');
+const captures = capture.sets ?? [capture];
+if (!capture.passed || !Array.isArray(captures) || !captures.length) throw new Error('Missing verified wearable sets.');
 
-const set = {name: capture.name, items: capture.items, tribes: []};
+const names = new Set();
+const sets = [];
 const encrypted = new Map();
-for (const {id, name} of capture.tribes) {
-  if (!/^[a-z]+(?:-[a-z]+)+$/.test(id) || !name || encrypted.has(id)) throw new Error('Invalid wearable recording ID.');
-  const [mp4, poster] = await Promise.all([
-    readFile(resolve(root, 'media', `${id}.mp4`)), readFile(resolve(root, 'media', `${id}.jpg`))
-  ]);
-  const iv = randomBytes(12), additionalData = Buffer.from(id);
-  const body = await crypto.subtle.encrypt({name: 'AES-GCM', iv, additionalData}, key, mp4);
-  const verified = await crypto.subtle.decrypt({name: 'AES-GCM', iv, additionalData}, key, body);
-  if (!mp4.equals(Buffer.from(verified))) throw new Error('Wearable recording verification failed.');
-  encrypted.set(id, Buffer.concat([iv, Buffer.from(body)]));
-  set.tribes.push({id, name, poster: poster.toString('base64')});
+for (const {name: setName, items, tribes} of captures) {
+  if (!setName || names.has(setName) || !items?.length || tribes?.length !== 8)
+    throw new Error('Expected a unique set with eight tribe slots.');
+  names.add(setName);
+  const set = {name: setName, items, tribes: []};
+  for (const {id, name, restriction} of tribes) {
+    if (!name) throw new Error('Missing wearable tribe name.');
+    if (!id && ['Tribe restricted', 'Model unavailable'].includes(restriction)) {
+      set.tribes.push({name, restriction}); continue;
+    }
+    if (!id || !/^[a-z]+(?:-[a-z0-9]+)+$/.test(id) || encrypted.has(id)) throw new Error('Invalid wearable recording ID.');
+    const [mp4, poster] = await Promise.all([
+      readFile(resolve(root, 'media', `${id}.mp4`)), readFile(resolve(root, 'media', `${id}.jpg`))
+    ]);
+    const iv = randomBytes(12), additionalData = Buffer.from(id);
+    const body = await crypto.subtle.encrypt({name: 'AES-GCM', iv, additionalData}, key, mp4);
+    const verified = await crypto.subtle.decrypt({name: 'AES-GCM', iv, additionalData}, key, body);
+    if (!mp4.equals(Buffer.from(verified))) throw new Error('Wearable recording verification failed.');
+    encrypted.set(id, Buffer.concat([iv, Buffer.from(body)]));
+    set.tribes.push({id, name, poster: poster.toString('base64')});
+  }
+  sets.push(set);
 }
-index.wearables = [...(index.wearables ?? []).filter(existing => existing.name !== set.name), set];
+index.wearables = [...(index.wearables ?? []).filter(existing => !names.has(existing.name)), ...sets];
 index.revision = randomBytes(8).toString('hex');
 const sealedIndex = await seal(index, password);
 if ((await unseal(sealedIndex, password)).revision !== index.revision) throw new Error('Wearable index did not verify.');
 for (const [id, bytes] of encrypted) await writeFile(new URL(`${id}.mp4.enc`, output), bytes);
 await writeFile(indexPath, JSON.stringify(sealedIndex) + '\n');
-await writeFile(resolve(root, 'SEALED.ok'), 'Eight verified wearable previews sealed for the roadmap.\n');
-console.log(`Sealed ${set.tribes.length} native previews for ${set.name}.`);
+const summary = {addedSets: sets.length, recordings: encrypted.size, totalSets:index.wearables.length};
+await writeFile(resolve(root, 'SEALED.json'), JSON.stringify(summary, null, 2) + '\n');
+console.log(JSON.stringify(summary));
