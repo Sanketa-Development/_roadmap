@@ -103,3 +103,7 @@
 .beta-group .beta-references{color:var(--muted);overflow-wrap:anywhere}
 #view-beta .scope-note li{margin:8px 0;font-size:12px;color:var(--soft)}
 @media(min-width:781px){.sidebar{overflow-y:auto}}
+.skill-recording{width:min(768px,92vw)}
+.skill-recording-link{margin-top:10px;font-size:12px}
+.skill-recording>.muted{padding:10px 20px;font-size:12px}
+.skill-recording>.muted:empty{display:none}

@@ -1,13 +1,13 @@
 import { unseal } from './crypto.mjs';
 import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server-tracks';
-import { loadSkillPreview, renderSkillPreview } from './preview.mjs';
+import { createSkillRecordingDialog, loadSkillPreview, renderSkillPreview } from './preview.mjs?v=20261128-skill-recordings';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';
 const form = $('#access-form'), password = $('#password'), remember = $('#remember'), error = $('#access-error'), submit = $('#enter');
 let payload, envelope, search = '', status = 'all', skillStatus = 'all', itemQuery = '';
 let itemCategory = 'weapons', questCategory = 'tutorial';
-let previewData, stopPreview;
+let previewData, stopPreview, skillRecording;
 const itemSelection = {types: new Set(), grips: new Set(), tribes: new Set()};
 const itemTribes = ['Naga', 'Kimnara', 'Asura', 'Rakshasa', 'Yaksha', 'Gandharva', 'Deva', 'Garuda'];
 
@@ -45,6 +45,7 @@ form.addEventListener('submit', async event => {
 $('#lock').addEventListener('click', () => {
   payload = null; envelope = null;
   stopPreview?.(); stopPreview = undefined; previewData = undefined;
+  skillRecording?.close(); skillRecording = undefined;
   document.querySelectorAll('.view').forEach(page => page.replaceChildren());
   $('#source-dialog').close(); $('#source-text').textContent = '';
   $('#workspace').hidden = true; $('#access').hidden = false; document.body.classList.remove('unlocked');
@@ -239,6 +240,7 @@ function skills() {
   const page = $('#view-skills'), catalog = payload.skills, intro = el('div', 'page-intro');
   intro.append(el('span', 'eyebrow', 'TRIBES & ABILITIES'), el('h2', '', 'Skills'), el('p', 'muted', catalog ? `${catalog.total} player skills, grouped by tribe pair. ${catalog.meaning}` : 'The skill catalog has not been published yet.'));
   page.append(intro);if (!catalog) return;
+  if (previewData) skillRecording = createSkillRecordingDialog(page, previewData, el, button);
   const entries = catalog.groups.flatMap(group => group.skills), counts = el('div', 'skill-counts');
   counts.append(badge(`${catalog.implemented} complete`, true), badge(`${catalog.total - catalog.implemented} incomplete`), badge(`${entries.filter(skill => skill.mechanicsImplemented).length} mechanics implemented`));page.append(counts);
   const tools = el('div', 'task-tools'), filters = el('div', 'filters skill-filters');filters.setAttribute('aria-label', 'Skill status');
@@ -263,6 +265,7 @@ function renderSkills() {
     const list = el('div', 'task-group-content');
     for (const skill of group.skills) {
       const row = el('article', `skill-row ${skill.status}`), checkbox = el('input', 'skill-checkbox');checkbox.type = 'checkbox';checkbox.checked = skill.implemented;checkbox.disabled = true;checkbox.setAttribute('aria-label', `${skill.id}: ${skill.name} — ${skill.status}`);
+      row.dataset.skill = String(skill.id);
       const icon = el(skill.icon ? 'img' : 'span', 'skill-icon');
       if (skill.icon) {icon.src = skill.icon.src;icon.alt = `${skill.name} skill icon`;icon.width = 44;icon.height = 44;icon.loading = 'lazy';icon.decoding = 'async';}
       else {icon.textContent = '?';icon.setAttribute('aria-label', `${skill.name}: icon unavailable`);}
@@ -287,6 +290,8 @@ function renderSkills() {
         label.append(check, text);parts.append(label);
       }
       copy.append(parts);const note = el('p', 'skill-note');note.append(el('strong', '', `${skill.mechanicsImplemented ? 'Mechanics implemented' : skill.mechanicsStatus === 'partial' ? 'Mechanics partially implemented' : 'Mechanics not yet confirmed'}: `), el('span', '', skill.implementationNote));copy.append(note);
+      const recording = skillRecording?.control(skill.id);
+      if (recording) copy.append(recording);
       row.append(checkbox, icon, copy);list.append(row);
     }
     section.append(list);$('#skills-list').append(section);
@@ -456,6 +461,7 @@ function showPage() {
   const current = route(location.hash);
   const titles = { overview: 'Roadmap overview', tasks: 'The task board', server: 'Server', beta: 'BETA', skills: 'Skills', items: 'Items', quests: 'Quests', worlds: 'Worlds & scope', updates: 'Development updates', 'patch-notes': 'Patch Notes', preview: 'Preview' };
   if (current !== 'preview') stopPreview?.();
+  if (current !== 'skills') skillRecording?.close();
   document.querySelectorAll('.view').forEach(page => page.hidden = page.id !== `view-${current}`);
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
   $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : current === 'quests' && payload.quests ? `Quest catalog · ${payload.quests.reviewed}` : `Source snapshot · ${payload.reviewed}`;

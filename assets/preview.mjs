@@ -15,6 +15,81 @@ export async function loadSkillPreview(password) {
   return {clips: index.clips, key, revision: index.revision};
 }
 
+function createPlayback(data) {
+  let playing;
+  function stop() {
+    if (!playing) return;
+    const {request, player, play, url} = playing;
+    playing = undefined;
+    request.abort();
+    player.pause(); player.removeAttribute('src'); player.load(); player.hidden = true;
+    if (url) URL.revokeObjectURL(url);
+    play.textContent = 'Play'; play.hidden = false; play.disabled = false;
+  }
+  async function start(clip, player, play, status) {
+    stop();
+    const request = new AbortController();
+    const playback = {request, player, play}; playing = playback;
+    play.textContent = 'Loading…'; play.disabled = true; status.textContent = '';
+    try {
+      const path = new URL(`${clip.id}.mp4.enc`, mediaDirectory);
+      path.searchParams.set('v', data.revision);
+      const response = await fetch(path, {signal: request.signal});
+      if (!response.ok) throw new Error('Recording unavailable');
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
+        additionalData: encoder.encode(clip.id)}, data.key, bytes.subarray(12));
+      if (playing !== playback) return;
+      playback.url = URL.createObjectURL(new Blob([decoded], {type: 'video/mp4'}));
+      player.src = playback.url; player.hidden = false; play.hidden = true;
+      await player.play().catch(() => {});
+    } catch {
+      if (playing !== playback) return;
+      stop(); status.textContent = 'The recording could not load. Try playing it again.';
+    }
+  }
+  return {start, stop};
+}
+
+export function createSkillRecordingDialog(page, data, el, button) {
+  if (!data) return;
+  const clips = new Map(data.clips.map(clip => [clip.id, clip]));
+  const {start, stop} = createPlayback(data);
+  const dialog = el('dialog', 'skill-recording');
+  const header = el('div', 'source-header');
+  const title = el('h2'); title.id = 'skill-recording-title';
+  dialog.setAttribute('aria-labelledby', title.id);
+  const close = () => { stop(); if (dialog.open) dialog.close(); };
+  header.append(title, button('Close', close));
+  const meta = el('p', 'muted');
+  const media = el('div', 'preview-media');
+  const picture = el('img'); picture.alt = '';
+  const player = el('video'); player.controls = true; player.playsInline = true; player.preload = 'none'; player.hidden = true;
+  const status = el('p', 'muted'); status.setAttribute('role', 'status');
+  let clip;
+  const play = button('Play', () => start(clip, player, play, status), 'primary-link');
+  media.append(picture, play, player);
+  dialog.append(header, meta, media, status);
+  dialog.addEventListener('close', stop);
+  page.append(dialog);
+  return {
+    close,
+    control(id) {
+      const recording = clips.get(String(id));
+      if (!recording) return;
+      return button('Watch recording', () => {
+        clip = recording;
+        title.textContent = clip.name;
+        meta.textContent = `Rank ${clip.rank} · ${clip.jobs} · ${clip.weapon} · ${clip.seconds}s${clip.audio ? '' : ' · No audible sample captured'}`;
+        picture.src = player.poster = `data:image/jpeg;base64,${clip.poster}`;
+        player.setAttribute('aria-label', `${clip.name} recording`);
+        dialog.showModal();
+        start(clip, player, play, status);
+      }, 'text-link skill-recording-link');
+    }
+  };
+}
+
 export function renderSkillPreview(page, data, el, button) {
   const intro = el('div', 'page-intro');
   intro.append(el('h2', '', 'Skill recordings'), el('p', 'muted', 'Review equipped cast animations, effects, and audio. Flag an issue or add a timestamped note, then download your report.'));
@@ -55,38 +130,7 @@ export function renderSkillPreview(page, data, el, button) {
   form.append(generalLabel, general, report, reportStatus);
   page.append(form, tabs);
 
-  let playing;
-  function stop() {
-    if (!playing) return;
-    const {request, player, play, url} = playing;
-    playing = undefined;
-    request.abort();
-    player.pause(); player.removeAttribute('src'); player.load(); player.hidden = true;
-    if (url) URL.revokeObjectURL(url);
-    play.textContent = 'Play'; play.hidden = false; play.disabled = false;
-  }
-  async function playClip(clip, player, play, status) {
-    stop();
-    const request = new AbortController();
-    const playback = {request, player, play}; playing = playback;
-    play.textContent = 'Loading…'; play.disabled = true; status.textContent = '';
-    try {
-      const path = new URL(`${clip.id}.mp4.enc`, mediaDirectory);
-      path.searchParams.set('v', data.revision);
-      const response = await fetch(path, {signal: request.signal});
-      if (!response.ok) throw new Error('Recording unavailable');
-      const bytes = new Uint8Array(await response.arrayBuffer());
-      const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
-        additionalData: encoder.encode(clip.id)}, data.key, bytes.subarray(12));
-      if (playing !== playback) return;
-      playback.url = URL.createObjectURL(new Blob([decoded], {type: 'video/mp4'}));
-      player.src = playback.url; player.hidden = false; play.hidden = true;
-      await player.play().catch(() => {});
-    } catch {
-      if (playing !== playback) return;
-      stop(); status.textContent = 'The recording could not load. Try playing it again.';
-    }
-  }
+  const {start, stop} = createPlayback(data);
 
   const panels = [];
   function selectTab(index) {
@@ -122,7 +166,7 @@ export function renderSkillPreview(page, data, el, button) {
       const player = el('video'); player.controls = true; player.playsInline = true; player.preload = 'none';
       player.poster = poster; player.hidden = true; player.setAttribute('aria-label', `${clip.name} recording`);
       const status = el('p', 'muted'); status.setAttribute('role', 'status');
-      const play = button('Play', () => playClip(clip, player, play, status), 'primary-link');
+      const play = button('Play', () => start(clip, player, play, status), 'primary-link');
       play.setAttribute('aria-label', `Play ${clip.name}`);
       stage.append(picture, play, player);
       const meta = el('div', 'preview-details');
