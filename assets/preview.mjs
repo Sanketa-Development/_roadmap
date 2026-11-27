@@ -176,7 +176,7 @@ function renderK2Dialogs(panel, data, el, button) {
   const dialogs = data?.k2Dialogs ?? [];
   const reservedCount = dialogs.filter(dialog => dialog.status === 'reserved').length;
   const intro = el('div', 'page-intro');
-  intro.append(el('h2', '', 'K2 UI'), el('p', '', 'Browse the authored Main, Intro, and Loading dialogs. Previews show the original artwork and default controls. In-game values are supplied at runtime.'));
+  intro.append(el('h2', '', 'K2 UI'), el('p', '', 'Browse the authored Main, Intro, and Loading dialogs. Some previews include labeled example values for fields the game fills at runtime.'));
   panel.append(intro);
   if (!dialogs.length) {
     panel.append(el('p', 'empty-state', 'The K2 dialog catalog is unavailable.'));
@@ -261,7 +261,8 @@ function renderK2Dialogs(panel, data, el, button) {
       await image.decode();
       if (request !== load) return;
       image.hidden = false;
-      status.textContent = selected.missing ? 'Some authored artwork is missing from the K2 packs.' : '';
+      status.textContent = selected.missing ? 'Some authored artwork is missing from the K2 packs.' :
+        selected.example ? 'Example values for this preview.' : '';
     } catch {
       if (request === load) status.textContent = 'The dialog preview could not be loaded.';
     }

@@ -1,6 +1,6 @@
 import { unseal } from './crypto.mjs';
 import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server-tracks';
-import { createSkillRecordingDialog, loadSkillPreview, renderPreviewSections } from './preview.mjs?v=20261128-k2-ui-fidelity';
+import { createSkillRecordingDialog, loadSkillPreview, renderPreviewSections } from './preview.mjs?v=20261128-k2-ui-dialogs';
 
 const $ = selector => document.querySelector(selector);
 const storageKey = 'sanketa.roadmap.remembered-password.v1';

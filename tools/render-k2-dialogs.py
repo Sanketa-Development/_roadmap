@@ -26,6 +26,18 @@ FRAME_CORNERS = {"rect_left_bot.bmp", "rect_right_bot.bmp", "rect_right_top.bmp"
 KEYED_TGAS = {"quickbar_h.tga", "quickbar_v.tga"}
 FULL_ART = FRAME_CORNERS | {"status_text4.bmp", "btn_cancel_n.tga",
                             "btn_prev_n.bmp", "btn_next_n.bmp"}
+# Illustrative runtime states. The Naga uses the level and Chakra allocation
+# from native_equipment_stats_probe::starter. Portal 101 links to 121 in
+# Portal.tsv, whose zone is Shambala (native_portal_travel_probe).
+EXAMPLE_VALUES = {
+    1001: ("Sample Naga", "1", "Naga", "—", "—", "0", "—", "—", "—",
+           "1000", "1000", "—", "—", "—", "—", "0",
+           "12", "12", "10", "9", "", "", "", "", "0", "0", "0", "0", "0"),
+    1008: ("0",),
+    1011: ("0", "0", "Trade partner", "You"),
+    1093: ("Mandara",),
+    1096: ("Hairstyle 1", "Face 1", "—", "0"),
+}
 NAMES = {
     "MAINCHECKBUTTON": "Main menu", "캐릭터정보": "Character information",
     "포탈": "Portal", "HP&PR": "Player vitals", "몬스터HP": "Monster health",
@@ -127,10 +139,21 @@ def authored_controls(lines):
                 sprites.append(row[1:4] + row[6:8])
         else:
             for line in lines[at:at + count]:
-                row = [field.strip() for field in line.split(",")]
-                if row[0] == "0" and len(row) >= 9 and row[8]:
-                    labels.append((int(row[1]), int(row[2]), tuple(map(int, row[3:7])), row[8]))
+                row = line.split(",", 8)
+                if row[0].strip() == "0" and len(row) == 9:
+                    text = row[8].rstrip(" ,\t")
+                    if text.strip():
+                        labels.append((int(row[1]), int(row[2]), tuple(map(int, row[3:7])), text))
     return sprites, labels
+
+
+def edit_fields(lines):
+    for at, line in enumerate(lines):
+        section = re.match(r"^EDITBOX\s+(\d+),", line)
+        if section:
+            return [[field.strip() for field in row.split(",")]
+                    for row in lines[at + 1:at + 1 + int(section[1])]]
+    return []
 
 
 def dialog_placements(group, rows, lines):
@@ -258,9 +281,23 @@ def main():
             layers, unresolved = [], set()
             labels = []
 
+            def label_in(value, x, y, w, h, horizontal, vertical, color):
+                if not value:
+                    return
+                left, top, right, bottom = font.getbbox(value)
+                width, height = right - left, bottom - top
+                if horizontal == "EN_CENTER":
+                    x += (w - width) // 2
+                if vertical == "EN_CENTER":
+                    y += (h - height) // 2
+                elif vertical == "EN_BOTTOM":
+                    y += h - height
+                labels.append((x - left, y - top, color, value))
+
             def place(kind, fields, rail_width=0):
                 index, x, y, w, h = (float(value) for value in fields)
                 index = int(index)
+                control = index
                 caption = None
                 if kind == "C":
                     caption = captions.get(index)
@@ -283,17 +320,18 @@ def main():
                     return
                 source_width = rail_width or width
                 image = Image.new("RGBA", (1, 1), rgba) if solid else image_for(file, source_width, height)
-                if file.casefold() in FULL_ART:
+                if file.casefold() in FULL_ART or (identity == ("main", 1092) and index in (816, 817)):
                     width, height = image.size
                 width, height = rail_width or width or image.width, height or image.height
                 if kind != "C" or caption:
                     width, height = max(1, math.floor(width * w + .5)), max(1, math.floor(height * h + .5))
+                if kind == "C" and identity == ("main", 1096) and control == 113:
+                    # HTStatus creates this control at 64 × 19. The K2 SYS
+                    # reuses the wide caption sprite next to the wallet fields.
+                    width, height = 64, 19
                 if caption:
                     label, horizontal, vertical, color, _ = caption
-                    left, top, right, bottom = font.getbbox(label)
-                    x_label = int(x) + (width - (right - left)) // 2 if horizontal == "EN_CENTER" else int(x)
-                    y_label = int(y) + (height - (bottom - top)) // 2 if vertical == "EN_CENTER" else int(y)
-                    labels.append((x_label - left, y_label - top, color, label))
+                    label_in(label, int(x), int(y), width, height, horizontal, vertical, color)
                 if rgba[3] == 0:
                     return
                 if width > 2048 or height > 2048:
@@ -318,6 +356,18 @@ def main():
             controls, static_labels = authored_controls(lines)
             for fields in controls:
                 place("I", fields)
+            if group == "main" and number in EXAMPLE_VALUES:
+                entry["example"] = True
+                for field, value in zip(edit_fields(lines), EXAMPLE_VALUES[number], strict=True):
+                    bitmap_id, x, y, width, height = map(int, field[:5])
+                    place("I", (bitmap_id, x, y, width, height))
+                    color = tuple(map(int, field[10:14]))
+                    label_in(value, x, y, width, height, field[7], field[8], color)
+                if number == 1093:
+                    # First normal radio row in this dialog.
+                    _, x, y, width, height = map(int, controls[0])
+                    label_in("Shambala · Portal 121", x, y, width, height,
+                             "EN_CENTER", "EN_CENTER", (221, 205, 163, 255))
             trade_amounts = []
             if identity == ("main", 1011):
                 trade_amounts = [int(fields[1]) for kind, fields in rows
