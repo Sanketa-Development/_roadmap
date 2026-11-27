@@ -174,6 +174,7 @@ function renderWearables(panel, data, el, button) {
 
 function renderK2Dialogs(panel, data, el, button) {
   const dialogs = data?.k2Dialogs ?? [];
+  const reservedCount = dialogs.filter(dialog => dialog.status === 'reserved').length;
   const intro = el('div', 'page-intro');
   intro.append(el('h2', '', 'K2 UI'), el('p', '', 'Browse the authored Main, Intro, and Loading dialogs. Previews show the original artwork and default controls. In-game values are supplied at runtime.'));
   panel.append(intro);
@@ -192,7 +193,9 @@ function renderK2Dialogs(panel, data, el, button) {
   search.setAttribute('aria-label', search.placeholder);
   const family = el('select');
   family.setAttribute('aria-label', 'Dialog group');
-  for (const [id, label] of [['', 'All dialogs'], ...Object.entries(groups)]) {
+  const families = [['', 'All UI dialogs'], ...Object.entries(groups)];
+  if (reservedCount) families.push(['reserved', `Reserved IDs (${reservedCount})`]);
+  for (const [id, label] of families) {
     const option = el('option', '', label);
     option.value = id;
     family.append(option);
@@ -282,16 +285,19 @@ function renderK2Dialogs(panel, data, el, button) {
   }
   function filter() {
     const query = search.value.trim().toLowerCase();
+    const onlyReserved = family.value === 'reserved';
     let first = null;
     let matches = 0;
     for (const {dialog, row} of rows) {
-      row.hidden = Boolean(family.value && dialog.group !== family.value) ||
+      row.hidden = (dialog.status === 'reserved') !== onlyReserved ||
+        Boolean(!onlyReserved && family.value && dialog.group !== family.value) ||
         !`${dialog.number} ${dialog.title} ${dialog.name}`.toLowerCase().includes(query);
       if (row.hidden) continue;
       first ??= dialog;
       matches++;
     }
-    count.textContent = `${matches} of ${dialogs.length} dialogs`;
+    count.textContent = onlyReserved ? `${matches} of ${reservedCount} reserved IDs` :
+      `${matches} of ${dialogs.length - reservedCount} dialogs`;
     if (!rows.some(({dialog, row}) => dialog === selected && !row.hidden)) selected = first;
     updateSelection();
     show();

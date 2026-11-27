@@ -23,6 +23,9 @@ SOURCES = {
     "load": ("LoadingUI.K2.sys", ("etc.hpk",)),
 }
 FRAME_CORNERS = {"rect_left_bot.bmp", "rect_right_bot.bmp", "rect_right_top.bmp"}
+KEYED_TGAS = {"quickbar_h.tga", "quickbar_v.tga"}
+FULL_ART = FRAME_CORNERS | {"status_text4.bmp", "btn_cancel_n.tga",
+                            "btn_prev_n.bmp", "btn_next_n.bmp"}
 NAMES = {
     "MAINCHECKBUTTON": "Main menu", "캐릭터정보": "Character information",
     "포탈": "Portal", "HP&PR": "Player vitals", "몬스터HP": "Monster health",
@@ -65,15 +68,31 @@ def title_for(name, dialog_id, group):
     return NAMES.get(name, name.replace("_", " ").title())
 
 
+def sys_text(path):
+    return "\n".join(line.split("//", 1)[0].strip()
+                     for line in path.read_text(encoding="cp949").splitlines())
+
+
 def dialog_sources(path):
-    text = path.read_text(encoding="cp949").split("[DIALOG]", 1)[1]
-    text = "\n".join(line.split("//", 1)[0].strip() for line in text.splitlines())
+    text = sys_text(path).split("[DIALOG]", 1)[1]
     pattern = r"^([^,\n]+?)\s+(\d+),[^\n]*\nSTYLE[^\n]*\n(.*?)^END\s*$"
     dialogs = [(int(i), name, block.splitlines()) for name, i, block in
                re.findall(pattern, text, flags=re.M | re.S)]
     if len(dialogs) != int(text.lstrip().splitlines()[0]):
         raise ValueError(f"Incomplete dialog inventory in {path}")
     return dialogs
+
+
+def button_captions(path):
+    section = sys_text(path).split("[PUSHBUTTON]", 1)[1].split("[TIMER]", 1)[0]
+    captions = {}
+    for index, normal, sprite in re.findall(
+            r"^(\d+)\s+[^\n]+\nNORMAL,1,([^\n]+)\n([^\n]+)", section, re.M):
+        label, _, horizontal, vertical, *color = (field.strip() for field in normal.split(","))
+        if label:
+            captions[int(index)] = (label, horizontal, vertical, tuple(map(int, color[:4])),
+                                    tuple(map(float, sprite.split(",")[1:5])))
+    return captions
 
 
 def authored_controls(lines):
@@ -143,6 +162,26 @@ def dialog_placements(group, rows, lines):
     return result
 
 
+def bottom_rail(group, rows, bitmaps, corner_size):
+    """Continue the outer frame rail to the matching right corner."""
+    pieces = [(tuple(fields), bitmaps[group, int(fields[0])])
+              for kind, fields in rows if kind == "I"]
+    left = next((fields for fields, b in pieces if b[0].lower() == "rect_left_bot.bmp"), None)
+    right = next((fields for fields, b in pieces if b[0].lower() == "rect_right_bot.bmp"), None)
+    if not left or not right or left[2] != right[2]:
+        return {}
+    corner_width, corner_height = corner_size
+    rails = [(fields, width) for fields, (file, width, height, _, _) in pieces
+             if file.lower().startswith("widthline_") and fields[3:5] == ("1", "1")
+             and int(fields[2]) + height == int(right[2]) + corner_height]
+    if not rails:
+        return {}
+    end = int(right[1]) + corner_width
+    rail, width = max(rails, key=lambda pair: int(pair[0][1]) + pair[1])
+    required = end - int(rail[1])
+    return {rail: required} if required > width else {}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("k2", type=Path)
@@ -177,6 +216,7 @@ def main():
     catalogue, seen, missing = [], set(), {}
     consumed_files = {"Layout.tsv"}
     for group, (source, archives) in SOURCES.items():
+        captions = button_captions(ui / source)
         originals = {}
         for archive in archives:
             _, entries = read_hpk(ui / archive)
@@ -189,19 +229,18 @@ def main():
             data = originals[name.casefold()]
             with Image.open(BytesIO(data)) as original:
                 image = original.convert("RGBA")
-            if data.startswith(b"BM"):
-                red, green, blue, _ = image.split()
+            if data.startswith(b"BM") or name.casefold() in KEYED_TGAS:
+                red, green, blue, alpha = image.split()
                 transparent = ImageChops.multiply(red.point(lambda v: 255 if v == 0 else 0),
                                                   green.point(lambda v: 255 if v == 0 else 0))
                 transparent = ImageChops.multiply(transparent, blue.point(lambda v: 255 if v == 240 else 0))
-                image.putalpha(ImageChops.invert(transparent))
+                image.putalpha(ImageChops.multiply(alpha, ImageChops.invert(transparent)))
             # K2 files can be power-of-two textures. Sample the registered
             # top-left region before applying the placement's display scale.
             # An axis declared larger than the file has no padding to crop.
-            if name.casefold() in FRAME_CORNERS:
-                # These frame corners have smaller declared rectangles than
-                # their visible ornaments. The SYS positions already anchor
-                # the complete ornaments at the ends of the frame rails.
+            if name.casefold() in FULL_ART:
+                # The registered sizes disagree with the visible artwork.
+                # Keep the full native pixels at the authored anchor.
                 _, _, right, bottom = image.getbbox()
                 return image.crop((0, 0, right, bottom))
             crop = (0, 0, min(width or image.width, image.width),
@@ -217,12 +256,19 @@ def main():
                      "name": name, "title": title_for(name, number, group), "source": source}
             catalogue.append(entry)
             layers, unresolved = [], set()
+            labels = []
 
-            def place(kind, fields):
+            def place(kind, fields, rail_width=0):
                 index, x, y, w, h = (float(value) for value in fields)
                 index = int(index)
+                caption = None
                 if kind == "C":
+                    caption = captions.get(index)
                     index = buttons[group, index]
+                    if caption:
+                        dx, dy, w, h = caption[4]
+                        x += dx
+                        y += dy
                 if index < 0:
                     return
                 bitmap = bitmaps.get((group, index))
@@ -230,17 +276,26 @@ def main():
                     unresolved.add(f"bitmap {index}")
                     return
                 file, width, height, rgba, solid = bitmap
-                if rgba[3] == 0:
+                if rgba[3] == 0 and not caption:
                     return
                 if not solid and file.casefold() not in originals:
                     unresolved.add(file)
                     return
-                image = Image.new("RGBA", (1, 1), rgba) if solid else image_for(file, width, height)
-                if file.casefold() in FRAME_CORNERS:
+                source_width = rail_width or width
+                image = Image.new("RGBA", (1, 1), rgba) if solid else image_for(file, source_width, height)
+                if file.casefold() in FULL_ART:
                     width, height = image.size
-                width, height = width or image.width, height or image.height
-                if kind != "C":
+                width, height = rail_width or width or image.width, height or image.height
+                if kind != "C" or caption:
                     width, height = max(1, math.floor(width * w + .5)), max(1, math.floor(height * h + .5))
+                if caption:
+                    label, horizontal, vertical, color, _ = caption
+                    left, top, right, bottom = font.getbbox(label)
+                    x_label = int(x) + (width - (right - left)) // 2 if horizontal == "EN_CENTER" else int(x)
+                    y_label = int(y) + (height - (bottom - top)) // 2 if vertical == "EN_CENTER" else int(y)
+                    labels.append((x_label - left, y_label - top, color, label))
+                if rgba[3] == 0:
+                    return
                 if width > 2048 or height > 2048:
                     raise ValueError(f"Oversized K2 placement in {entry['id']}: {width} × {height}")
                 if not solid and rgba != (255, 255, 255, 255):
@@ -252,14 +307,28 @@ def main():
 
             if group == "load":
                 layers.append((image_for("LOAD_TYPE4.bmp" if number == 100 else "LOAD_TYPE1.bmp"), 0, 0))
-            for kind, fields in dialog_placements(group, placements[identity], lines):
-                place(kind, fields)
-            controls, labels = authored_controls(lines)
+            rows = dialog_placements(group, placements[identity], lines)
+            rails = bottom_rail(group, rows, bitmaps, image_for("RECT_RIGHT_BOT.BMP").size) if group == "main" else {}
+            for kind, fields in rows:
+                # The refinery indicator is a running-action progress sprite.
+                # The static gallery opens on the idle control state.
+                if identity == ("main", 1008) and kind == "I" and fields[0] == "340":
+                    continue
+                place(kind, fields, rails.get(tuple(fields), 0))
+            controls, static_labels = authored_controls(lines)
             for fields in controls:
                 place("I", fields)
-            for x, y, color, text in labels:
+            trade_amounts = []
+            if identity == ("main", 1011):
+                trade_amounts = [int(fields[1]) for kind, fields in rows
+                                 if kind == "I" and fields[0] == "6"]
+            for x, y, color, text in [*static_labels, *labels]:
                 left, top, right, bottom = font.getbbox(text)
                 if right > left and bottom > top:
+                    if trade_amounts and text == "RUPIAH":
+                        # Keep the gallery font clear of the adjacent authored amount box.
+                        x = min(x, min((amount - right - 2 for amount in trade_amounts if amount > x),
+                                       default=x))
                     image = Image.new("RGBA", (right - left, bottom - top))
                     ImageDraw.Draw(image).text((-left, -top), text, font=font,
                                                fill=tuple(max(0, min(255, c)) for c in color))
