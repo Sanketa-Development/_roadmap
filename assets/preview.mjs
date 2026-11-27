@@ -12,18 +12,23 @@ export async function loadSkillPreview(password) {
       index.clips.some(clip => !/^3\d{3}$/.test(clip.id))) throw new Error('Invalid preview index');
   const bytes = Uint8Array.from(atob(index.mediaKey), character => character.charCodeAt(0));
   const key = await crypto.subtle.importKey('raw', bytes, 'AES-GCM', false, ['decrypt']);
-  return {clips: index.clips, wearables: Array.isArray(index.wearables) ? index.wearables : [], key, revision: index.revision};
+  return {clips: index.clips, wearables: Array.isArray(index.wearables) ? index.wearables : [],
+    k2Dialogs: Array.isArray(index.k2Dialogs) ? index.k2Dialogs : [], key, revision: index.revision};
 }
 
-async function loadRecording(data, id, signal) {
-  const path = new URL(`${id}.mp4.enc`, mediaDirectory);
+async function loadPreviewMedia(data, id, extension, type, signal) {
+  const path = new URL(`${id}.${extension}.enc`, mediaDirectory);
   path.searchParams.set('v', data.revision);
   const response = await fetch(path, {signal});
-  if (!response.ok) throw new Error('Recording unavailable');
+  if (!response.ok) throw new Error('Preview media unavailable');
   const bytes = new Uint8Array(await response.arrayBuffer());
   const decoded = await crypto.subtle.decrypt({name: 'AES-GCM', iv: bytes.subarray(0, 12),
     additionalData: encoder.encode(id)}, data.key, bytes.subarray(12));
-  return new Blob([decoded], {type: 'video/mp4'});
+  return new Blob([decoded], {type});
+}
+
+function loadRecording(data, id, signal) {
+  return loadPreviewMedia(data, id, 'mp4', 'video/mp4', signal);
 }
 
 function createPlayback(data) {
@@ -167,9 +172,142 @@ function renderWearables(panel, data, el, button) {
   };
 }
 
+function renderK2Dialogs(panel, data, el, button) {
+  const dialogs = data?.k2Dialogs ?? [];
+  const intro = el('div', 'page-intro');
+  intro.append(el('h2', '', 'K2 UI'), el('p', '', 'Browse the authored Main, Intro, and Loading dialogs. Previews show the original artwork and default controls. In-game values are supplied at runtime.'));
+  panel.append(intro);
+  if (!dialogs.length) {
+    panel.append(el('p', 'empty-state', 'The K2 dialog catalog is unavailable.'));
+    return {};
+  }
+
+  const groups = {main: 'Main UI', intro: 'Intro UI', load: 'Loading UI'};
+  const gallery = el('div', 'k2-gallery');
+  const sidebar = el('div', 'k2-browser');
+  const filters = el('div', 'k2-filters');
+  const search = el('input');
+  search.type = 'search';
+  search.placeholder = 'Search name or dialog ID';
+  search.setAttribute('aria-label', search.placeholder);
+  const family = el('select');
+  family.setAttribute('aria-label', 'Dialog group');
+  for (const [id, label] of [['', 'All dialogs'], ...Object.entries(groups)]) {
+    const option = el('option', '', label);
+    option.value = id;
+    family.append(option);
+  }
+  const count = el('p', 'muted');
+  const list = el('ul', 'k2-dialog-list');
+  filters.append(search, family);
+  sidebar.append(filters, count, list);
+
+  const viewer = el('figure', 'k2-viewer');
+  const caption = el('figcaption');
+  const title = el('h3');
+  const meta = el('p', 'muted');
+  const image = el('img');
+  image.hidden = true;
+  const canvas = el('div', 'k2-canvas');
+  const status = el('p', 'muted');
+  status.setAttribute('role', 'status');
+  caption.append(title, meta);
+  canvas.append(image, status);
+  viewer.append(caption, canvas);
+  gallery.append(sidebar, viewer);
+  panel.append(gallery);
+
+  let selected = dialogs.find(dialog => dialog.id === 'k2-main-1007') ?? dialogs[0];
+  let request, url;
+  let active = false;
+  function release() {
+    request?.abort();
+    request = undefined;
+    image.hidden = true;
+    image.removeAttribute('src');
+    if (url) URL.revokeObjectURL(url);
+    url = undefined;
+  }
+  async function show() {
+    release();
+    title.textContent = selected?.title ?? 'No matching dialogs';
+    meta.textContent = selected ? `${groups[selected.group]} · ${selected.number} · ${selected.name} · ${selected.source}` : '';
+    if (!selected) {
+      status.textContent = 'Try a different name, ID, or group.';
+      return;
+    }
+    if (selected.status !== 'art') {
+      status.textContent = selected.status === 'reserved'
+        ? 'Reserved dialog ID. The source layout declares no visible controls.'
+        : 'The source layout contains no standalone artwork for this dialog.';
+      return;
+    }
+    if (!active) {
+      status.textContent = '';
+      return;
+    }
+    const load = new AbortController();
+    request = load;
+    status.textContent = 'Loading preview…';
+    try {
+      const picture = await loadPreviewMedia(data, selected.id, 'webp', 'image/webp', load.signal);
+      if (request !== load) return;
+      url = URL.createObjectURL(picture);
+      image.alt = `${selected.title} · K2 dialog ${selected.number}`;
+      image.src = url;
+      await image.decode();
+      if (request !== load) return;
+      image.hidden = false;
+      status.textContent = selected.missing ? 'Some authored artwork is missing from the K2 packs.' : '';
+    } catch {
+      if (request === load) status.textContent = 'The dialog preview could not be loaded.';
+    }
+  }
+
+  const rows = dialogs.map(dialog => {
+    const row = el('li');
+    const select = button(dialog.title, () => {
+      if (selected === dialog) return;
+      selected = dialog;
+      updateSelection();
+      show();
+    });
+    select.append(el('small', 'muted', `${groups[dialog.group]} · ${dialog.number}`));
+    row.append(select);
+    list.append(row);
+    return {dialog, row, select};
+  });
+  function updateSelection() {
+    for (const {dialog, select} of rows) select.setAttribute('aria-pressed', String(dialog === selected));
+  }
+  function filter() {
+    const query = search.value.trim().toLowerCase();
+    let first = null;
+    let matches = 0;
+    for (const {dialog, row} of rows) {
+      row.hidden = Boolean(family.value && dialog.group !== family.value) ||
+        !`${dialog.number} ${dialog.title} ${dialog.name}`.toLowerCase().includes(query);
+      if (row.hidden) continue;
+      first ??= dialog;
+      matches++;
+    }
+    count.textContent = `${matches} of ${dialogs.length} dialogs`;
+    if (!rows.some(({dialog, row}) => dialog === selected && !row.hidden)) selected = first;
+    updateSelection();
+    show();
+  }
+  search.addEventListener('input', filter);
+  family.addEventListener('change', filter);
+  filter();
+  return {
+    start() { if (!active) { active = true; show(); } },
+    stop() { active = false; release(); }
+  };
+}
+
 export function renderPreviewSections(page, data, el, button) {
   const categories = [['skills', 'Skills'], ['wearables', 'Wearables'], ['weapons', 'Weapons'],
-    ['fashions', 'Fashions'], ['mounts', 'Mounts']];
+    ['fashions', 'Fashions'], ['mounts', 'Mounts'], ['k2-ui', 'K2 UI']];
   const navigation = el('nav', 'item-tabs preview-categories');
   navigation.setAttribute('aria-label', 'Preview categories');
   page.append(navigation);
@@ -180,11 +318,12 @@ export function renderPreviewSections(page, data, el, button) {
     const panel = el('section', 'preview-section'); panel.hidden = true;
     navigation.append(link); page.append(panel);
     sections.set(id, {link, panel});
-    if (id !== 'skills' && id !== 'wearables')
+    if (id !== 'skills' && id !== 'wearables' && id !== 'k2-ui')
       panel.append(el('h2', 'preview-empty-heading', label), el('p', 'empty-state', 'No recordings are available in this category yet.'));
   }
   const stopSkills = renderSkillPreview(sections.get('skills').panel, data, el, button);
   const wearables = renderWearables(sections.get('wearables').panel, data, el, button);
+  const k2 = renderK2Dialogs(sections.get('k2-ui').panel, data, el, button);
   return {
     select(hash) {
       const requested = new URLSearchParams(hash.split('?')[1]).get('category');
@@ -197,8 +336,10 @@ export function renderPreviewSections(page, data, el, button) {
       if (category !== 'skills') stopSkills?.();
       if (category === 'wearables') wearables.start?.();
       else wearables.stop?.();
+      if (category === 'k2-ui') k2.start?.();
+      else k2.stop?.();
     },
-    stop() { stopSkills?.(); wearables.stop?.(); }
+    stop() { stopSkills?.(); wearables.stop?.(); k2.stop?.(); }
   };
 }
 

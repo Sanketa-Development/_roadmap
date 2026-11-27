@@ -127,3 +127,18 @@
 .wearable-tribe figcaption{margin:8px 0 4px;overflow-wrap:anywhere}
 .wearable-tribe .muted{font-size:10px}
 @media(max-width:700px){.wearable-set{grid-template-columns:1fr}.wearable-info{border-right:0;border-bottom:1px solid var(--line)}.wearable-info ul{grid-template-columns:repeat(2,1fr)}}
+.k2-gallery{display:grid;grid-template-columns:minmax(190px,260px) minmax(0,1fr);gap:16px;margin-top:18px}
+.k2-browser,.k2-viewer{min-width:0;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.k2-browser{padding:12px}.k2-filters{display:grid;gap:8px}
+.k2-filters input,.k2-filters select{width:100%;min-width:0;color:var(--ink);font:inherit;background:#190f11;border:1px solid var(--line);border-radius:5px;padding:8px 10px}
+.k2-browser>p{margin:10px 0;font-size:12px}
+.k2-dialog-list{list-style:none;padding:0;margin:0;max-height:32rem;overflow-y:auto}
+.k2-dialog-list button{display:block;width:100%;padding:9px 10px;text-align:left;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.k2-dialog-list button:is(:hover,[aria-pressed="true"]){background:#422a2f;border-color:#65454a}
+.k2-dialog-list small{display:block;margin-top:2px;font-size:11px}
+.k2-viewer{margin:0;align-self:start;overflow:hidden}.k2-viewer figcaption{padding:14px 16px}
+.k2-viewer h3{margin:0;font-size:17px}.k2-viewer figcaption p{margin:4px 0 0;font-size:11px;overflow-wrap:anywhere}
+.k2-canvas{display:grid;place-items:center;min-height:200px;padding:18px;background:#111014}
+.k2-canvas img{display:block;max-width:100%;height:auto;object-fit:contain}
+.k2-canvas img[hidden],.k2-canvas p:empty{display:none}.k2-canvas p{margin:0;text-align:center}
+@media(max-width:700px){.k2-gallery{grid-template-columns:1fr}.k2-dialog-list{max-height:12rem}}
