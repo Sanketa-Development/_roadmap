@@ -22,6 +22,7 @@ SOURCES = {
     )),
     "load": ("LoadingUI.K2.sys", ("etc.hpk",)),
 }
+FRAME_CORNERS = {"rect_left_bot.bmp", "rect_right_bot.bmp", "rect_right_top.bmp"}
 NAMES = {
     "MAINCHECKBUTTON": "Main menu", "캐릭터정보": "Character information",
     "포탈": "Portal", "HP&PR": "Player vitals", "몬스터HP": "Monster health",
@@ -113,6 +114,35 @@ def authored_controls(lines):
     return sprites, labels
 
 
+def dialog_placements(group, rows, lines):
+    if group != "main":
+        return rows
+    titles, body = set(), set()
+    for at, line in enumerate(lines):
+        section = re.match(r"^(TITLEBAR|BITMAP)\s+(\d+),", line)
+        if not section:
+            continue
+        is_title = section[1] == "TITLEBAR"
+        offset = 1 if is_title else 0
+        for row in lines[at + 1:at + 1 + int(section[2])]:
+            fields = tuple(field.strip() for field in row.split(",")[offset:offset + 5])
+            if fields[0].isdigit() and int(fields[1]) > 10 and int(fields[2]) < 16:
+                (titles if is_title else body).add(fields)
+    # The body sometimes supplies a different position for the title
+    # graphic. Drop that earlier title layer only, preserving repeated
+    # body sprites such as quickbar cells and timer digits.
+    positions = {(fields[0], fields[2]) for fields in body}
+    alternate = {fields for fields in titles if (fields[0], fields[2]) in positions}
+    result = []
+    for kind, fields in rows:
+        placement = tuple(fields)
+        if kind == "I" and placement in alternate:
+            alternate.remove(placement)
+        else:
+            result.append((kind, fields))
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("k2", type=Path)
@@ -155,7 +185,7 @@ def main():
         consumed_files.update((source, *archives))
 
         @lru_cache(maxsize=256)
-        def image_for(name):
+        def image_for(name, width=0, height=0):
             data = originals[name.casefold()]
             with Image.open(BytesIO(data)) as original:
                 image = original.convert("RGBA")
@@ -165,7 +195,18 @@ def main():
                                                   green.point(lambda v: 255 if v == 0 else 0))
                 transparent = ImageChops.multiply(transparent, blue.point(lambda v: 255 if v == 240 else 0))
                 image.putalpha(ImageChops.invert(transparent))
-            return image
+            # K2 files can be power-of-two textures. Sample the registered
+            # top-left region before applying the placement's display scale.
+            # An axis declared larger than the file has no padding to crop.
+            if name.casefold() in FRAME_CORNERS:
+                # These frame corners have smaller declared rectangles than
+                # their visible ornaments. The SYS positions already anchor
+                # the complete ornaments at the ends of the frame rails.
+                _, _, right, bottom = image.getbbox()
+                return image.crop((0, 0, right, bottom))
+            crop = (0, 0, min(width or image.width, image.width),
+                    min(height or image.height, image.height))
+            return image if crop[2:] == image.size else image.crop(crop)
 
         for number, name, lines in dialog_sources(ui / source):
             identity = group, number
@@ -194,7 +235,9 @@ def main():
                 if not solid and file.casefold() not in originals:
                     unresolved.add(file)
                     return
-                image = Image.new("RGBA", (1, 1), rgba) if solid else image_for(file)
+                image = Image.new("RGBA", (1, 1), rgba) if solid else image_for(file, width, height)
+                if file.casefold() in FRAME_CORNERS:
+                    width, height = image.size
                 width, height = width or image.width, height or image.height
                 if kind != "C":
                     width, height = max(1, math.floor(width * w + .5)), max(1, math.floor(height * h + .5))
@@ -209,7 +252,7 @@ def main():
 
             if group == "load":
                 layers.append((image_for("LOAD_TYPE4.bmp" if number == 100 else "LOAD_TYPE1.bmp"), 0, 0))
-            for kind, fields in placements[identity]:
+            for kind, fields in dialog_placements(group, placements[identity], lines):
                 place(kind, fields)
             controls, labels = authored_controls(lines)
             for fields in controls:

@@ -16,6 +16,7 @@ const key = await crypto.subtle.importKey('raw', Buffer.from(index.mediaKey, 'ba
   'AES-GCM', false, ['encrypt', 'decrypt']);
 const seen = new Set();
 const files = new Map();
+let reused = 0;
 for (const dialog of dialogs) {
   const {id, group, number, status, title} = dialog;
   if (!/^k2-(main|intro|load)-\d+$/.test(id) || id !== `k2-${group}-${number}` ||
@@ -26,18 +27,34 @@ for (const dialog of dialogs) {
   const picture = await readFile(resolve(root, 'media', `${id}.webp`));
   if (picture.toString('ascii', 0, 4) !== 'RIFF' || picture.toString('ascii', 8, 12) !== 'WEBP')
     throw new Error(`Invalid K2 image ${id}.`);
+  const existing = await readFile(new URL(`${id}.webp.enc`, output)).catch(error => {
+    if (error.code !== 'ENOENT') throw error;
+  });
+  const additionalData = Buffer.from(id);
+  if (existing) {
+    const previous = await crypto.subtle.decrypt({name: 'AES-GCM', iv: existing.subarray(0, 12),
+      additionalData}, key, existing.subarray(12));
+    if (picture.equals(Buffer.from(previous))) {
+      reused++;
+      continue;
+    }
+  }
   const iv = randomBytes(12);
-  const parameters = {name: 'AES-GCM', iv, additionalData: Buffer.from(id)};
+  const parameters = {name: 'AES-GCM', iv, additionalData};
   const body = await crypto.subtle.encrypt(parameters, key, picture);
   const verified = await crypto.subtle.decrypt(parameters, key, body);
   if (!picture.equals(Buffer.from(verified))) throw new Error(`K2 image verification failed for ${id}.`);
   files.set(id, Buffer.concat([iv, Buffer.from(body)]));
 }
-if (!files.size) throw new Error('No K2 artwork to seal.');
+if (!files.size && !reused) throw new Error('No K2 artwork to seal.');
+if (!files.size && JSON.stringify(index.k2Dialogs) === JSON.stringify(dialogs)) {
+  console.log(`All ${reused} K2 previews and their catalog are current.`);
+  process.exit(0);
+}
 const updated = {...index, k2Dialogs: dialogs, revision: randomBytes(8).toString('hex')};
 const envelope = await seal(updated, password);
 if ((await unseal(envelope, password)).revision !== updated.revision)
   throw new Error('The encrypted K2 catalog did not verify.');
 for (const [id, encrypted] of files) await writeFile(new URL(`${id}.webp.enc`, output), encrypted);
 await writeFile(indexPath, JSON.stringify(envelope) + '\n');
-console.log(`Sealed ${files.size} K2 previews for ${seen.size} dialog entries.`);
+console.log(`Sealed ${files.size} updated previews and reused ${reused} for ${seen.size} K2 dialog entries.`);
