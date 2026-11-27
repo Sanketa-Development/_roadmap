@@ -53,14 +53,17 @@ export function validate(payload) {
   if (project.server !== undefined) {
     const server = project.server;
     const present = value => typeof value === 'string' && value.trim().length > 0;
-    if (!present(server?.lead) || !Array.isArray(server.phases) || !server.phases.length) throw new Error('Invalid server roadmap');
+    const tracks = server?.phases ? [server] : [server?.cpp, server?.rust];
     const phaseIds = new Set(), taskIds = new Set();
-    for (const phase of server.phases) {
-      if (!/^SRV-\d{2}$/.test(phase.id) || phaseIds.has(phase.id) || !present(phase.title) || !Array.isArray(phase.tasks) || !phase.tasks.length) throw new Error('Invalid server phase');
-      phaseIds.add(phase.id);
-      for (const task of phase.tasks) {
-        if (!/^SRV-\d{3}$/.test(task.id) || taskIds.has(task.id) || !present(task.text) || !present(task.verification) || typeof task.done !== 'boolean') throw new Error('Invalid server task');
-        taskIds.add(task.id);
+    for (const track of tracks) {
+      if (!present(track?.lead) || !Array.isArray(track.phases) || !track.phases.length) throw new Error('Invalid server roadmap');
+      for (const phase of track.phases) {
+        if (!/^(CPP|SRV)-\d{2}$/.test(phase.id) || phaseIds.has(phase.id) || !present(phase.title) || !Array.isArray(phase.tasks) || !phase.tasks.length) throw new Error('Invalid server phase');
+        phaseIds.add(phase.id);
+        for (const task of phase.tasks) {
+          if (!/^(CPP|SRV)-\d{3}$/.test(task.id) || taskIds.has(task.id) || !present(task.text) || !present(task.verification) || typeof task.done !== 'boolean') throw new Error('Invalid server task');
+          taskIds.add(task.id);
+        }
       }
     }
   }

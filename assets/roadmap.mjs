@@ -1,5 +1,5 @@
 import { unseal } from './crypto.mjs';
-import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server';
+import { route, filteredGroups, itemCategoryRows, filteredItemRows, validate, checklistPercent, patchNoteRecords } from './model.mjs?v=20261127-server-tracks';
 import { loadSkillPreview, renderSkillPreview } from './preview.mjs';
 
 const $ = selector => document.querySelector(selector);
@@ -129,19 +129,51 @@ function tasks() {
 function serverChecklist() {
   const page = $('#view-server'), server = payload.project.server;
   const intro = el('div', 'page-intro');
-  intro.append(el('h2', '', 'Tantra Rust server'));
+  intro.append(el('h2', '', 'Tantra server'));
   page.append(intro);
   if (!server) {
     page.append(el('p', 'empty-state', 'The Server checklist will appear in an updated roadmap snapshot.'));
     return;
   }
-  const tasks = server.phases.flatMap(phase => phase.tasks);
-  intro.append(el('p', 'muted', server.lead));
+  const nav = el('nav', 'item-tabs');
+  nav.setAttribute('aria-label', 'Server categories');
+  for (const id of ['cpp', 'rust']) {
+    const category = link(id.toUpperCase(), `#server?track=${id}`, 'item-tab server-category');
+    category.setAttribute('data-track', id);
+    nav.append(category);
+  }
+  const panel = el('section');
+  panel.id = 'server-track';
+  panel.setAttribute('aria-labelledby', 'server-track-title');
+  page.append(nav, panel);
+}
+function renderServerTrack() {
+  const panel = $('#server-track');
+  if (!panel) return;
+  const server = payload.project.server;
+  const requested = new URLSearchParams(location.hash.split('?')[1] || '').get('track');
+  const trackId = requested === 'rust' || (!server.cpp && requested !== 'cpp') ? 'rust' : 'cpp';
+  const track = trackId === 'rust' ? server.rust || server : server.cpp;
+  document.querySelectorAll('.server-category').forEach(category => {
+    if (category.dataset.track === trackId) category.setAttribute('aria-current', 'page');
+    else category.removeAttribute('aria-current');
+  });
+  const intro = el('div', 'page-intro');
+  const title = el('h3', '', trackId === 'cpp' ? 'Tantra C++ server' : 'Tantra Rust server');
+  title.id = 'server-track-title';
+  intro.append(title);
+  panel.replaceChildren(intro);
+  if (!track) {
+    panel.append(el('p', 'empty-state', 'The CPP checklist will appear in an updated roadmap snapshot.'));
+    return;
+  }
+  const tasks = track.phases.flatMap(phase => phase.tasks);
+  intro.append(el('p', 'muted', track.lead));
   const meta = el('div', 'task-meta');
   meta.append(el('span', 'muted', `${tasks.filter(task => task.done).length} of ${tasks.length} server tasks checked`));
-  page.append(meta);
-  const currentPhase = server.phases.find(phase => phase.tasks.some(task => !task.done));
-  for (const [index, phase] of server.phases.entries()) {
+  panel.append(meta);
+  const currentPhase = track.phases.find(phase => phase.tasks.some(task => !task.done));
+  for (const [index, phase] of track.phases.entries()) {
     const section = el('details', 'task-group server-phase'), summary = el('summary');
     const heading = el('div', 'task-group-title'), body = el('div', 'task-group-content');
     const done = phase.tasks.filter(task => task.done).length;
@@ -154,7 +186,7 @@ function serverChecklist() {
       body.append(taskNode({ ...task, children: [] }, false, verification));
     }
     section.append(summary, body);
-    page.append(section);
+    panel.append(section);
   }
 }
 function betaChecklist() {
@@ -428,6 +460,8 @@ function showPage() {
   document.querySelectorAll('[data-route]').forEach(item => { if (item.dataset.route === current) item.setAttribute('aria-current', 'page'); else item.removeAttribute('aria-current'); });
   $('#review-date').textContent = current === 'skills' && payload.skills ? `Skill catalog · ${payload.skills.reviewed}` : current === 'items' && payload.items ? `Item catalog · ${payload.items.reviewed}` : current === 'quests' && payload.quests ? `Quest catalog · ${payload.quests.reviewed}` : `Source snapshot · ${payload.reviewed}`;
   $('#page-title').textContent = titles[current]; document.title = `${titles[current]} — Sanketa`;
-  if (current === 'tasks') renderTasks(); window.scrollTo({ top: 0, behavior: 'instant' });
+  if (current === 'tasks') renderTasks();
+  if (current === 'server') renderServerTrack();
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 window.addEventListener('hashchange', showPage);

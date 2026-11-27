@@ -45,30 +45,46 @@ class Node {
   assert(app.get('workspace').hidden && !app.get('access').hidden, 'First visit is locked');
   assert(!app.get('remember').checked && !app.get('password').value, 'Remember starts off');
   if (process.argv.includes('--server')) {
-    const page = app.get('view-server'), phases = data.project.server.phases;
-    const tasks = phases.flatMap(phase => phase.tasks), done = tasks.filter(task => task.done).length;
+    const page = app.get('view-server'), server = data.project.server;
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
     assert.match(html, /<a href="#server" data-route="server">[^\n]*>Server<\/a>/);
     assert.equal(page.textContent, '', 'Server details stay unavailable until unlock');
     app.get('password').value = password; await app.get('access-form').fire('submit'); app.route('#server');
     assert(!page.hidden && app.get('view-tasks').hidden);
     assert.equal(app.get('page-title').textContent, 'Server');
-    assert(page.textContent.includes(`${done} of ${tasks.length} server tasks checked`));
-    const sections = page.querySelectorAll('.server-phase');
-    assert.equal(sections.length, phases.length);
-    for (const [index, phase] of phases.entries()) {
-      const section = sections[index], rows = section.querySelectorAll('.task');
-      assert(section.textContent.includes(`Phase ${index}`) && section.textContent.includes(phase.title));
-      assert.deepEqual(rows.map(row => row.querySelectorAll('.task-id')[0].textContent), phase.tasks.map(task => task.id));
-      assert.deepEqual(rows.map(row => row.className.split(' ').includes('checked')), phase.tasks.map(task => task.done));
-      assert.deepEqual(section.querySelectorAll('.server-verification').map(node => node.textContent), phase.tasks.map(task => task.verification));
+    const categories = page.querySelectorAll('.server-category');
+    assert.deepEqual(categories.map(category => [category.textContent, category.href]), [['CPP', '#server?track=cpp'], ['RUST', '#server?track=rust']]);
+    assert.equal(categories[0].attrs['aria-current'], 'page');
+    const counts = {};
+    for (const category of categories) {
+      app.route(category.href);
+      const id = category.dataset.track, { phases } = server[id];
+      const tasks = phases.flatMap(phase => phase.tasks), checked = tasks.filter(task => task.done).length;
+      counts[id] = { phases: phases.length, tasks: tasks.length, checked };
+      assert.equal(category.attrs['aria-current'], 'page');
+      assert.equal(categories.filter(link => link.attrs['aria-current'] === 'page').length, 1);
+      assert(page.textContent.includes(`${checked} of ${tasks.length} server tasks checked`));
+      const sections = page.querySelectorAll('.server-phase');
+      assert.equal(sections.length, phases.length);
+      for (const [index, phase] of phases.entries()) {
+        const section = sections[index], rows = section.querySelectorAll('.task');
+        assert(section.textContent.includes(`Phase ${index}`) && section.textContent.includes(phase.title));
+        assert.deepEqual(rows.map(row => row.querySelectorAll('.task-id')[0].textContent), phase.tasks.map(task => task.id));
+        assert.deepEqual(rows.map(row => row.className.split(' ').includes('checked')), phase.tasks.map(task => task.done));
+        assert.deepEqual(section.querySelectorAll('.server-verification').map(node => node.textContent), phase.tasks.map(task => task.verification));
+      }
     }
     await app.get('lock').fire('click'); assert.equal(page.textContent, '', 'Lock removes Server details');
     const legacyProject = { ...data.project }; delete legacyProject.server;
     const legacy = start({ ...data, project: legacyProject });
     legacy.get('password').value = password; await legacy.get('access-form').fire('submit'); legacy.route('#server');
     assert(legacy.get('view-server').textContent.includes('updated roadmap snapshot'));
-    console.log(JSON.stringify({ result: 'passed', scope: 'Server checklist', phases: phases.length, tasks: tasks.length, checked: done, lockedContentCleared: true, olderSnapshotSupported: true })); return;
+    const rustOnly = start({ ...data, project: { ...data.project, server: server.rust } });
+    rustOnly.get('password').value = password; await rustOnly.get('access-form').fire('submit'); rustOnly.route('#server');
+    assert.equal(rustOnly.get('view-server').querySelectorAll('.server-phase').length, server.rust.phases.length);
+    rustOnly.route('#server?track=cpp');
+    assert(rustOnly.get('view-server').textContent.includes('CPP checklist will appear'));
+    console.log(JSON.stringify({ result: 'passed', scope: 'Server categories', ...counts, lockedContentCleared: true, olderSnapshotsSupported: true })); return;
   }
   if (process.argv.includes('--beta')) {
     const page = app.get('view-beta'), beta = data.project.beta;
